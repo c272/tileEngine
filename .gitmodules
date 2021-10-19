@@ -1,0 +1,3 @@
+[submodule "Dependencies/DarkUI"]
+	path = Dependencies/DarkUI
+	url = https://github.com/c272/DarkUI.git
