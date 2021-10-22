@@ -36,13 +36,17 @@ namespace easyCase
             // 
             this.nodeGraphControl1.BackgroundColour = System.Drawing.Color.White;
             this.nodeGraphControl1.BackgroundLineColour = System.Drawing.Color.WhiteSmoke;
-            this.nodeGraphControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.nodeGraphControl1.FieldPadding = 5F;
             this.nodeGraphControl1.GridStep = 10F;
-            this.nodeGraphControl1.Location = new System.Drawing.Point(0, 0);
+            this.nodeGraphControl1.Location = new System.Drawing.Point(12, 33);
             this.nodeGraphControl1.Name = "nodeGraphControl1";
-            this.nodeGraphControl1.Size = new System.Drawing.Size(800, 450);
+            this.nodeGraphControl1.NodeBackgroundColour = System.Drawing.Color.Black;
+            this.nodeGraphControl1.NodeTextFont = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nodeGraphControl1.NodeTitleFont = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nodeGraphControl1.Size = new System.Drawing.Size(425, 276);
             this.nodeGraphControl1.TabIndex = 0;
             this.nodeGraphControl1.Text = "nodeGraphControl1";
+            this.nodeGraphControl1.TitlePadding = 5F;
             this.nodeGraphControl1.Zoom = 1F;
             // 
             // Editor

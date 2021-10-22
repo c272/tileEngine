@@ -46,6 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\NodeField.cs" />
+    <Compile Include="Attributes\NodeNumericField.cs" />
+    <Compile Include="Nodes\ExampleNode.cs" />
+    <Compile Include="Nodes\Node.cs" />
     <Compile Include="Controls\NodeGraphControl.cs">
       <SubType>Component</SubType>
     </Compile>

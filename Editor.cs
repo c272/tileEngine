@@ -1,4 +1,5 @@
-﻿using System;
+﻿using easyCase.Nodes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,7 @@ namespace easyCase
         public Editor()
         {
             InitializeComponent();
+            nodeGraphControl1.AddNode(new ExampleNode());
         }
     }
 }
