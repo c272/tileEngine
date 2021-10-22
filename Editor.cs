@@ -18,5 +18,10 @@ namespace easyCase
             InitializeComponent();
             nodeGraphControl1.AddNode(new ExampleNode());
         }
+
+        private void Editor_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -32,10 +32,20 @@ namespace easyCase.Controls
             get { return zoom; }
             set
             {
+                //Bound zoom to 0.01 or above.
+                if (value < 0.01)
+                    value = 0.01f;
+
+                //Update font size values.
+                NodeTitleFont = UpdateFontSize(NodeTitleFont, value, zoom);
+                NodeTextFont = UpdateFontSize(NodeTextFont, value, zoom);
+
+                //Update zoom value.
                 zoom = value;
                 Invalidate();
             }
         }
+
         private float zoom = 1f;
 
         /// <summary>
@@ -79,6 +89,34 @@ namespace easyCase.Controls
             }
         }
         private float fieldPadding = 5;
+
+        /// <summary>
+        /// The size of the padding between the edge of the node and the internal draw.
+        /// </summary>
+        public float GlobalPadding
+        { 
+            get { return globalPadding; }
+            set
+            {
+                globalPadding = value;
+                Invalidate();
+            }
+        }
+        private float globalPadding = 5;
+
+        /// <summary>
+        /// The radius of the circles rounding the corners of each node on the graph.
+        /// </summary>
+        public int NodeRoundingRadius
+        {
+            get { return nodeRoundingRadius; }
+            set
+            {
+                nodeRoundingRadius = value;
+                Invalidate();
+            }
+        }
+        private int nodeRoundingRadius = 5;
 
         /// <summary>
         /// The font for title text of nodes.
@@ -157,19 +195,31 @@ namespace easyCase.Controls
         //////////////////////////
 
         //The current location of the camera (X and Y).
-        public Vector2 cameraPos = new Vector2(0, 0);
+        private Vector2 cameraPos = new Vector2(0, 0);
 
         //A list of nodes currently on the node graph.
-        public List<Node> nodes = new List<Node>();
+        private List<Node> nodes = new List<Node>();
+
+        //Tracking variables for mouse drag on the graph.
+        private bool mouseDragActive = false;
+        private Point lastMouseLocation;
 
         ///////////////////////////
         /// METHODS & OVERRIDES ///
-        ///////////////////////////#
-        
-        //Default constructor, sets resizing redraw on.
+        ///////////////////////////
+
+        //Default constructor.
         public NodeGraphControl()
         {
+            //Set redraw on, double buffer self.
             SetStyle(ControlStyles.ResizeRedraw, true);
+            DoubleBuffered = true;
+
+            //Set up events for user control.
+            MouseDown += OnMouseDown;
+            MouseUp += OnMouseUp;
+            MouseMove += OnMouseMove;
+            MouseWheel += OnMouseWheel;
         }
 
         /// <summary>
@@ -189,44 +239,48 @@ namespace easyCase.Controls
             nodes.RemoveAll(x => x.ID == n.ID);
         }
 
-        /// <summary>
-        /// Gets a pixel-space rectangle based on the top left and bottom right of a rectangle in grid space.
-        /// </summary>
-        public Rectangle GetPixelRectangle(Vector2 topLeft, Vector2 bottomRight)
+        ///////////////////////
+        /// EVENT FUNCTIONS ///
+        ///////////////////////
+        
+        //Triggered when the user spins the mouse wheel.
+        private void OnMouseWheel(object sender, MouseEventArgs e)
         {
-            Point pixelTopLeft = ToPixelCoordinate(topLeft.X, topLeft.Y);
-            Point pixelBottomRight = ToPixelCoordinate(bottomRight.X, bottomRight.Y);
-            return new Rectangle(pixelTopLeft, new Size(pixelBottomRight.X - pixelTopLeft.X, pixelBottomRight.Y - pixelTopLeft.X));
+            //Adjust zoom.
+            Zoom += e.Delta / 120 * 0.1f;
+        }
+        
+        //Triggered when the mouse is first pressed down.
+        private void OnMouseDown(object sender, MouseEventArgs e)
+        {
+            //Start the mouse drag.
+            mouseDragActive = true;
+            lastMouseLocation = e.Location;
         }
 
-        /// <summary>
-        /// Converts an existing pixel-space coordinate into a grid space coordinate.
-        /// </summary>
-        public Vector2 ToGridCoordinate(float x, float y)
+        private void OnMouseMove(object sender, MouseEventArgs e)
         {
-            //The amount of grid coordinates traversed per pixel.
-            float pixelValue = 1 / zoom;
+            //If we're currently dragging the mouse, move the camera based on the delta/zoom.
+            if (mouseDragActive)
+            {
+                //Get the delta, adjust for zoom.
+                Vector2 delta = new Vector2(lastMouseLocation.X - e.Location.X, lastMouseLocation.Y - e.Location.Y);
+                lastMouseLocation = e.Location;
+                delta.X /= zoom;
+                delta.Y /= zoom;
 
-            //Calculate how far away we are (in pixels) from the center, as a vector.
-            Vector2 center = new Vector2(ClientRectangle.X + ClientRectangle.Width / 2f, ClientRectangle.Y + ClientRectangle.Height / 2f);
-            Vector2 relativeToCenter = new Vector2(x - center.X, y - center.Y);
-
-            //Convert this vector into grid space coordinates, then apply the vector to the camera position.
-            return new Vector2(cameraPos.X + relativeToCenter.X * pixelValue, cameraPos.Y + relativeToCenter.Y * pixelValue);
+                //Apply this delta to the camera.
+                cameraPos.X += delta.X;
+                cameraPos.Y += delta.Y;
+                Invalidate();
+            }
         }
 
-        /// <summary>
-        /// Converts an existing grid-space coordinate into a client rectangle pixel coordinate.
-        /// </summary>
-        public Point ToPixelCoordinate(float x, float y)
+        //Triggered when the mouse is released.
+        private void OnMouseUp(object sender, MouseEventArgs e)
         {
-            //Get the vector from the camera to this point.
-            Vector2 relativeToCamera = new Vector2(x - cameraPos.X, y - cameraPos.Y);
-
-            //Convert this vector into pixel space coordinates, correct for the center of the control.
-            Vector2 center = new Vector2(ClientRectangle.X + ClientRectangle.Width / 2f, ClientRectangle.Y + ClientRectangle.Height / 2f);
-            Vector2 relativePixels = new Vector2(relativeToCamera.X * zoom, relativeToCamera.Y * zoom);
-            return new Point((int)(center.X + relativePixels.X), (int)(center.Y + relativePixels.Y));
+            //Finish the mouse drag.
+            mouseDragActive = false;
         }
 
         /// <summary>
@@ -278,7 +332,7 @@ namespace easyCase.Controls
             Vector2 curPos = new Vector2(topLeft.X - (topLeft.X % GridStep), topLeft.Y);
             while (curPos.X <= bottomRight.X)
             {
-                e.Graphics.DrawLine(pen, ToPixelCoordinate(curPos.X, curPos.Y), ToPixelCoordinate(curPos.X, bottomRight.Y));
+                e.Graphics.DrawLine(pen, ToPixelPointF(curPos.X, curPos.Y), ToPixelPointF(curPos.X, bottomRight.Y));
                 curPos.X += GridStep;
             }
 
@@ -286,9 +340,72 @@ namespace easyCase.Controls
             curPos = new Vector2(topLeft.X, topLeft.Y - (topLeft.Y % GridStep));
             while (curPos.Y <= bottomRight.Y)
             {
-                e.Graphics.DrawLine(pen, ToPixelCoordinate(curPos.X, curPos.Y), ToPixelCoordinate(bottomRight.X, curPos.Y));
+                e.Graphics.DrawLine(pen, ToPixelPointF(curPos.X, curPos.Y), ToPixelPointF(bottomRight.X, curPos.Y));
                 curPos.Y += GridStep;
             }
+        }
+
+        //////////////////////////////////////
+        /// UTILITY FUNCTIONS (CONVERSION) ///
+        //////////////////////////////////////
+
+        /// <summary>
+        /// Gets a pixel-space rectangle based on the top left and bottom right of a rectangle in grid space.
+        /// </summary>
+        public Rectangle GetPixelRectangle(Vector2 topLeft, Vector2 bottomRight)
+        {
+            Point pixelTopLeft = ToPixelPoint(topLeft.X, topLeft.Y);
+            Point pixelBottomRight = ToPixelPoint(bottomRight.X, bottomRight.Y);
+            return new Rectangle(pixelTopLeft, new Size(pixelBottomRight.X - pixelTopLeft.X, pixelBottomRight.Y - pixelTopLeft.Y));
+        }
+
+        /// <summary>
+        /// Converts an existing pixel-space coordinate into a grid space coordinate.
+        /// </summary>
+        public Vector2 ToGridCoordinate(float x, float y)
+        {
+            //The amount of grid coordinates traversed per pixel.
+            float pixelValue = 1 / zoom;
+
+            //Calculate how far away we are (in pixels) from the center, as a vector.
+            Vector2 center = new Vector2(ClientRectangle.X + ClientRectangle.Width / 2f, ClientRectangle.Y + ClientRectangle.Height / 2f);
+            Vector2 relativeToCenter = new Vector2(x - center.X, y - center.Y);
+
+            //Convert this vector into grid space coordinates, then apply the vector to the camera position.
+            return new Vector2(cameraPos.X + relativeToCenter.X * pixelValue, cameraPos.Y + relativeToCenter.Y * pixelValue);
+        }
+
+        /// <summary>
+        /// Converts an existing grid-space coordinate into a single client rectangle pixel point.
+        /// </summary>
+        public Point ToPixelPoint(float x, float y)
+        {
+            PointF floatVer = ToPixelPointF(x, y);
+            return new Point((int)floatVer.X, (int)floatVer.Y);
+        }
+
+        /// <summary>
+        /// Converts an existing grid-space coordinate into a client rectangle pixel coordinate.
+        /// </summary>
+        public PointF ToPixelPointF(float x, float y)
+        {
+            //Get the vector from the camera to this point.
+            Vector2 relativeToCamera = new Vector2(x - cameraPos.X, y - cameraPos.Y);
+
+            //Convert this vector into pixel space coordinates, correct for the center of the control.
+            Vector2 center = new Vector2(ClientRectangle.X + ClientRectangle.Width / 2f, ClientRectangle.Y + ClientRectangle.Height / 2f);
+            Vector2 relativePixels = new Vector2(relativeToCamera.X * zoom, relativeToCamera.Y * zoom);
+            return new PointF(center.X + relativePixels.X, center.Y + relativePixels.Y);
+        }
+
+        /////////////////////////////////
+        /// PRIVATE UTILITY FUNCTIONS ///
+        /////////////////////////////////
+
+        //Updates the size of all fonts when "zoom" is changed.
+        private Font UpdateFontSize(Font font, float newZoom, float zoom)
+        {
+            return new Font(font.FontFamily, font.SizeInPoints * (newZoom / zoom));
         }
     }
 }

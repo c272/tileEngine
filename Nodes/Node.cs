@@ -27,6 +27,11 @@ namespace easyCase.Nodes
         public string Title { get; protected set; }
 
         /// <summary>
+        /// The colour of the node's title text.
+        /// </summary>
+        public Color TitleColour { get; protected set; }
+
+        /// <summary>
         /// The colour of the title bar of the node.
         /// </summary>
         public Color Colour { get; protected set; }
@@ -42,17 +47,15 @@ namespace easyCase.Nodes
         /// </summary>
         public List<NodeField> Fields { get; private set; } = new List<NodeField>();
 
-        //The label used for the title of this node.
-        private Label titleLabel = new Label();
-
         /// <summary>
         /// Node constructor, populates the list of fields which the node posesses.
         /// </summary>
-        public Node(string title, Color colour)
+        public Node(string title, Color colour, Color titleColour)
         {
             //Set the title and colour.
             Title = title;
             Colour = colour;
+            TitleColour = titleColour;
 
             //Get a list of all properties on the class.
             var properties = this.GetType().GetProperties();
@@ -65,9 +68,6 @@ namespace easyCase.Nodes
                 //Save this to the list.
                 Fields.Add((NodeField)attributes[0]);
             }
-
-            //Set up the title label.
-            titleLabel.Text = Title;
         }
 
         /// <summary>
@@ -75,27 +75,42 @@ namespace easyCase.Nodes
         /// </summary>
         public void Draw(NodeGraphControl control, Graphics graphics)
         {
+            //Set antialiasing on.
+            graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+
             //Based on the expected size of the node, shift the start position to the top left.
             Vector2 size = GetNodeSize(control, graphics);
             Vector2 curPos = new Vector2(Location.X - size.X / 2f, Location.Y - size.Y / 2f);
 
-            //Draw the title bar.
+            //Get the size of the title text, accounting for zoom.
             Brush brush = new SolidBrush(Colour);
-            SizeF titleSize = graphics.MeasureString(titleLabel.Text, titleLabel.Font);
-            Rectangle titleRect = control.GetPixelRectangle(curPos, new Vector2(curPos.X + size.X, curPos.Y + titleSize.Height));
-            graphics.FillRectangle(brush, titleRect);
+            SizeF titleSize = graphics.MeasureString(Title, control.NodeTitleFont);
+            titleSize.Width /= control.Zoom;
+            titleSize.Height /= control.Zoom;
 
-            //Move the title label into the title bar, resize.
-            titleLabel.Location = control.ToPixelCoordinate(curPos.X, curPos.Y);
-            titleLabel.Size = titleRect.Size;
-            titleLabel.Invalidate();
+            //Find and draw the title.
+            Vector2 titleBottomRight = new Vector2(curPos.X + size.X, curPos.Y + titleSize.Height + control.GlobalPadding);
+            Rectangle titleRect = control.GetPixelRectangle(curPos, titleBottomRight);
+            graphics.FillPath(brush, RoundedPaths.RoundedRect(titleRect, control.NodeRoundingRadius, true, false));
+
+            //Draw title (with global padding).
+            brush = new SolidBrush(TitleColour);
+            graphics.DrawString(Title, control.NodeTitleFont, brush, control.ToPixelPointF(curPos.X + control.GlobalPadding, curPos.Y + control.GlobalPadding));
 
             //Draw the main body rectangle.
-            curPos.Y += titleSize.Height;
+            curPos.Y += titleSize.Height + control.TitlePadding;
             brush = new SolidBrush(control.NodeBackgroundColour);
-            graphics.FillRectangle(brush, control.GetPixelRectangle(curPos, new Vector2(curPos.X + size.X, curPos.Y - titleSize.Height + size.Y)));
+            var mainRect = control.GetPixelRectangle(curPos, new Vector2(curPos.X + size.X, curPos.Y - titleSize.Height + size.Y));
+            var mainPath = RoundedPaths.RoundedRect(mainRect, control.NodeRoundingRadius, false, true);
+            graphics.FillPath(brush, mainPath);
 
-            //...
+            //Draw all the fields for input, then for output.
+            curPos.Y += control.TitlePadding;
+            foreach (var field in Fields)
+            {
+                //Increment to next current position.
+                curPos.Y += field.GetDimensions(control).Y + control.FieldPadding;
+            }
         }
 
         /// <summary>
@@ -104,15 +119,21 @@ namespace easyCase.Nodes
         public Vector2 GetNodeSize(NodeGraphControl control, Graphics graphics)
         {
             //Try and figure out the size of the entire node.
-            Vector2 finalSize;
+            Vector2 finalSize = new Vector2();
 
-            //Size of the title.
-            titleLabel.Font = control.NodeTitleFont;
-            SizeF titleSize = graphics.MeasureString(Title, titleLabel.Font);
-            finalSize = new Vector2(titleSize.Width, titleSize.Height);
+            //Global padding in all directions.
+            finalSize.X += control.GlobalPadding * 2;
+            finalSize.Y += control.GlobalPadding * 2;
+
+            //Size of the title (accounting for zoom).
+            SizeF titleSize = graphics.MeasureString(Title, control.NodeTitleFont);
+            titleSize.Width /= control.Zoom;
+            titleSize.Height /= control.Zoom;
+            finalSize.X += titleSize.Width;
+            finalSize.Y += titleSize.Height;
 
             //Add padding for between title and fields.
-            finalSize.Y += control.TitlePadding;
+            finalSize.Y += control.TitlePadding + control.GlobalPadding;
 
             //Loop over all fields and process.
             float inputX = 0, outputX = 0;
