@@ -147,6 +147,22 @@ namespace easyCase.Controls
         private Font nodeTextFont = SystemFonts.DefaultFont;
 
         /// <summary>
+        /// Property to set the text colour of the standard text on the node.
+        /// Title text is controlled per-node (for colour matching purposes).
+        /// </summary>
+        public Color NodeTextColour
+        {
+            get { return nodeTextColour; }
+            set
+            {
+                nodeTextColour = value;
+                Invalidate();
+            }
+        }
+        private Color nodeTextColour = Color.Black;
+
+
+        /// <summary>
         /// Property to set the background colour of the editor.
         /// </summary>
         public Color BackgroundColour

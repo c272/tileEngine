@@ -3,6 +3,7 @@ using easyCase.Controls;
 using easyCase.Utility;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -105,11 +106,15 @@ namespace easyCase.Nodes
             graphics.FillPath(brush, mainPath);
 
             //Draw all the fields for input, then for output.
+            curPos.X += control.GlobalPadding;
             curPos.Y += control.TitlePadding;
             foreach (var field in Fields)
             {
+                //Draw field.
+                field.Draw(control, graphics, curPos);
+
                 //Increment to next current position.
-                curPos.Y += field.GetDimensions(control).Y + control.FieldPadding;
+                curPos.Y += field.GetDimensions(control, graphics).Y + control.FieldPadding;
             }
         }
 
@@ -139,7 +144,7 @@ namespace easyCase.Nodes
             float inputX = 0, outputX = 0;
             foreach (var field in Fields)
             {
-                Vector2 fieldDims = field.GetDimensions(control);
+                Vector2 fieldDims = field.GetDimensions(control, graphics);
 
                 //If this field is an input/output, and bigger than one previously processed,
                 //expand the expected width of either side.
@@ -158,9 +163,10 @@ namespace easyCase.Nodes
 
             //Combine the field widths (+ padding).
             float totalFieldWidth = inputX + outputX + control.FieldPadding;
-            if (finalSize.X < totalFieldWidth) { finalSize.X = totalFieldWidth; }
+            if (finalSize.X < totalFieldWidth) { finalSize.X = totalFieldWidth + control.GlobalPadding * 2; }
 
             //Return final dimensions.
+            Debug.WriteLine("EXPECTED NODE SIZE: " + finalSize.X + " x " + finalSize.Y);
             return finalSize;
         }
     }

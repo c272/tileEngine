@@ -45,8 +45,9 @@ namespace easyCase
             this.nodeGraphControl1.Name = "nodeGraphControl1";
             this.nodeGraphControl1.NodeBackgroundColour = System.Drawing.Color.Black;
             this.nodeGraphControl1.NodeRoundingRadius = 10;
-            this.nodeGraphControl1.NodeTextFont = new System.Drawing.Font("Microsoft Sans Serif", 10.92F);
-            this.nodeGraphControl1.NodeTitleFont = new System.Drawing.Font("Fjalla One", 16.8F);
+            this.nodeGraphControl1.NodeTextColour = System.Drawing.Color.White;
+            this.nodeGraphControl1.NodeTextFont = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nodeGraphControl1.NodeTitleFont = new System.Drawing.Font("Fjalla One", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nodeGraphControl1.Size = new System.Drawing.Size(600, 366);
             this.nodeGraphControl1.TabIndex = 0;
             this.nodeGraphControl1.Text = "nodeGraphControl1";
@@ -59,7 +60,7 @@ namespace easyCase
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(600, 366);
             this.Controls.Add(this.nodeGraphControl1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Editor";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Editor_Load);

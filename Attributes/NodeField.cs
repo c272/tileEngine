@@ -16,21 +16,29 @@ namespace easyCase.Attributes
 
     public abstract class NodeField : Attribute
     {
+        //The name of this field.
+        public string Name;
+
         //The type of node field this is (input, output, etc.)
         public FieldType Type;
 
         //The field this node is currently connected to.
         public NodeField ConnectedTo = null;
 
-        public NodeField(FieldType type)
+        //The colour of the attach node for this field.
+        public Color NodeColour { get; private set; }
+
+        public NodeField(string name, FieldType type, Color nodeColour)
         {
+            Name = name;
             Type = type;
+            NodeColour = nodeColour;
         }
 
         /// <summary>
         /// Gets the dimensions of this node field based on the settings of the node graph.
         /// </summary>
-        public abstract Vector2 GetDimensions(NodeGraphControl control);
+        public abstract Vector2 GetDimensions(NodeGraphControl control, Graphics graphics);
         
         /// <summary>
         /// Draws this field to the node graph at the provided position.

@@ -14,7 +14,7 @@ namespace easyCase.Nodes
     public class ExampleNode : Node
     {
         //test value
-        [NodeNumericField(FieldType.Input)]
+        [NodeNumericField("SomeValue", FieldType.Input)]
         public int SomeValue { get; set; }
 
         public ExampleNode() : base("ExampleNode!", Color.Red, Color.White)
