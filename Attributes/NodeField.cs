@@ -28,6 +28,9 @@ namespace easyCase.Attributes
         //The colour of the attach node for this field.
         public Color NodeColour { get; private set; }
 
+        //The current location of this field's connector.
+        public Vector2 ConnectorLocation { get; set; }
+
         public NodeField(string name, FieldType type, Color nodeColour)
         {
             Name = name;

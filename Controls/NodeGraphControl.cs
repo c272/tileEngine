@@ -63,6 +63,35 @@ namespace easyCase.Controls
         private float gridStep = 10f;
 
         /// <summary>
+        /// The diameter (in grid units) of the connection points
+        /// for a single node field.
+        /// </summary>
+        public float NodeConnectorSize
+        {
+            get { return nodeConnectorSize; }
+            set
+            {
+                nodeConnectorSize = value;
+                Invalidate();
+            }
+        }
+        private float nodeConnectorSize = 3f;
+
+        /// <summary>
+        /// The padding following the node connector until the field.
+        /// </summary>
+        public float NodeConnectorPadding
+        {
+            get { return nodeConnectorPadding; }
+            set
+            {
+                nodeConnectorPadding = value;
+                Invalidate();
+            }
+        }
+        private float nodeConnectorPadding = 2f;
+
+        /// <summary>
         /// The size of the padding following the title of the node.
         /// </summary>
         public float TitlePadding

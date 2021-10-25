@@ -34,6 +34,10 @@ namespace easyCase
         {
             InitializeComponent();
             nodeGraphControl1.AddNode(new ExampleNode());
+            nodeGraphControl1.AddNode(new ExampleNode()
+            {
+                Location = new Utility.Vector2(200, 200)
+            });
         }
 
         private void Editor_Load(object sender, EventArgs e)
