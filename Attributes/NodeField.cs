@@ -14,13 +14,16 @@ namespace easyCase.Attributes
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
 
-    public abstract class NodeField : Attribute
+    public abstract class NodeField : SnowflakeAttribute
     {
         //The name of this field.
         public string Name;
 
         //The type of node field this is (input, output, etc.)
         public FieldType Type;
+
+        //The underlying value type this field is expecting.
+        public Type ValueType { get; protected set; }
 
         //The field this node is currently connected to.
         public NodeField ConnectedTo = null;
@@ -31,7 +34,7 @@ namespace easyCase.Attributes
         //The current location of this field's connector.
         public Vector2 ConnectorLocation { get; set; }
 
-        public NodeField(string name, FieldType type, Color nodeColour)
+        public NodeField(string name, FieldType type, Type valueType, Color nodeColour)
         {
             Name = name;
             Type = type;
@@ -42,6 +45,21 @@ namespace easyCase.Attributes
         /// Gets the dimensions of this node field based on the settings of the node graph.
         /// </summary>
         public abstract Vector2 GetDimensions(NodeGraphControl control, Graphics graphics);
+
+        /// <summary>
+        /// Returns whether a given point is within the bounds of the connector for this field.
+        /// </summary>
+        public bool PointWithinConnector(NodeGraphControl control, Point point)
+        {
+            //If we don't have a connector location, no points within it.
+            if (ConnectorLocation == null) { return false; }
+
+            //Calculate rectangle of connector, provide result.
+            Vector2 connectorTopLeft = new Vector2(ConnectorLocation.X - control.NodeConnectorSize / 2f, ConnectorLocation.Y - control.NodeConnectorSize / 2f);
+            Vector2 connectorBottomRight = new Vector2(connectorTopLeft.X + control.NodeConnectorSize, connectorTopLeft.Y + control.NodeConnectorSize);
+            Rectangle connectorPixelRect = control.GetPixelRectangle(connectorTopLeft, connectorBottomRight);
+            return connectorPixelRect.Contains(point);
+        }
         
         /// <summary>
         /// Draws this field to the node graph at the provided position.

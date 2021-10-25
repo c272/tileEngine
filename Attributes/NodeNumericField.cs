@@ -36,7 +36,7 @@ namespace easyCase.Attributes
         /// Constructor for the numeric field.
         /// Simply passes down base arguments, nothing fancy.
         /// </summary>
-        public NodeNumericField(string name, FieldType type) : base(name, type, Color.Green) { }
+        public NodeNumericField(string name, FieldType type) : base(name, type, typeof(float), Color.Green) { }
 
         /// <summary>
         /// Draws the numeric field to the control, at the provided position.
@@ -50,7 +50,7 @@ namespace easyCase.Attributes
             //Draw the name (left).
             Brush brush = new SolidBrush(control.NodeTextColour);
             SizeF nameDims = graphics.MeasureString(Name, control.NodeTextFont);
-            graphics.DrawString(Name, control.NodeTextFont, brush, control.ToPixelPointF(position.X, position.Y));
+            graphics.DrawString(Name, control.NodeTextFont, brush, control.ToPixelPointF(position));
 
             //Calculate the size of the input box. If it's small enough, invisible it.
             numericInput.Size = new Size((int)(Width * control.Zoom), (int)(Height * control.Zoom));

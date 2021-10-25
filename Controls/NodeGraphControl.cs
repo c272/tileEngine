@@ -1,4 +1,5 @@
-﻿using easyCase.Nodes;
+﻿using easyCase.Attributes;
+using easyCase.Nodes;
 using easyCase.Utility;
 using System;
 using System.Collections.Generic;
@@ -245,9 +246,14 @@ namespace easyCase.Controls
         //A list of nodes currently on the node graph.
         private List<Node> nodes = new List<Node>();
 
+        //The current state of the NodeGraphControl.
+        private NodeGraphState state = NodeGraphState.Default;
+
         //Tracking variables for mouse drag on the graph.
-        private bool mouseDragActive = false;
         private Point lastMouseLocation;
+
+        //The field currently being connected in the ConnectingNode state.
+        private NodeField connectingField = null;
 
         ///////////////////////////
         /// METHODS & OVERRIDES ///
@@ -298,19 +304,34 @@ namespace easyCase.Controls
         //Triggered when the mouse is first pressed down.
         private void OnMouseDown(object sender, MouseEventArgs e)
         {
+            //Has the user clicked on a connector? (If so, start connecting).
+            foreach (var node in nodes)
+            {
+                foreach (var field in node.Fields)
+                {
+                    //Are we in the connector?
+                    if (!field.PointWithinConnector(this, e.Location)) { continue; }
+
+                    //Click is within the rectangle! Start a connector drag.
+                    state = NodeGraphState.ConnectingNode;
+                    connectingField = field;
+                    lastMouseLocation = e.Location;
+                    return;
+                }
+            }
+
             //Start the mouse drag.
-            mouseDragActive = true;
+            state = NodeGraphState.MovingCamera;
             lastMouseLocation = e.Location;
         }
 
         private void OnMouseMove(object sender, MouseEventArgs e)
         {
             //If we're currently dragging the mouse, move the camera based on the delta/zoom.
-            if (mouseDragActive)
+            if (state == NodeGraphState.MovingCamera)
             {
                 //Get the delta, adjust for zoom.
                 Vector2 delta = new Vector2(lastMouseLocation.X - e.Location.X, lastMouseLocation.Y - e.Location.Y);
-                lastMouseLocation = e.Location;
                 delta.X /= zoom;
                 delta.Y /= zoom;
 
@@ -319,13 +340,44 @@ namespace easyCase.Controls
                 cameraPos.Y += delta.Y;
                 Invalidate();
             }
+
+            //Update last mouse location.
+            lastMouseLocation = e.Location;
         }
 
         //Triggered when the mouse is released.
         private void OnMouseUp(object sender, MouseEventArgs e)
         {
-            //Finish the mouse drag.
-            mouseDragActive = false;
+            //Are we currently connecting a node?
+            if (state == NodeGraphState.ConnectingNode)
+            {
+                //Check if we're within a valid node to connect to.
+                foreach (var node in nodes)
+                {
+                    foreach (var field in node.Fields)
+                    {
+                        //Ignore if the fields' types do not match, or the field is the one we're connecting from.
+                        if (field.ID == connectingField.ID || field.ValueType != connectingField.ValueType) { continue; }
+
+                        //Don't let an output connect to an output, or an input to an input.
+                        if (field.Type == connectingField.Type) { continue; }
+
+                        //Is the mouse within the bounds of this field?
+                        if (!field.PointWithinConnector(this, e.Location)) { continue; }
+
+                        //Yes, connect the two fields.
+                        field.ConnectedTo = connectingField;
+                        connectingField.ConnectedTo = field;
+                        break;
+                    }
+                }
+
+                //Clear the field currently being connected (drag ended).
+                connectingField = null;
+            }
+
+            //Return to the default state.
+            state = NodeGraphState.Default;
         }
 
         /// <summary>
@@ -341,6 +393,12 @@ namespace easyCase.Controls
 
             //Draw the nodes (and their connections).
             DrawNodes(e);
+
+            //If we're currently in the "connecting node" state, also draw the pending connection.
+            if (state == NodeGraphState.ConnectingNode)
+            {
+                e.Graphics.DrawLine(new Pen(connectingField.NodeColour, 3), ToPixelPoint(connectingField.ConnectorLocation), lastMouseLocation);
+            }
         }
 
         /// <summary>
@@ -348,9 +406,33 @@ namespace easyCase.Controls
         /// </summary>
         private void DrawNodes(PaintEventArgs e)
         {
+            //Draw all the nodes in order.
             foreach (var node in nodes)
             {
                 node.Draw(this, e.Graphics);
+            }
+
+            //Draw the connections between those nodes.
+            List<int> alreadyConnected = new List<int>();
+            foreach (var node in nodes)
+            {
+                foreach (var field in node.Fields)
+                {
+                    //Ignore field if it's not got a connector location yet.
+                    if (field.ConnectorLocation == null) { continue; }
+
+                    //Ignore fields with no connection, or if we've connected it already.
+                    if (field.ConnectedTo == null || alreadyConnected.Contains(field.ID)) { continue; }
+
+                    //Draw bezier curve to connecting field.
+                    Point startPoint = ToPixelPoint(field.ConnectorLocation);
+                    Point endPoint = ToPixelPoint(field.ConnectedTo.ConnectorLocation);
+                    e.Graphics.DrawLine(new Pen(field.NodeColour, 3), startPoint, endPoint);
+
+                    //List field as connected.
+                    alreadyConnected.Add(field.ID);
+                    alreadyConnected.Add(field.ConnectedTo.ID);
+                }
             }
         }
 
@@ -377,7 +459,7 @@ namespace easyCase.Controls
             Vector2 curPos = new Vector2(topLeft.X - (topLeft.X % GridStep), topLeft.Y);
             while (curPos.X <= bottomRight.X)
             {
-                e.Graphics.DrawLine(pen, ToPixelPointF(curPos.X, curPos.Y), ToPixelPointF(curPos.X, bottomRight.Y));
+                e.Graphics.DrawLine(pen, ToPixelPointF(curPos), ToPixelPointF(curPos.X, bottomRight.Y));
                 curPos.X += GridStep;
             }
 
@@ -385,7 +467,7 @@ namespace easyCase.Controls
             curPos = new Vector2(topLeft.X, topLeft.Y - (topLeft.Y % GridStep));
             while (curPos.Y <= bottomRight.Y)
             {
-                e.Graphics.DrawLine(pen, ToPixelPointF(curPos.X, curPos.Y), ToPixelPointF(bottomRight.X, curPos.Y));
+                e.Graphics.DrawLine(pen, ToPixelPointF(curPos), ToPixelPointF(bottomRight.X, curPos.Y));
                 curPos.Y += GridStep;
             }
         }
@@ -399,8 +481,8 @@ namespace easyCase.Controls
         /// </summary>
         public Rectangle GetPixelRectangle(Vector2 topLeft, Vector2 bottomRight)
         {
-            Point pixelTopLeft = ToPixelPoint(topLeft.X, topLeft.Y);
-            Point pixelBottomRight = ToPixelPoint(bottomRight.X, bottomRight.Y);
+            Point pixelTopLeft = ToPixelPoint(topLeft);
+            Point pixelBottomRight = ToPixelPoint(bottomRight);
             return new Rectangle(pixelTopLeft, new Size(pixelBottomRight.X - pixelTopLeft.X, pixelBottomRight.Y - pixelTopLeft.Y));
         }
 
@@ -421,6 +503,11 @@ namespace easyCase.Controls
         }
 
         /// <summary>
+        /// Converts an existing grid-space coordinate into a client rectangle pixel coordinate.
+        /// </summary>
+        public Point ToPixelPoint(Vector2 point) { return ToPixelPoint(point.X, point.Y); }
+
+        /// <summary>
         /// Converts an existing grid-space coordinate into a single client rectangle pixel point.
         /// </summary>
         public Point ToPixelPoint(float x, float y)
@@ -428,6 +515,11 @@ namespace easyCase.Controls
             PointF floatVer = ToPixelPointF(x, y);
             return new Point((int)floatVer.X, (int)floatVer.Y);
         }
+
+        /// <summary>
+        /// Converts an existing grid-space coordinate into a client rectangle pixel coordinate.
+        /// </summary>
+        public PointF ToPixelPointF(Vector2 point) { return ToPixelPointF(point.X, point.Y); }
 
         /// <summary>
         /// Converts an existing grid-space coordinate into a client rectangle pixel coordinate.

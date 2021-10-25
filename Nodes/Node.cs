@@ -15,13 +15,8 @@ namespace easyCase.Nodes
     /// <summary>
     /// Represents a single node, placeable within the node graph editor.
     /// </summary>
-    public abstract class Node
+    public abstract class Node : Snowflake
     {
-        /// <summary>
-        /// The unique identifying ID of this node instance.
-        /// </summary>
-        public int ID = Guid.NewGuid().GetHashCode();
-
         /// <summary>
         /// The title of the node (as seen in-editor).
         /// </summary>
