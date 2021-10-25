@@ -14,13 +14,13 @@ namespace easyCase.Nodes
     public class ExampleNode : Node
     {
         //test value
-        [NodeNumericField("SomeInput", FieldType.Input)]
+        [NodeFieldNumeric("SomeInput", FieldType.Input)]
         public int SomeInput { get; set; }
 
-        [NodeNumericField("SomeOutput", FieldType.Output)]
+        [NodeFieldNumeric("SomeOutput", FieldType.Output, UserCanEdit = false)]
         public int SomeOutput { get; set; }
 
-        [NodeNumericField("SomeOutput2", FieldType.Output)]
+        [NodeFieldNumeric("SomeOutput2", FieldType.Output)]
         public int AnotherOutput { get; set; }
 
         public ExampleNode() : base("ExampleNode!", Color.Red, Color.White)

@@ -313,7 +313,12 @@ namespace easyCase.Controls
                     //Are we in the connector?
                     if (!field.PointWithinConnector(this, e.Location)) { continue; }
 
-                    //Click is within the rectangle! Start a connector drag.
+                    //Click is within the rectangle! If it's connected to something already, disconnect.
+                    if (field.ConnectedTo != null)
+                        field.ConnectedTo.ConnectedTo = null;
+                    field.ConnectedTo = null;
+
+                    //Start the drag.
                     state = NodeGraphState.ConnectingNode;
                     connectingField = field;
                     lastMouseLocation = e.Location;
@@ -381,6 +386,7 @@ namespace easyCase.Controls
 
                 //Clear the field currently being connected (drag ended).
                 connectingField = null;
+                Invalidate();
             }
 
             //If we were moving a node, clear the node being moved (we're done).
@@ -416,7 +422,6 @@ namespace easyCase.Controls
                     //Yes, connect the two fields.
                     field.ConnectedTo = connectingField;
                     connectingField.ConnectedTo = field;
-                    Invalidate();
                     break;
                 }
             }
