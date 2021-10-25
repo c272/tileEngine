@@ -254,6 +254,7 @@ namespace easyCase.Controls
 
         //The field currently being connected in the ConnectingNode state.
         private NodeField connectingField = null;
+        private Node nodeBeingMoved = null;
 
         ///////////////////////////
         /// METHODS & OVERRIDES ///
@@ -320,6 +321,19 @@ namespace easyCase.Controls
                 }
             }
 
+            //Has the user clicked on a node but not on a connector? (If so, start moving the node).
+            foreach (var node in nodes)
+            {
+                if (node.ContainsPoint(this, e.Location))
+                {
+                    //Start the node drag.
+                    state = NodeGraphState.MovingNode;
+                    lastMouseLocation = e.Location;
+                    nodeBeingMoved = node;
+                    return;
+                }
+            }
+
             //Start the mouse drag.
             state = NodeGraphState.MovingCamera;
             lastMouseLocation = e.Location;
@@ -327,14 +341,22 @@ namespace easyCase.Controls
 
         private void OnMouseMove(object sender, MouseEventArgs e)
         {
-            //If we're currently dragging the mouse, move the camera based on the delta/zoom.
+            //Get the mouse location delta, adjust for zoom.
+            Vector2 delta = new Vector2(lastMouseLocation.X - e.Location.X, lastMouseLocation.Y - e.Location.Y);
+            delta.X /= zoom;
+            delta.Y /= zoom;
+
+            //If we're currently moving a node, alter the node position by the delta.
+            if (state == NodeGraphState.MovingNode)
+            {
+                nodeBeingMoved.Location.X -= delta.X;
+                nodeBeingMoved.Location.Y -= delta.Y;
+                Invalidate();
+            }
+
+            //If we're currently moving the camera, alter camera based on the delta/zoom.
             if (state == NodeGraphState.MovingCamera)
             {
-                //Get the delta, adjust for zoom.
-                Vector2 delta = new Vector2(lastMouseLocation.X - e.Location.X, lastMouseLocation.Y - e.Location.Y);
-                delta.X /= zoom;
-                delta.Y /= zoom;
-
                 //Apply this delta to the camera.
                 cameraPos.X += delta.X;
                 cameraPos.Y += delta.Y;
@@ -351,33 +373,48 @@ namespace easyCase.Controls
             //Are we currently connecting a node?
             if (state == NodeGraphState.ConnectingNode)
             {
-                //Check if we're within a valid node to connect to.
-                foreach (var node in nodes)
-                {
-                    foreach (var field in node.Fields)
-                    {
-                        //Ignore if the fields' types do not match, or the field is the one we're connecting from.
-                        if (field.ID == connectingField.ID || field.ValueType != connectingField.ValueType) { continue; }
-
-                        //Don't let an output connect to an output, or an input to an input.
-                        if (field.Type == connectingField.Type) { continue; }
-
-                        //Is the mouse within the bounds of this field?
-                        if (!field.PointWithinConnector(this, e.Location)) { continue; }
-
-                        //Yes, connect the two fields.
-                        field.ConnectedTo = connectingField;
-                        connectingField.ConnectedTo = field;
-                        break;
-                    }
-                }
+                ValidateFieldConnection(e);
 
                 //Clear the field currently being connected (drag ended).
                 connectingField = null;
             }
 
+            //If we were moving a node, clear the node being moved (we're done).
+            if (state == NodeGraphState.MovingNode)
+                nodeBeingMoved = null;
+
             //Return to the default state.
             state = NodeGraphState.Default;
+        }
+
+        /// <summary>
+        /// Checks whether after a connecting drag the two fields hovered over should be connected.
+        /// </summary>
+        private void ValidateFieldConnection(MouseEventArgs e)
+        {
+            //Check if we're within a valid node to connect to.
+            foreach (var node in nodes)
+            {
+                foreach (var field in node.Fields)
+                {
+                    //Ignore if the fields' types do not match, or the field is the one we're connecting from.
+                    if (field.ID == connectingField.ID || field.ValueType != connectingField.ValueType) { continue; }
+
+                    //Don't let an output connect to an output, or an input to an input.
+                    if (field.Type == connectingField.Type) { continue; }
+
+                    //Don't let an output connect to an input on the same node.
+                    if (field.Node.ID == connectingField.Node.ID) { continue; }
+
+                    //Is the mouse within the bounds of this field?
+                    if (!field.PointWithinConnector(this, e.Location)) { continue; }
+
+                    //Yes, connect the two fields.
+                    field.ConnectedTo = connectingField;
+                    connectingField.ConnectedTo = field;
+                    break;
+                }
+            }
         }
 
         /// <summary>

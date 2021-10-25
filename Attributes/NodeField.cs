@@ -1,4 +1,5 @@
 ﻿using easyCase.Controls;
+using easyCase.Nodes;
 using easyCase.Utility;
 using System;
 using System.Collections.Generic;
@@ -34,11 +35,22 @@ namespace easyCase.Attributes
         //The current location of this field's connector.
         public Vector2 ConnectorLocation { get; set; }
 
+        //The node that owns this field.
+        public Node Node { get; private set; }
+
         public NodeField(string name, FieldType type, Type valueType, Color nodeColour)
         {
             Name = name;
             Type = type;
             NodeColour = nodeColour;
+        }
+
+        /// <summary>
+        /// Sets the owner of this field to the provided node.
+        /// </summary>
+        public void SetOwner(Node node)
+        {
+            Node = node;
         }
 
         /// <summary>

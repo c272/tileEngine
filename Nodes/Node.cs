@@ -39,6 +39,12 @@ namespace easyCase.Nodes
         public Vector2 Location { get; set; } = new Vector2();
 
         /// <summary>
+        /// The estimated size of this node.
+        /// Updated on draw, but can be updated manually with UpdateNodeSize().
+        /// </summary>
+        public Vector2 Size { get; private set; } = null;
+
+        /// <summary>
         /// A list of fields that this node contains.
         /// </summary>
         public List<NodeField> Fields { get; private set; } = new List<NodeField>();
@@ -62,7 +68,9 @@ namespace easyCase.Nodes
                 if (attributes.Length == 0) { continue; }
 
                 //Save this to the list.
-                Fields.Add((NodeField)attributes[0]);
+                var field = (NodeField)attributes[0];
+                field.SetOwner(this);
+                Fields.Add(field);
             }
         }
 
@@ -74,9 +82,11 @@ namespace easyCase.Nodes
             //Set antialiasing on.
             graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
+            //Update our size.
+            UpdateNodeSize(control, graphics);
+
             //Based on the expected size of the node, shift the start position to the top left.
-            Vector2 size = GetNodeSize(control, graphics);
-            Vector2 curPos = new Vector2(Location.X - size.X / 2f, Location.Y - size.Y / 2f);
+            Vector2 curPos = new Vector2(Location.X - Size.X / 2f, Location.Y - Size.Y / 2f);
 
             //Get the size of the title text, accounting for zoom.
             Brush brush = new SolidBrush(Colour);
@@ -85,7 +95,7 @@ namespace easyCase.Nodes
             titleSize.Height /= control.Zoom;
 
             //Find and draw the title.
-            Vector2 titleBottomRight = new Vector2(curPos.X + size.X, curPos.Y + titleSize.Height + control.GlobalPadding);
+            Vector2 titleBottomRight = new Vector2(curPos.X + Size.X, curPos.Y + titleSize.Height + control.GlobalPadding);
             Rectangle titleRect = control.GetPixelRectangle(curPos, titleBottomRight);
             graphics.FillPath(brush, RoundedPaths.RoundedRect(titleRect, control.NodeRoundingRadius, true, false));
 
@@ -96,7 +106,7 @@ namespace easyCase.Nodes
             //Draw the main body rectangle.
             curPos.Y += titleSize.Height + control.TitlePadding;
             brush = new SolidBrush(control.NodeBackgroundColour);
-            var mainRect = control.GetPixelRectangle(curPos, new Vector2(curPos.X + size.X, curPos.Y - titleSize.Height + size.Y));
+            var mainRect = control.GetPixelRectangle(curPos, new Vector2(curPos.X + Size.X, curPos.Y - titleSize.Height + Size.Y));
             var mainPath = RoundedPaths.RoundedRect(mainRect, control.NodeRoundingRadius, false, true);
             graphics.FillPath(brush, mainPath);
             curPos.X += control.GlobalPadding;
@@ -104,7 +114,7 @@ namespace easyCase.Nodes
 
             //Start drawing all fields on the node.
             Vector2 curInputPos = curPos;
-            Vector2 curOutputPos = new Vector2(curPos.X + size.X - control.GlobalPadding * 2 - control.NodeConnectorSize, curPos.Y);
+            Vector2 curOutputPos = new Vector2(curPos.X + Size.X - control.GlobalPadding * 2 - control.NodeConnectorSize, curPos.Y);
             foreach (var field in Fields)
             {
                 //Input or output? Switch current position.
@@ -158,7 +168,7 @@ namespace easyCase.Nodes
         /// <summary>
         /// Returns the size of the node in grid units depending on the control/graphics.
         /// </summary>
-        public Vector2 GetNodeSize(NodeGraphControl control, Graphics graphics)
+        public void UpdateNodeSize(NodeGraphControl control, Graphics graphics)
         {
             //Try and figure out the size of the entire node.
             Vector2 finalSize = new Vector2();
@@ -215,7 +225,17 @@ namespace easyCase.Nodes
 
             //Return final dimensions.
             Debug.WriteLine("EXPECTED NODE SIZE: " + finalSize.X + " x " + finalSize.Y);
-            return finalSize;
+            Size = finalSize;
+        }
+
+        /// <summary>
+        /// Returns whether this node contains the given pixel point.
+        /// </summary>
+        public bool ContainsPoint(NodeGraphControl control, Point point)
+        {
+            Vector2 topLeft = new Vector2(Location.X - Size.X / 2f, Location.Y - Size.Y / 2f);
+            Vector2 bottomRight = new Vector2(topLeft.X + Size.X, topLeft.Y + Size.Y);
+            return control.GetPixelRectangle(topLeft, bottomRight).Contains(point);
         }
     }
 }
