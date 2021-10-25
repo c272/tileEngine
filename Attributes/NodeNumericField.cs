@@ -64,7 +64,6 @@ namespace easyCase.Attributes
             numericInput.Visible = true;
             numericInput.Font = control.NodeTextFont;
             numericInput.Location = control.ToPixelPoint(position.X + NamePadding + nameDims.Width / control.Zoom, position.Y);
-            numericInput.Invalidate();
         }
 
         /// <summary>

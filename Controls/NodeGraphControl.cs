@@ -363,6 +363,10 @@ namespace easyCase.Controls
                 Invalidate();
             }
 
+            //If we're currently connecting a node, invalidate so we can draw the pending line.
+            if (state == NodeGraphState.ConnectingNode)
+                Invalidate();
+
             //Update last mouse location.
             lastMouseLocation = e.Location;
         }
@@ -412,6 +416,7 @@ namespace easyCase.Controls
                     //Yes, connect the two fields.
                     field.ConnectedTo = connectingField;
                     connectingField.ConnectedTo = field;
+                    Invalidate();
                     break;
                 }
             }
