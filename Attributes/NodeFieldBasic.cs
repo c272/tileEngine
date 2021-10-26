@@ -88,7 +88,7 @@ namespace easyCase.Attributes
             }
             else
             {
-                return new Vector2(nameDims.Width, nameDims.Height);
+                return new Vector2(nameDims);
             }
         }
     }

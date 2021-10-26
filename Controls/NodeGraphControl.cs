@@ -93,6 +93,20 @@ namespace easyCase.Controls
         private float nodeConnectorPadding = 2f;
 
         /// <summary>
+        /// The intermediary gap for the bezier curve on each connection.
+        /// </summary>
+        public int NodeConnectionGap
+        {
+            get { return nodeConnectionGap; }
+            set
+            {
+                nodeConnectionGap = value;
+                Invalidate();
+            }
+        }
+        private int nodeConnectionGap = 3;
+
+        /// <summary>
         /// The size of the padding following the title of the node.
         /// </summary>
         public float TitlePadding
@@ -440,12 +454,6 @@ namespace easyCase.Controls
 
             //Draw the nodes (and their connections).
             DrawNodes(e);
-
-            //If we're currently in the "connecting node" state, also draw the pending connection.
-            if (state == NodeGraphState.ConnectingNode)
-            {
-                e.Graphics.DrawLine(new Pen(connectingField.NodeColour, 3), ToPixelPoint(connectingField.ConnectorLocation), lastMouseLocation);
-            }
         }
 
         /// <summary>
@@ -453,13 +461,7 @@ namespace easyCase.Controls
         /// </summary>
         private void DrawNodes(PaintEventArgs e)
         {
-            //Draw all the nodes in order.
-            foreach (var node in nodes)
-            {
-                node.Draw(this, e.Graphics);
-            }
-
-            //Draw the connections between those nodes.
+            //Draw the connections between the nodes.
             List<int> alreadyConnected = new List<int>();
             foreach (var node in nodes)
             {
@@ -472,15 +474,59 @@ namespace easyCase.Controls
                     if (field.ConnectedTo == null || alreadyConnected.Contains(field.ID)) { continue; }
 
                     //Draw bezier curve to connecting field.
-                    Point startPoint = ToPixelPoint(field.ConnectorLocation);
                     Point endPoint = ToPixelPoint(field.ConnectedTo.ConnectorLocation);
-                    e.Graphics.DrawLine(new Pen(field.NodeColour, 3), startPoint, endPoint);
+                    DrawConnection(e, field, endPoint, field.ConnectedTo.Type);
 
                     //List field as connected.
                     alreadyConnected.Add(field.ID);
                     alreadyConnected.Add(field.ConnectedTo.ID);
                 }
             }
+
+            //Draw all the nodes in order.
+            foreach (var node in nodes)
+            {
+                node.Draw(this, e.Graphics);
+            }
+
+            //If we're currently in the "connecting node" state, also draw the pending connection.
+            if (state == NodeGraphState.ConnectingNode)
+            {
+                DrawConnection(e, connectingField, lastMouseLocation, FieldType.Input);
+            }
+        }
+
+        /// <summary>
+        /// Draws a connection between the two given points, provided the type of each field on either side.
+        /// </summary>
+        /// <param name="e">The graphics object to draw with.</param>
+        /// <param name="startField">The field to start the drawing from.</param>
+        /// <param name="endPoint">The point to end the drawing at.</param>
+        /// <param name="endType">The type (direction) of the end offset, Output = Right, Input = Left</param>
+        private void DrawConnection(PaintEventArgs e, NodeField startField, Point endPoint, FieldType endType)
+        {
+            //Get the distance between the nodes.
+            Point fieldPoint = ToPixelPoint(startField.ConnectorLocation);
+            Vector2 fieldToEnd = new Vector2(fieldPoint.X - endPoint.X, fieldPoint.Y - endPoint.Y);
+            float distance = fieldToEnd.GetMagnitude();
+
+            //Calculate the strength modifier to the curve.
+            float modifier = 1f;
+            if (distance < NodeConnectionGap * 2)
+            {
+                modifier = distance / (float)(NodeConnectionGap * 2f);
+            }
+
+            //Calculate intermediary points.
+            int connectionGap = (int)(NodeConnectionGap * modifier);
+            int startOffset = startField.Type == FieldType.Output ? connectionGap : -connectionGap;
+            int endOffset = endType == FieldType.Output ? connectionGap : -connectionGap;
+
+            Point startIntermediate = ToPixelPoint(startField.ConnectorLocation.X + startOffset, startField.ConnectorLocation.Y);
+            Point endIntermediate = new Point(endPoint.X + endOffset, endPoint.Y);
+
+            //Draw the bezier.
+            e.Graphics.DrawBezier(new Pen(startField.NodeColour, 3), ToPixelPoint(startField.ConnectorLocation), startIntermediate, endIntermediate, endPoint);
         }
 
         /// <summary>

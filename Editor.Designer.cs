@@ -44,6 +44,7 @@ namespace easyCase
             this.nodeGraphControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.nodeGraphControl1.Name = "nodeGraphControl1";
             this.nodeGraphControl1.NodeBackgroundColour = System.Drawing.Color.Black;
+            this.nodeGraphControl1.NodeConnectionGap = 80;
             this.nodeGraphControl1.NodeConnectorPadding = 5F;
             this.nodeGraphControl1.NodeConnectorSize = 10F;
             this.nodeGraphControl1.NodeRoundingRadius = 10;
