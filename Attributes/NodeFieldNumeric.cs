@@ -14,7 +14,11 @@ namespace easyCase.Attributes
     public class NodeFieldNumeric : NodeFieldBasic
     {
         //The field for editing the underlying value.
-        NumericUpDown numericField = new NumericUpDown();
+        //We use a text box here because NumericUpDown does not allow height resizing (seriously).
+        TextBox numericField = new TextBox()
+        {
+            AutoSize = false
+        };
 
         /// <summary>
         /// Creates a new numeric node field, with the given name and field type.
@@ -23,7 +27,7 @@ namespace easyCase.Attributes
         {
             editorControl = numericField;
             Width = 30;
-            Height = 10;
+            Height = 50;
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -161,6 +162,20 @@ namespace easyCase.Controls
             }
         }
         private int nodeRoundingRadius = 5;
+
+        /// <summary>
+        /// The opacity of the background of the node, from 0 (completely clear) to 255 (completely opaque).
+        /// </summary>
+        public int NodeBackgroundOpacity
+        {
+            get { return nodeBackgroundOpacity; }
+            set
+            {
+                nodeBackgroundOpacity = value;
+                Invalidate();
+            }
+        }
+        private int nodeBackgroundOpacity = 240;
 
         /// <summary>
         /// The font for title text of nodes.
@@ -433,7 +448,11 @@ namespace easyCase.Controls
                     //Is the mouse within the bounds of this field?
                     if (!field.PointWithinConnector(this, e.Location)) { continue; }
 
-                    //Yes, connect the two fields.
+                    //If the field is already connected, boot the other connection off.
+                    if (field.ConnectedTo != null)
+                        field.ConnectedTo.ConnectedTo = null;
+
+                    //Connect the two fields.
                     field.ConnectedTo = connectingField;
                     connectingField.ConnectedTo = field;
                     break;
@@ -448,6 +467,9 @@ namespace easyCase.Controls
         {
             base.OnPaint(e);
             e.Graphics.Clear(BackgroundColour);
+
+            //Set up graphical options.
+            e.Graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
             //Draw the background.
             DrawBackground(e);
@@ -505,6 +527,9 @@ namespace easyCase.Controls
         /// <param name="endType">The type (direction) of the end offset, Output = Right, Input = Left</param>
         private void DrawConnection(PaintEventArgs e, NodeField startField, Point endPoint, FieldType endType)
         {
+            //Set graphics to anti alias.
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+
             //Get the distance between the nodes.
             Point fieldPoint = ToPixelPoint(startField.ConnectorLocation);
             Vector2 fieldToEnd = new Vector2(fieldPoint.X - endPoint.X, fieldPoint.Y - endPoint.Y);
@@ -568,6 +593,15 @@ namespace easyCase.Controls
         //////////////////////////////////////
         /// UTILITY FUNCTIONS (CONVERSION) ///
         //////////////////////////////////////
+
+        /// <summary>
+        /// Returns a given string's measurements in grid units based on the current zoom.
+        /// </summary>
+        public Vector2 GetStringAsUnits(Graphics graphics, string text, Font font)
+        {
+            SizeF size = graphics.MeasureString(text, font);
+            return new Vector2(size.Width / zoom, size.Height / zoom);
+        }
 
         /// <summary>
         /// Gets a pixel-space rectangle based on the top left and bottom right of a rectangle in grid space.

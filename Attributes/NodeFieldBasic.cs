@@ -23,7 +23,7 @@ namespace easyCase.Attributes
         public int Height { get; set; } = 10;
 
         //The padding between the text and the editor control (grid units).
-        public int NamePadding { get; set; } = 5;
+        public int NamePadding { get; set; } = 1;
 
         //Whether this field is user-editable or not.
         public bool UserCanEdit { get; set; } = true;
@@ -50,10 +50,14 @@ namespace easyCase.Attributes
             if (!control.Controls.Contains(editorControl))
                 control.Controls.Add(editorControl);
 
-            //Draw the name (left).
+            //Get what size we're expected to be.
+            Vector2 size = GetDimensions(control, graphics);
+
+            //Draw the name (left). Make sure it's centered with the editor control.
             Brush brush = new SolidBrush(control.NodeTextColour);
-            SizeF nameDims = graphics.MeasureString(Name, control.NodeTextFont);
-            graphics.DrawString(Name, control.NodeTextFont, brush, control.ToPixelPointF(position));
+            Vector2 nameDims = control.GetStringAsUnits(graphics, Name, control.NodeTextFont);
+            Vector2 namePosition = new Vector2(position.X, position.Y + ((size.Y - nameDims.Y) / 2f));
+            graphics.DrawString(Name, control.NodeTextFont, brush, control.ToPixelPointF(namePosition));
 
             //Is the field connected and an input? If so, get rid of the input box.
             if ((Type == FieldType.Input && ConnectedTo != null) || !UserCanEdit)
@@ -63,10 +67,11 @@ namespace easyCase.Attributes
             }
 
             //Editable input. Position the input box (right).
-            editorControl.Size = new Size((int)(Width * control.Zoom), (int)(Height * control.Zoom));
+            editorControl.Location = control.ToPixelPoint(position.X + NamePadding + nameDims.X, position.Y);
             editorControl.Visible = true;
             editorControl.Font = control.NodeTextFont;
-            editorControl.Location = control.ToPixelPoint(position.X + NamePadding + nameDims.Width / control.Zoom, position.Y);
+            editorControl.Size = new Size((int)(Width * control.Zoom), (int)(Height * control.Zoom));
+            System.Diagnostics.Debug.WriteLine("new size: " + editorControl.Width + " x " + editorControl.Height);
         }
 
         /// <summary>
@@ -75,20 +80,18 @@ namespace easyCase.Attributes
         public override Vector2 GetDimensions(NodeGraphControl control, Graphics graphics)
         {
             //Get dimensions of name + padding + input size.
-            SizeF nameDims = graphics.MeasureString(Name, control.NodeTextFont);
-            nameDims.Width /= control.Zoom;
-            nameDims.Height /= control.Zoom;
+            Vector2 nameDims = control.GetStringAsUnits(graphics, Name, control.NodeTextFont);
             Size numericSize = new Size((int)(Width), (int)(Height));
 
             //If the user can edit the field, return with the box included.
             //If not, return without the editing box.
             if (UserCanEdit)
             {
-                return new Vector2(nameDims.Width + NamePadding + numericSize.Width, nameDims.Height > numericSize.Height ? nameDims.Height : numericSize.Height);
+                return new Vector2(nameDims.X + NamePadding + numericSize.Width, nameDims.Y > numericSize.Height ? nameDims.Y : numericSize.Height);
             }
             else
             {
-                return new Vector2(nameDims);
+                return nameDims;
             }
         }
     }

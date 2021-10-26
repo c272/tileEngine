@@ -90,12 +90,10 @@ namespace easyCase.Nodes
 
             //Get the size of the title text, accounting for zoom.
             Brush brush = new SolidBrush(Colour);
-            SizeF titleSize = graphics.MeasureString(Title, control.NodeTitleFont);
-            titleSize.Width /= control.Zoom;
-            titleSize.Height /= control.Zoom;
+            Vector2 titleSize = control.GetStringAsUnits(graphics, Title, control.NodeTitleFont);
 
             //Find and draw the title.
-            Vector2 titleBottomRight = new Vector2(curPos.X + Size.X, curPos.Y + titleSize.Height + control.GlobalPadding);
+            Vector2 titleBottomRight = new Vector2(curPos.X + Size.X, curPos.Y + titleSize.Y + control.GlobalPadding);
             Rectangle titleRect = control.GetPixelRectangle(curPos, titleBottomRight);
             graphics.FillPath(brush, RoundedPaths.RoundedRect(titleRect, control.NodeRoundingRadius, true, false));
 
@@ -104,9 +102,10 @@ namespace easyCase.Nodes
             graphics.DrawString(Title, control.NodeTitleFont, brush, control.ToPixelPointF(curPos.X + control.GlobalPadding, curPos.Y + control.GlobalPadding));
 
             //Draw the main body rectangle.
-            curPos.Y += titleSize.Height + control.TitlePadding;
-            brush = new SolidBrush(control.NodeBackgroundColour);
-            var mainRect = control.GetPixelRectangle(curPos, new Vector2(curPos.X + Size.X, curPos.Y - titleSize.Height + Size.Y));
+            curPos.Y += titleSize.Y + control.TitlePadding;
+            Color backgroundColour = Color.FromArgb(control.NodeBackgroundOpacity, control.NodeBackgroundColour);
+            brush = new SolidBrush(backgroundColour);
+            var mainRect = control.GetPixelRectangle(curPos, new Vector2(curPos.X + Size.X, curPos.Y - titleSize.Y + Size.Y));
             var mainPath = RoundedPaths.RoundedRect(mainRect, control.NodeRoundingRadius, false, true);
             graphics.FillPath(brush, mainPath);
             curPos.X += control.GlobalPadding;
@@ -129,7 +128,7 @@ namespace easyCase.Nodes
 
                 //Draw the connector (with colouring).
                 Vector2 fieldSize = field.GetDimensions(control, graphics);
-                Vector2 nodeTopLeft = new Vector2(curPos.X, curPos.Y + fieldSize.Y / 2f - control.NodeConnectorSize / 2f);
+                Vector2 nodeTopLeft = new Vector2(curPos.X, curPos.Y + ((fieldSize.Y - control.NodeConnectorSize) / 2f));
                 Vector2 nodeBottomRight = new Vector2(nodeTopLeft.X + control.NodeConnectorSize, nodeTopLeft.Y + control.NodeConnectorSize);
                 brush = new SolidBrush(field.NodeColour);
                 if (field.ConnectedTo != null)
@@ -178,11 +177,9 @@ namespace easyCase.Nodes
             finalSize.Y += control.GlobalPadding * 2;
 
             //Size of the title (accounting for zoom).
-            SizeF titleSize = graphics.MeasureString(Title, control.NodeTitleFont);
-            titleSize.Width /= control.Zoom;
-            titleSize.Height /= control.Zoom;
-            finalSize.X += titleSize.Width;
-            finalSize.Y += titleSize.Height;
+            Vector2 titleSize = control.GetStringAsUnits(graphics, Title, control.NodeTitleFont);
+            finalSize.X += titleSize.X;
+            finalSize.Y += titleSize.Y;
 
             //Add padding for between title and fields.
             finalSize.Y += control.TitlePadding + control.GlobalPadding;

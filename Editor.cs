@@ -33,6 +33,7 @@ namespace easyCase
         public Editor()
         {
             InitializeComponent();
+            AutoScaleMode = AutoScaleMode.Dpi;
             nodeGraphControl1.AddNode(new ExampleNode());
             nodeGraphControl1.AddNode(new ExampleNode()
             {
