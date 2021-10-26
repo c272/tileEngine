@@ -59,6 +59,15 @@ namespace easyCase.Nodes
             Colour = colour;
             TitleColour = titleColour;
 
+            //Get all the attributes on the main class itself.
+            object[] classAttribs = this.GetType().GetCustomAttributes(typeof(NodeField), true);
+            foreach (var attrib in classAttribs)
+            {
+                var field = (NodeField)attrib;
+                field.SetOwner(this);
+                Fields.Add(field);
+            }
+
             //Get a list of all properties on the class.
             var properties = this.GetType().GetProperties();
             foreach (var prop in properties)
@@ -113,7 +122,7 @@ namespace easyCase.Nodes
 
             //Start drawing all fields on the node.
             Vector2 curInputPos = curPos;
-            Vector2 curOutputPos = new Vector2(curPos.X + Size.X - control.GlobalPadding * 2 - control.NodeConnectorSize, curPos.Y);
+            Vector2 curOutputPos = new Vector2(curPos.X + Size.X - control.GlobalPadding * 2, curPos.Y);
             foreach (var field in Fields)
             {
                 //Input or output? Switch current position.
@@ -128,22 +137,16 @@ namespace easyCase.Nodes
 
                 //Draw the connector (with colouring).
                 Vector2 fieldSize = field.GetDimensions(control, graphics);
-                Vector2 nodeTopLeft = new Vector2(curPos.X, curPos.Y + ((fieldSize.Y - control.NodeConnectorSize) / 2f));
-                Vector2 nodeBottomRight = new Vector2(nodeTopLeft.X + control.NodeConnectorSize, nodeTopLeft.Y + control.NodeConnectorSize);
-                brush = new SolidBrush(field.NodeColour);
-                if (field.ConnectedTo != null)
-                {
-                    //Draw filled, it's connected to something.
-                    graphics.FillEllipse(brush, control.GetPixelRectangle(nodeTopLeft, nodeBottomRight));
-                }
-                else
-                {
-                    //Draw with outline only.
-                    graphics.DrawEllipse(new Pen(brush, Math.Max(control.NodeConnectorSize / 5f, 1)), control.GetPixelRectangle(nodeTopLeft, nodeBottomRight));
-                }
+                Vector2 connectorSize = field.GetConnectorDimensions();
+
+                //Correct for the width of the node if we're drawing output.
+                float connectorX = field.Type == FieldType.Output ? curPos.X - connectorSize.X : curPos.X;
+                Vector2 nodeTopLeft = new Vector2(connectorX, curPos.Y + ((fieldSize.Y - connectorSize.Y) / 2f));
+                Vector2 nodeBottomRight = new Vector2(nodeTopLeft.X + connectorSize.X, nodeTopLeft.Y + connectorSize.Y);
+                field.DrawConnector(control, graphics, nodeTopLeft, nodeBottomRight);
 
                 //Update the connector location within the field.
-                field.ConnectorLocation = new Vector2(nodeTopLeft.X + control.NodeConnectorSize / 2f, nodeTopLeft.Y + control.NodeConnectorSize / 2f);
+                field.ConnectorLocation = new Vector2(nodeTopLeft.X + connectorSize.X / 2f, nodeTopLeft.Y + connectorSize.Y / 2f);
 
                 //Calculate the top left of the field based on side in preparation for drawing field.
                 Vector2 fieldPos;
@@ -153,7 +156,7 @@ namespace easyCase.Nodes
                 }
                 else
                 {
-                    fieldPos = new Vector2(curPos.X - control.NodeConnectorPadding - fieldSize.X, curPos.Y);
+                    fieldPos = new Vector2(curPos.X - connectorSize.X - control.NodeConnectorPadding - fieldSize.X, curPos.Y);
                 }
 
                 //Draw field.
@@ -191,20 +194,21 @@ namespace easyCase.Nodes
                 //Get the current side, dimensions of fields.
                 Vector2 curSide = field.Type == FieldType.Input ? input : output;
                 Vector2 fieldDims = field.GetDimensions(control, graphics);
+                Vector2 connectorDims = field.GetConnectorDimensions();
 
                 //If this field is an input/output, and bigger than one previously processed,
                 //expand the expected width of either side.
-                if (field.Type == FieldType.Input && input.X < fieldDims.X) 
+                if (field.Type == FieldType.Input && input.X < fieldDims.X + connectorDims.X) 
                 {
-                    curSide.X = fieldDims.X;
+                    curSide.X = fieldDims.X + connectorDims.X;
                 }
-                else if (field.Type == FieldType.Output && output.X < fieldDims.X)
+                else if (field.Type == FieldType.Output && output.X < fieldDims.X + connectorDims.X)
                 {
-                    curSide.X = fieldDims.X;
+                    curSide.X = fieldDims.X + connectorDims.X;
                 }
 
                 //Increment height (+ padding).
-                curSide.Y += fieldDims.Y + control.FieldPadding;
+                curSide.Y += Math.Max(fieldDims.Y, connectorDims.Y) + control.FieldPadding;
             }
 
             //Add the field height.
@@ -213,9 +217,9 @@ namespace easyCase.Nodes
             //Combine the field widths (+ padding).
             float totalFieldWidth = 0;
             if (input.X > 0)
-                totalFieldWidth += input.X + control.NodeConnectorSize + control.NodeConnectorPadding;
+                totalFieldWidth += input.X + control.NodeConnectorPadding;
             if (output.X > 0)
-                totalFieldWidth += output.X + control.NodeConnectorSize + control.NodeConnectorPadding;
+                totalFieldWidth += output.X + control.NodeConnectorPadding;
             if (input.X > 0 && output.X > 0)
                 totalFieldWidth += control.FieldPadding;
             if (finalSize.X < totalFieldWidth) { finalSize.X = totalFieldWidth + control.GlobalPadding * 2; }

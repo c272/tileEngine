@@ -64,22 +64,6 @@ namespace easyCase.Controls
         }
         private float gridStep = 10f;
 
-        /// <summary>
-        /// The diameter (in grid units) of the connection points
-        /// for a single node field.
-        /// </summary>
-        public float NodeConnectorSize
-        {
-            get { return nodeConnectorSize; }
-            set
-            {
-                nodeConnectorSize = value;
-                Invalidate();
-            }
-        }
-        private float nodeConnectorSize = 3f;
-
-        /// <summary>
         /// The padding following the node connector until the field.
         /// </summary>
         public float NodeConnectorPadding
@@ -443,7 +427,7 @@ namespace easyCase.Controls
                 foreach (var field in node.Fields)
                 {
                     //Ignore if the fields' types do not match, or the field is the one we're connecting from.
-                    if (field.ID == connectingField.ID || field.ValueType != connectingField.ValueType) { continue; }
+                    if (field.ID == connectingField.ID || !field.ValueType.Equals(connectingField.ValueType)) { continue; }
 
                     //Don't let an output connect to an output, or an input to an input.
                     if (field.Type == connectingField.Type) { continue; }

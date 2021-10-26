@@ -30,7 +30,7 @@ namespace easyCase.Attributes
         public NodeField ConnectedTo = null;
 
         //The colour of the attach node for this field.
-        public Color NodeColour { get; private set; }
+        public Color NodeColour { get; protected set; }
 
         //The current location of this field's connector.
         public Vector2 ConnectorLocation { get; set; }
@@ -42,6 +42,7 @@ namespace easyCase.Attributes
         {
             Name = name;
             Type = type;
+            ValueType = valueType;
             NodeColour = nodeColour;
         }
 
@@ -59,19 +60,20 @@ namespace easyCase.Attributes
         public abstract Vector2 GetDimensions(NodeGraphControl control, Graphics graphics);
 
         /// <summary>
+        /// Returns a Vector2 representing the dimensions of the connector in grid units.
+        /// </summary>
+        /// <returns></returns>
+        public abstract Vector2 GetConnectorDimensions();
+
+        /// <summary>
+        /// Draws the connector at the provided point, on the given control.
+        /// </summary>
+        public abstract void DrawConnector(NodeGraphControl control, Graphics graphics, Vector2 topLeft, Vector2 bottomRight);
+
+        /// <summary>
         /// Returns whether a given point is within the bounds of the connector for this field.
         /// </summary>
-        public bool PointWithinConnector(NodeGraphControl control, Point point)
-        {
-            //If we don't have a connector location, no points within it.
-            if (ConnectorLocation == null) { return false; }
-
-            //Calculate rectangle of connector, provide result.
-            Vector2 connectorTopLeft = new Vector2(ConnectorLocation.X - control.NodeConnectorSize / 2f, ConnectorLocation.Y - control.NodeConnectorSize / 2f);
-            Vector2 connectorBottomRight = new Vector2(connectorTopLeft.X + control.NodeConnectorSize, connectorTopLeft.Y + control.NodeConnectorSize);
-            Rectangle connectorPixelRect = control.GetPixelRectangle(connectorTopLeft, connectorBottomRight);
-            return connectorPixelRect.Contains(point);
-        }
+        public abstract bool PointWithinConnector(NodeGraphControl control, Point point);
         
         /// <summary>
         /// Draws this field to the node graph at the provided position.

@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Attributes\NodeField.cs" />
     <Compile Include="Attributes\NodeFieldBasic.cs" />
+    <Compile Include="Attributes\NodeFieldFlow.cs" />
     <Compile Include="Attributes\NodeFieldNumeric.cs" />
     <Compile Include="Controls\NodeGraphState.cs" />
     <Compile Include="Nodes\ExampleNode.cs" />

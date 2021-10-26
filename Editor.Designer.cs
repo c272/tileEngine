@@ -47,7 +47,6 @@ namespace easyCase
             this.nodeGraphControl1.NodeBackgroundOpacity = 200;
             this.nodeGraphControl1.NodeConnectionGap = 80;
             this.nodeGraphControl1.NodeConnectorPadding = 5F;
-            this.nodeGraphControl1.NodeConnectorSize = 10F;
             this.nodeGraphControl1.NodeRoundingRadius = 10;
             this.nodeGraphControl1.NodeTextColour = System.Drawing.Color.Black;
             this.nodeGraphControl1.NodeTextFont = new System.Drawing.Font("Montserrat", 10.8F);

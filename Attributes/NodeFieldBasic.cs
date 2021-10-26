@@ -28,6 +28,9 @@ namespace easyCase.Attributes
         //Whether this field is user-editable or not.
         public bool UserCanEdit { get; set; } = true;
 
+        //The radius of the connector.
+        public int ConnectorRadius { get; set; } = 10;
+
         //Create the numeric input for this numeric field.
         protected Control editorControl = null;
 
@@ -74,6 +77,47 @@ namespace easyCase.Attributes
             editorControl.Visible = true;
             editorControl.Font = control.NodeTextFont;
             editorControl.Size = new Size((int)(Width * control.Zoom), (int)(Height * control.Zoom));
+        }
+
+        /// <summary>
+        /// Draws the connector to the provided locations.
+        /// </summary>
+        public override void DrawConnector(NodeGraphControl control, Graphics graphics, Vector2 topLeft, Vector2 bottomRight)
+        {
+            Brush brush = new SolidBrush(NodeColour);
+            if (ConnectedTo != null)
+            {
+                //Draw filled, it's connected to something.
+                graphics.FillEllipse(brush, control.GetPixelRectangle(topLeft, bottomRight));
+            }
+            else
+            {
+                //Draw with outline only.
+                graphics.DrawEllipse(new Pen(brush, Math.Max(GetConnectorDimensions().X / 5f, 1)), control.GetPixelRectangle(topLeft, bottomRight));
+            }
+        }
+
+        /// <summary>
+        /// Checks whether a given point is within the bounds of the connector.
+        /// </summary>
+        public override bool PointWithinConnector(NodeGraphControl control, Point point)
+        {
+            //If we don't have a connector location, no points within it.
+            if (ConnectorLocation == null) { return false; }
+
+            //Calculate rectangle of connector, provide result.
+            Vector2 connectorTopLeft = new Vector2(ConnectorLocation.X - ConnectorRadius / 2f, ConnectorLocation.Y - ConnectorRadius / 2f);
+            Vector2 connectorBottomRight = new Vector2(connectorTopLeft.X + ConnectorRadius, connectorTopLeft.Y + ConnectorRadius);
+            Rectangle connectorPixelRect = control.GetPixelRectangle(connectorTopLeft, connectorBottomRight);
+            return connectorPixelRect.Contains(point);
+        }
+
+        /// <summary>
+        /// Returns the dimensions of the connector on this field.
+        /// </summary>
+        public override Vector2 GetConnectorDimensions()
+        {
+            return new Vector2(ConnectorRadius, ConnectorRadius);
         }
 
         /// <summary>
