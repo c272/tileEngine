@@ -23,7 +23,7 @@ namespace easyCase.Nodes
         [NodeFieldNumeric("SomeOutput2", FieldType.Output)]
         public int AnotherOutput { get; set; }
 
-        public ExampleNode() : base("ExampleNode!", Color.Red, Color.White)
+        public ExampleNode() : base("Very Important Node", Color.Red, Color.White)
         {
         }
     }

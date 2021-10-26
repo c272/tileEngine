@@ -328,12 +328,15 @@ namespace easyCase.Controls
         private void OnMouseWheel(object sender, MouseEventArgs e)
         {
             //Adjust zoom.
-            Zoom += e.Delta / 120 * 0.1f;
+            Zoom += e.Delta / 120 * 0.05f;
         }
         
         //Triggered when the mouse is first pressed down.
         private void OnMouseDown(object sender, MouseEventArgs e)
         {
+            //Deselect any child elements.
+            this.Select();
+
             //Has the user clicked on a connector? (If so, start connecting).
             foreach (var node in nodes)
             {

@@ -17,7 +17,8 @@ namespace easyCase.Attributes
         //We use a text box here because NumericUpDown does not allow height resizing (seriously).
         TextBox numericField = new TextBox()
         {
-            AutoSize = false
+            AutoSize = false,
+            TextAlign = HorizontalAlignment.Center
         };
 
         /// <summary>
@@ -26,8 +27,8 @@ namespace easyCase.Attributes
         public NodeFieldNumeric(string name, FieldType type) : base(name, type, typeof(float), Color.Green)
         {
             editorControl = numericField;
-            Width = 30;
-            Height = 50;
+            Width = 40;
+            Height = 20;
         }
     }
 }

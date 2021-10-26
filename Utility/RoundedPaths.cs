@@ -18,9 +18,8 @@ namespace easyCase.Utility
         /// </summary>
         /// <param name="rect">The rectangle to round off.</param>
         /// <param name="radius">The radius of the arc rounding it.</param>
-        public static GraphicsPath RoundedRect(Rectangle rect, int radius, bool roundTop = true, bool roundBottom = true)
+        public static GraphicsPath RoundedRect(Rectangle rect, float radius, bool roundTop = true, bool roundBottom = true)
         {
-            //todo
             var path = new GraphicsPath();
             path.StartFigure();
 

@@ -50,8 +50,8 @@ namespace easyCase
             this.nodeGraphControl1.NodeConnectorSize = 10F;
             this.nodeGraphControl1.NodeRoundingRadius = 10;
             this.nodeGraphControl1.NodeTextColour = System.Drawing.Color.Black;
-            this.nodeGraphControl1.NodeTextFont = new System.Drawing.Font("Montserrat", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nodeGraphControl1.NodeTitleFont = new System.Drawing.Font("Montserrat Black", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nodeGraphControl1.NodeTextFont = new System.Drawing.Font("Montserrat", 10.8F);
+            this.nodeGraphControl1.NodeTitleFont = new System.Drawing.Font("Montserrat SemiBold", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nodeGraphControl1.Size = new System.Drawing.Size(800, 450);
             this.nodeGraphControl1.TabIndex = 0;
             this.nodeGraphControl1.Text = "nodeGraphControl1";

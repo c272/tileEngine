@@ -71,7 +71,6 @@ namespace easyCase.Attributes
             editorControl.Visible = true;
             editorControl.Font = control.NodeTextFont;
             editorControl.Size = new Size((int)(Width * control.Zoom), (int)(Height * control.Zoom));
-            System.Diagnostics.Debug.WriteLine("new size: " + editorControl.Width + " x " + editorControl.Height);
         }
 
         /// <summary>

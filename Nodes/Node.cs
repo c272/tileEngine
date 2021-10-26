@@ -93,16 +93,16 @@ namespace easyCase.Nodes
             Vector2 titleSize = control.GetStringAsUnits(graphics, Title, control.NodeTitleFont);
 
             //Find and draw the title.
-            Vector2 titleBottomRight = new Vector2(curPos.X + Size.X, curPos.Y + titleSize.Y + control.GlobalPadding);
+            Vector2 titleBottomRight = new Vector2(curPos.X + Size.X, curPos.Y + titleSize.Y); //+ control.GlobalPadding);
             Rectangle titleRect = control.GetPixelRectangle(curPos, titleBottomRight);
-            graphics.FillPath(brush, RoundedPaths.RoundedRect(titleRect, control.NodeRoundingRadius, true, false));
+            graphics.FillPath(brush, RoundedPaths.RoundedRect(titleRect, control.NodeRoundingRadius * control.Zoom, true, false));
 
             //Draw title (with global padding).
             brush = new SolidBrush(TitleColour);
-            graphics.DrawString(Title, control.NodeTitleFont, brush, control.ToPixelPointF(curPos.X + control.GlobalPadding, curPos.Y + control.GlobalPadding));
+            graphics.DrawString(Title, control.NodeTitleFont, brush, control.ToPixelPointF(curPos.X + control.GlobalPadding, curPos.Y)); // + control.GlobalPadding));
 
             //Draw the main body rectangle.
-            curPos.Y += titleSize.Y + control.TitlePadding;
+            curPos.Y += titleSize.Y;
             Color backgroundColour = Color.FromArgb(control.NodeBackgroundOpacity, control.NodeBackgroundColour);
             brush = new SolidBrush(backgroundColour);
             var mainRect = control.GetPixelRectangle(curPos, new Vector2(curPos.X + Size.X, curPos.Y - titleSize.Y + Size.Y));
@@ -182,7 +182,7 @@ namespace easyCase.Nodes
             finalSize.Y += titleSize.Y;
 
             //Add padding for between title and fields.
-            finalSize.Y += control.TitlePadding + control.GlobalPadding;
+            finalSize.Y += control.TitlePadding;
 
             //Loop over all fields and process.
             Vector2 input = new Vector2(), output = new Vector2();
@@ -221,7 +221,6 @@ namespace easyCase.Nodes
             if (finalSize.X < totalFieldWidth) { finalSize.X = totalFieldWidth + control.GlobalPadding * 2; }
 
             //Return final dimensions.
-            Debug.WriteLine("EXPECTED NODE SIZE: " + finalSize.X + " x " + finalSize.Y);
             Size = finalSize;
         }
 
