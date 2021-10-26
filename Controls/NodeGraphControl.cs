@@ -338,7 +338,9 @@ namespace easyCase.Controls
             this.Select();
 
             //Has the user clicked on a connector? (If so, start connecting).
-            foreach (var node in nodes)
+            //Traverse in reverse in line with front-to-back draw order.
+            var nodesReversed = nodes.Reverse<Node>();
+            foreach (var node in nodesReversed)
             {
                 foreach (var field in node.Fields)
                 {
@@ -359,7 +361,8 @@ namespace easyCase.Controls
             }
 
             //Has the user clicked on a node but not on a connector? (If so, start moving the node).
-            foreach (var node in nodes)
+            //Traverse in reverse in line with front-to-back draw order.
+            foreach (var node in nodesReversed)
             {
                 if (node.ContainsPoint(this, e.Location))
                 {
