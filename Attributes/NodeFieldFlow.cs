@@ -36,7 +36,8 @@ namespace easyCase.Attributes
         /// </summary>
         public override void Draw(NodeGraphControl control, Graphics graphics, Vector2 position)
         {
-            
+            //Just draw the name, nothing fancy.
+            graphics.DrawString(Name, control.NodeTextFont, new SolidBrush(control.NodeTextColour), control.ToPixelPointF(position));
         }
 
         /// <summary>
@@ -84,7 +85,14 @@ namespace easyCase.Attributes
         /// </summary>
         public override Vector2 GetDimensions(NodeGraphControl control, Graphics graphics)
         {
-            return new Vector2(Width, Height);
+            //Measure name as string, use. If name is null, then ignore.
+            Vector2 finalSize = new Vector2(0, 0);
+            if (Name != null)
+            {
+                finalSize = control.GetStringAsUnits(graphics, Name, control.NodeTextFont);
+            }
+
+            return finalSize;
         }
 
         /// <summary>
