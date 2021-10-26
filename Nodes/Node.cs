@@ -141,7 +141,7 @@ namespace easyCase.Nodes
 
                 //Correct for the width of the node if we're drawing output.
                 float connectorX = field.Type == FieldType.Output ? curPos.X - connectorSize.X : curPos.X;
-                Vector2 nodeTopLeft = new Vector2(connectorX, curPos.Y + ((fieldSize.Y - connectorSize.Y) / 2f));
+                Vector2 nodeTopLeft = new Vector2(connectorX, curPos.Y + (Math.Max(0, fieldSize.Y - connectorSize.Y) / 2f));
                 Vector2 nodeBottomRight = new Vector2(nodeTopLeft.X + connectorSize.X, nodeTopLeft.Y + connectorSize.Y);
                 field.DrawConnector(control, graphics, nodeTopLeft, nodeBottomRight);
 
@@ -163,7 +163,7 @@ namespace easyCase.Nodes
                 field.Draw(control, graphics, fieldPos);
 
                 //Increment to next current position.
-                curPos.Y += fieldSize.Y + control.FieldPadding;
+                curPos.Y += Math.Max(fieldSize.Y, connectorSize.Y) + control.FieldPadding;
             }
         }
 
