@@ -66,6 +66,9 @@ namespace easyCase.Attributes
                 return;
             }
 
+            //Let child classes style the control at this point if they want.
+            StyleEditorControl(control, graphics);
+
             //Editable input. Position the input box (right).
             editorControl.Location = control.ToPixelPoint(position.X + NamePadding + nameDims.X, position.Y);
             editorControl.Visible = true;
@@ -93,5 +96,11 @@ namespace easyCase.Attributes
                 return nameDims;
             }
         }
+
+        /// <summary>
+        /// Called during draw when the editor control requires styling.
+        /// Optionally overridden by child field classes for mid-draw styling support.
+        /// </summary>
+        protected virtual void StyleEditorControl(NodeGraphControl control, Graphics graphics) { }
     }
 }

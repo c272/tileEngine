@@ -1,4 +1,5 @@
-﻿using System;
+﻿using easyCase.Controls;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -29,6 +30,15 @@ namespace easyCase.Attributes
             editorControl = numericField;
             Width = 40;
             Height = 20;
+        }
+
+        /// <summary>
+        /// Styles the numeric input to be in line with the current node theming.
+        /// </summary>
+        protected override void StyleEditorControl(NodeGraphControl control, Graphics graphics)
+        {
+            numericField.BackColor = control.NodeBackgroundColour;
+            numericField.ForeColor = control.NodeTextColour;
         }
     }
 }
