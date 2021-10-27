@@ -105,5 +105,14 @@ namespace easyCase.Attributes
             Rectangle connectorRect = control.GetPixelRectangle(topLeft, new Vector2(topLeft.X + Width, topLeft.Y + Height));
             return connectorRect.Contains(point);
         }
+
+        /// <summary>
+        /// Returns whether the currently entered value in the field is valid.
+        /// For flow nodes, all values are valid.
+        /// </summary>
+        public override bool ValueIsValid()
+        {
+            return true;
+        }
     }
 }

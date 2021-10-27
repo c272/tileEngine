@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -38,12 +39,17 @@ namespace easyCase.Attributes
         //The node that owns this field.
         public Node Node { get; private set; }
 
-        public NodeField(string name, FieldType type, Type valueType, Color nodeColour)
+        //The name of the member that this field is applied to.
+        //Not guaranteed to contain a valid member value.
+        protected string MemberName { get; private set; } = null;
+
+        public NodeField(string name, FieldType type, Type valueType, Color nodeColour, [CallerMemberName] string memberName = null)
         {
             Name = name;
             Type = type;
             ValueType = valueType;
             NodeColour = nodeColour;
+            MemberName = memberName;
         }
 
         /// <summary>
@@ -53,6 +59,11 @@ namespace easyCase.Attributes
         {
             Node = node;
         }
+
+        /// <summary>
+        /// Returns whether the field currently has a valid value entered in it.
+        /// </summary>
+        public abstract bool ValueIsValid();
 
         /// <summary>
         /// Gets the dimensions of this node field based on the settings of the node graph.

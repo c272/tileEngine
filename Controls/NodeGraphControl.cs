@@ -204,6 +204,20 @@ namespace easyCase.Controls
         }
         private Color nodeTextColour = Color.Black;
 
+        /// <summary>
+        /// Property to set the colour of errors on each node.
+        /// </summary>
+        public Color NodeErrorColour
+        {
+            get { return nodeErrorColour; }
+            set
+            {
+                nodeErrorColour = value;
+                Invalidate();
+            }
+        }
+        private Color nodeErrorColour = Color.Red;
+
 
         /// <summary>
         /// Property to set the background colour of the editor.
