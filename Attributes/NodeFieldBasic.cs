@@ -34,25 +34,25 @@ namespace easyCase.Attributes
         //Create the numeric input for this numeric field.
         protected Control editorControl = null;
 
+        //The name of the property this field is editing.
+        public string PropertyName { get; private set; }
+
         /// <summary>
         /// Constructor for the numeric field.
         /// Simply passes down base arguments, nothing fancy.
         /// </summary>
-        public NodeFieldBasic(string name, FieldType type, Type valueType, Color nodeColour) : base(name, type, valueType, nodeColour) { }
+        public NodeFieldBasic(string name, FieldType type, Type valueType, Color nodeColour) : base(name, type, valueType, nodeColour) 
+        {
+            //Alter whether the user can edit based on whether this is an output or input.
+            //If we're an input, by default turn it on. If we're an output, by default turn it off.
+            UserCanEdit = type == FieldType.Input ? true : false;
+        }
 
         /// <summary>
         /// Draws the numeric field to the control, at the provided position.
         /// </summary>
         public override void Draw(NodeGraphControl control, Graphics graphics, Vector2 position)
         {
-            //Throw an error if the editor control hasn't been initialized.
-            if (editorControl == null)
-                throw new Exception("NodeFieldBasic: Editor control has not been initialized before draw.");
-
-            //Add the editor control to this node graph if it's not there already.
-            if (!control.Controls.Contains(editorControl))
-                control.Controls.Add(editorControl);
-
             //Get what size we're expected to be.
             Vector2 size = GetDimensions(control, graphics);
 
@@ -61,6 +61,13 @@ namespace easyCase.Attributes
             Vector2 nameDims = control.GetStringAsUnits(graphics, Name, control.NodeTextFont);
             Vector2 namePosition = new Vector2(position.X, position.Y + ((size.Y - nameDims.Y) / 2f));
             graphics.DrawString(Name, control.NodeTextFont, brush, control.ToPixelPointF(namePosition));
+
+            //If there's no editor control, ignore and return.
+            if (editorControl == null) { return; }
+
+            //Add the editor control to this node graph if it's not there already.
+            if (!control.Controls.Contains(editorControl))
+                control.Controls.Add(editorControl);
 
             //Is the field connected and an input? If so, get rid of the input box.
             if ((Type == FieldType.Input && ConnectedTo != null) || !UserCanEdit)

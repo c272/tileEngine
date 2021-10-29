@@ -50,8 +50,9 @@
     <Compile Include="Attributes\NodeFieldBasic.cs" />
     <Compile Include="Attributes\NodeFieldFlow.cs" />
     <Compile Include="Attributes\NodeFieldNumeric.cs" />
+    <Compile Include="Attributes\NodeFieldObject.cs" />
     <Compile Include="Controls\NodeGraphState.cs" />
-    <Compile Include="Nodes\ExampleNode.cs" />
+    <Compile Include="Nodes\AddNode.cs" />
     <Compile Include="Nodes\Node.cs" />
     <Compile Include="Controls\NodeGraphControl.cs">
       <SubType>Component</SubType>
@@ -62,6 +63,7 @@
     <Compile Include="Editor.Designer.cs">
       <DependentUpon>Editor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Nodes\PrintNode.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\RoundedPaths.cs" />

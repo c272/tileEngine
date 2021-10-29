@@ -440,17 +440,18 @@ namespace easyCase.Controls
             {
                 foreach (var field in node.Fields)
                 {
-                    //Ignore if the fields' types do not match, or the field is the one we're connecting from.
-                    if (field.ID == connectingField.ID || !field.ValueType.Equals(connectingField.ValueType)) { continue; }
-
-                    //Don't let an output connect to an output, or an input to an input.
-                    if (field.Type == connectingField.Type) { continue; }
+                    //Ignore if the field is itself, or we're trying to connect two of the same type.
+                    if (field.ID == connectingField.ID || field.Type == connectingField.Type) { continue; }
 
                     //Don't let an output connect to an input on the same node.
                     if (field.Node.ID == connectingField.Node.ID) { continue; }
 
                     //Is the mouse within the bounds of this field?
                     if (!field.PointWithinConnector(this, e.Location)) { continue; }
+
+                    //Are the two field value types compatible?
+                    if (field.Type == FieldType.Input && !field.ValueType.IsAssignableFrom(connectingField.ValueType)
+                       || field.Type == FieldType.Output && !connectingField.ValueType.IsAssignableFrom(field.ValueType)) { continue; }
 
                     //If the field is already connected, boot the other connection off.
                     if (field.ConnectedTo != null)

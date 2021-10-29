@@ -79,6 +79,7 @@ namespace easyCase.Nodes
                 //Save this to the list.
                 var field = (NodeField)attributes[0];
                 field.SetOwner(this);
+                field.SetProperty(prop);
                 Fields.Add(field);
             }
         }
@@ -222,7 +223,8 @@ namespace easyCase.Nodes
                 totalFieldWidth += output.X + control.NodeConnectorPadding;
             if (input.X > 0 && output.X > 0)
                 totalFieldWidth += control.FieldPadding;
-            if (finalSize.X < totalFieldWidth) { finalSize.X = totalFieldWidth + control.GlobalPadding * 2; }
+            totalFieldWidth += control.GlobalPadding * 2;
+            if (finalSize.X < totalFieldWidth) { finalSize.X = totalFieldWidth; }
 
             //Return final dimensions.
             Size = finalSize;
@@ -237,5 +239,28 @@ namespace easyCase.Nodes
             Vector2 bottomRight = new Vector2(topLeft.X + Size.X, topLeft.Y + Size.Y);
             return control.GetPixelRectangle(topLeft, bottomRight).Contains(point);
         }
+
+        /// <summary>
+        /// Runs the current node's operations, in a synchronised fashion.
+        /// Used by outside callers to execute the node.
+        /// </summary>
+        public void Execute()
+        {
+            //Get all connected input field values set.
+            foreach (var input in Fields.Where(x => x.Type == FieldType.Input && x.ConnectedTo != null))
+            {
+                input.ConnectedTo.Node.Execute();
+                input.SetPropertyValue(input.ConnectedTo.GetPropertyValue<object>());
+            }
+
+            //Run the node's actions.
+            Run();
+        }
+
+        /// <summary>
+        /// Runs the operations of this node type.
+        /// Used by inheriting nodes to specify their behaviour, not to be called externally.
+        /// </summary>
+        protected abstract void Run();
     }
 }

@@ -30,20 +30,42 @@ namespace easyCase
             }
         }
 
+        //The print node on the graph.
+        private PrintNode printNode;
+
         public Editor()
         {
             InitializeComponent();
             AutoScaleMode = AutoScaleMode.Dpi;
-            nodeGraphControl1.AddNode(new ExampleNode());
-            nodeGraphControl1.AddNode(new ExampleNode()
+
+            //Some add nodes.
+            nodeGraphControl1.AddNode(new AddNode());
+            nodeGraphControl1.AddNode(new AddNode()
             {
                 Location = new Utility.Vector2(200, 200)
             });
+            nodeGraphControl1.AddNode(new AddNode()
+            {
+                Location = new Utility.Vector2(-200, 200)
+            });
+
+            //A print node.
+            printNode = new PrintNode()
+            {
+                Location = new Utility.Vector2(0, -200)
+            };
+            nodeGraphControl1.AddNode(printNode);
         }
 
         private void Editor_Load(object sender, EventArgs e)
         {
 
+        }
+
+        //Runs the print node on click.
+        private void executeBtn_Click(object sender, EventArgs e)
+        {
+            printNode.Execute();
         }
     }
 }

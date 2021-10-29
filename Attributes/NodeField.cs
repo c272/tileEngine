@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,17 +40,20 @@ namespace easyCase.Attributes
         //The node that owns this field.
         public Node Node { get; private set; }
 
-        //The name of the member that this field is applied to.
-        //Not guaranteed to contain a valid member value.
-        protected string MemberName { get; private set; } = null;
+        //The underlying property for this field (if valid).
+        //Not guaranteed to have a non-null value.
+        public PropertyInfo Property { get; private set; } = null;
 
-        public NodeField(string name, FieldType type, Type valueType, Color nodeColour, [CallerMemberName] string memberName = null)
+        //Event that is fired every time the property on this object is altered.
+        public delegate void PropertyUpdatedHandler(NodeField sender);
+        public event PropertyUpdatedHandler OnPropertyChanged;
+
+        public NodeField(string name, FieldType type, Type valueType, Color nodeColour)
         {
             Name = name;
             Type = type;
             ValueType = valueType;
             NodeColour = nodeColour;
-            MemberName = memberName;
         }
 
         /// <summary>
@@ -58,6 +62,36 @@ namespace easyCase.Attributes
         public void SetOwner(Node node)
         {
             Node = node;
+        }
+
+        /// <summary>
+        /// Sets the underlying property of this node to the given property.
+        /// </summary>
+        public void SetProperty(PropertyInfo prop)
+        {
+            Property = prop;
+            OnPropertyChanged?.Invoke(this);
+        }
+
+        /// <summary>
+        /// Returns the underlying property's value with the provided type.
+        /// This is a hard cast, so make sure of the type before calling.
+        /// </summary>
+        public T GetPropertyValue<T>()
+        {
+            if (Property == null)
+                throw new Exception("Attempted to get property value with no property set.");
+            return (T)Property.GetValue(Node);
+        }
+
+        /// <summary>
+        /// Sets the underlying property's value on this node to the given object.
+        /// </summary>
+        public void SetPropertyValue(object value)
+        {
+            if (Property == null)
+                throw new Exception("Attempted to set property value with no property set.");
+            Property.SetValue(Node, value);
         }
 
         /// <summary>

@@ -30,12 +30,15 @@ namespace easyCase
         private void InitializeComponent()
         {
             this.nodeGraphControl1 = new easyCase.Controls.NodeGraphControl();
+            this.executeBtn = new System.Windows.Forms.Button();
+            this.nodeGraphControl1.SuspendLayout();
             this.SuspendLayout();
             // 
             // nodeGraphControl1
             // 
             this.nodeGraphControl1.BackgroundColour = System.Drawing.Color.White;
             this.nodeGraphControl1.BackgroundLineColour = System.Drawing.Color.WhiteSmoke;
+            this.nodeGraphControl1.Controls.Add(this.executeBtn);
             this.nodeGraphControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.nodeGraphControl1.FieldPadding = 10F;
             this.nodeGraphControl1.GlobalPadding = 10F;
@@ -47,6 +50,7 @@ namespace easyCase
             this.nodeGraphControl1.NodeBackgroundOpacity = 200;
             this.nodeGraphControl1.NodeConnectionGap = 80;
             this.nodeGraphControl1.NodeConnectorPadding = 5F;
+            this.nodeGraphControl1.NodeErrorColour = System.Drawing.Color.Red;
             this.nodeGraphControl1.NodeRoundingRadius = 10;
             this.nodeGraphControl1.NodeTextColour = System.Drawing.Color.Black;
             this.nodeGraphControl1.NodeTextFont = new System.Drawing.Font("Montserrat", 10.8F);
@@ -56,6 +60,16 @@ namespace easyCase
             this.nodeGraphControl1.Text = "nodeGraphControl1";
             this.nodeGraphControl1.TitlePadding = 10F;
             this.nodeGraphControl1.Zoom = 1F;
+            // 
+            // executeBtn
+            // 
+            this.executeBtn.Location = new System.Drawing.Point(0, 0);
+            this.executeBtn.Name = "executeBtn";
+            this.executeBtn.Size = new System.Drawing.Size(100, 29);
+            this.executeBtn.TabIndex = 0;
+            this.executeBtn.Text = "Execute";
+            this.executeBtn.UseVisualStyleBackColor = true;
+            this.executeBtn.Click += new System.EventHandler(this.executeBtn_Click);
             // 
             // Editor
             // 
@@ -67,6 +81,7 @@ namespace easyCase
             this.Name = "Editor";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Editor_Load);
+            this.nodeGraphControl1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -74,6 +89,7 @@ namespace easyCase
         #endregion
 
         private Controls.NodeGraphControl nodeGraphControl1;
+        private System.Windows.Forms.Button executeBtn;
     }
 }
 

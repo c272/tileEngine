@@ -14,9 +14,6 @@ namespace easyCase.Attributes
     /// </summary>
     public class NodeFieldNumeric : NodeFieldBasic
     {
-        //The current numeric value of the field.
-        public float Value { get; private set; }
-
         //The default value of this numeric field.
         public float DefaultValue { get; private set; } = 0;
 
@@ -34,7 +31,7 @@ namespace easyCase.Attributes
         public NodeFieldNumeric(string name, FieldType type) : base(name, type, typeof(float), Color.Green)
         {
             //Default value setup.
-            Value = DefaultValue;
+            OnPropertyChanged += setDefaultValue;
             numericField.Text = DefaultValue.ToString();
 
             //Set up editor control, sizing.
@@ -44,6 +41,12 @@ namespace easyCase.Attributes
 
             //Event hooks for the textbox (number only validation).
             editorControl.TextChanged += fieldTextChanged;
+        }
+
+        //Called when the property is changed, to set the default value.
+        private void setDefaultValue(NodeField sender)
+        {
+            SetPropertyValue(DefaultValue);
         }
 
         /// <summary>
@@ -77,7 +80,7 @@ namespace easyCase.Attributes
             {
                 return false;
             }
-            Value = newValue;
+            SetPropertyValue(newValue);
             return true;
         }
     }
