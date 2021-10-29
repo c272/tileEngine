@@ -1,6 +1,6 @@
-﻿using easyCase.Controls;
-using easyCase.Nodes;
-using easyCase.Utility;
+﻿using nodeGame.Controls;
+using nodeGame.Nodes;
+using nodeGame.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace easyCase.Attributes
+namespace nodeGame.Attributes
 {
     /// <summary>
     /// Represents a single field on a node, either an input or an output.

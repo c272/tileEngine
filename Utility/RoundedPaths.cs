@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace easyCase.Utility
+namespace nodeGame.Utility
 {
     /// <summary>
     /// Class for generating rounded rectangle paths for System.Drawing GDI.

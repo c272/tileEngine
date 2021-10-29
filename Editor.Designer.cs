@@ -1,5 +1,5 @@
 ﻿
-namespace easyCase
+namespace nodeGame
 {
     partial class Editor
     {
@@ -29,7 +29,7 @@ namespace easyCase
         /// </summary>
         private void InitializeComponent()
         {
-            this.nodeGraphControl1 = new easyCase.Controls.NodeGraphControl();
+            this.nodeGraphControl1 = new nodeGame.Controls.NodeGraphControl();
             this.executeBtn = new System.Windows.Forms.Button();
             this.nodeGraphControl1.SuspendLayout();
             this.SuspendLayout();

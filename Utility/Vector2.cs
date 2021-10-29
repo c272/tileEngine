@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace easyCase.Utility
+namespace nodeGame.Utility
 {
     /// <summary>
     /// A simple Vector2 for use in controls.

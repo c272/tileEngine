@@ -4,15 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
-using easyCase.Attributes;
+using nodeGame.Attributes;
 
-namespace easyCase.Nodes
+namespace nodeGame.Nodes
 {
     /// <summary>
     /// Example node class demonstrating implementing a simple repeating node.
     /// </summary>
     public class RepeatNode : Node
     {
+        [NodeFieldFlow(null, FieldType.Input)]
+        public Action FlowIn { get; set; }
+
         [NodeFieldNumeric("Amount", FieldType.Input, IntegersOnly = true)]
         public float TimesToRepeat { get; set; }
 
@@ -26,7 +29,7 @@ namespace easyCase.Nodes
         [NodeFieldNumeric("Index", FieldType.Output)]
         public float RepeatNumber { get; set; }
 
-        public RepeatNode() : base("For Loop", Color.Blue, Color.White) { }
+        public RepeatNode() : base("Repeat", Color.Blue, Color.White) { }
 
         //Runs the for loop.
         protected override void Run()

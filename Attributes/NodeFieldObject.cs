@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace easyCase.Attributes
+namespace nodeGame.Attributes
 {
     /// <summary>
     /// Represents a wildcard node field that can take in and pass out any object.

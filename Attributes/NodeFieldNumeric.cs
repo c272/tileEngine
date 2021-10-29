@@ -1,4 +1,4 @@
-﻿using easyCase.Controls;
+﻿using nodeGame.Controls;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace easyCase.Attributes
+namespace nodeGame.Attributes
 {
     /// <summary>
     /// Represents a single numeric field on a node.

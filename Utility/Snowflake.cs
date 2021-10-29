@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace easyCase.Utility
+namespace nodeGame.Utility
 {
     /// <summary>
     /// Implements a globally unique public ID per instance for differentiating instances easily.

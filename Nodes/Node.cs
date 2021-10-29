@@ -1,6 +1,6 @@
-﻿using easyCase.Attributes;
-using easyCase.Controls;
-using easyCase.Utility;
+﻿using nodeGame.Attributes;
+using nodeGame.Controls;
+using nodeGame.Utility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace easyCase.Nodes 
+namespace nodeGame.Nodes 
 {
     /// <summary>
     /// Represents a single node, placeable within the node graph editor.

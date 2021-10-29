@@ -1,4 +1,4 @@
-﻿using easyCase.Nodes;
+﻿using nodeGame.Nodes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace easyCase
+namespace nodeGame
 {
     public partial class Editor : Form
     {
@@ -42,16 +42,21 @@ namespace easyCase
             //Some add nodes.
             nodeGraphControl1.AddNode(new AddNode());
 
-            //A print node.
+            //A print node or two.
             nodeGraphControl1.AddNode(new PrintNode()
             {
-                Location = new Utility.Vector2(0, -200)
+                Location = new Utility.Vector2(0, -140)
             });
+            nodeGraphControl1.AddNode(new PrintNode()
+            {
+                Location = new Utility.Vector2(120, -140)
+            });
+
 
             //A repeat node.
             toExecute = new RepeatNode()
             {
-                Location = new Utility.Vector2(0, 200)
+                Location = new Utility.Vector2(0, 140)
             };
             nodeGraphControl1.AddNode(toExecute);
         }

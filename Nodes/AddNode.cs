@@ -1,4 +1,4 @@
-﻿using easyCase.Attributes;
+﻿using nodeGame.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace easyCase.Nodes
+namespace nodeGame.Nodes
 {
     /// <summary>
     /// An example node for testing.

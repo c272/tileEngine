@@ -1,5 +1,5 @@
-﻿using easyCase.Controls;
-using easyCase.Utility;
+﻿using nodeGame.Controls;
+using nodeGame.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace easyCase.Attributes
+namespace nodeGame.Attributes
 {
     /// <summary>
     /// Represents a single "logic flow" field (either in, or out) on a node.

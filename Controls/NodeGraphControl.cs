@@ -1,6 +1,6 @@
-﻿using easyCase.Attributes;
-using easyCase.Nodes;
-using easyCase.Utility;
+﻿using nodeGame.Attributes;
+using nodeGame.Nodes;
+using nodeGame.Utility;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace easyCase.Controls
+namespace nodeGame.Controls
 {
     /// <summary>
     /// Represents a visual node graph editor control within the form.
