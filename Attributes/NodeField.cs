@@ -69,6 +69,10 @@ namespace easyCase.Attributes
         /// </summary>
         public void SetProperty(PropertyInfo prop)
         {
+            //Check if the property has a correct type for the fields' value type.
+            if (!prop.PropertyType.IsAssignableFrom(ValueType))
+                throw new Exception("Invalid property type decorated by field, got " + prop.PropertyType.Name + " but was expecting " + ValueType.Name + ".");
+
             Property = prop;
             OnPropertyChanged?.Invoke(this);
         }

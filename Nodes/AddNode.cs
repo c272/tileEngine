@@ -11,6 +11,7 @@ namespace easyCase.Nodes
     /// <summary>
     /// An example node for testing.
     /// </summary>
+    [NodeFieldFlow(null, FieldType.Output)]
     public class AddNode : Node
     {
         //test value

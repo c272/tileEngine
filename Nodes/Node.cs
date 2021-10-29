@@ -250,7 +250,8 @@ namespace easyCase.Nodes
             foreach (var input in Fields.Where(x => x.Type == FieldType.Input && x.ConnectedTo != null))
             {
                 input.ConnectedTo.Node.Execute();
-                input.SetPropertyValue(input.ConnectedTo.GetPropertyValue<object>());
+                if (input.ConnectedTo.Property != null)
+                    input.SetPropertyValue(input.ConnectedTo.GetPropertyValue<object>());
             }
 
             //Run the node's actions.
