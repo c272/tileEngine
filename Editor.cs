@@ -40,14 +40,20 @@ namespace easyCase
             AutoScaleMode = AutoScaleMode.Dpi;
 
             //Some add nodes.
-            toExecute = new AddNode();
-            nodeGraphControl1.AddNode(toExecute);
+            nodeGraphControl1.AddNode(new AddNode());
 
             //A print node.
             nodeGraphControl1.AddNode(new PrintNode()
             {
                 Location = new Utility.Vector2(0, -200)
             });
+
+            //A repeat node.
+            toExecute = new RepeatNode()
+            {
+                Location = new Utility.Vector2(0, 200)
+            };
+            nodeGraphControl1.AddNode(toExecute);
         }
 
         private void Editor_Load(object sender, EventArgs e)

@@ -17,6 +17,9 @@ namespace easyCase.Attributes
         //The default value of this numeric field.
         public float DefaultValue { get; private set; } = 0;
 
+        //Whether to limit this field to purely integers.
+        public bool IntegersOnly { get; set; } = false;
+
         //The field for editing the underlying value.
         //We use a text box here because NumericUpDown does not allow height resizing (seriously).
         TextBox numericField = new TextBox()
@@ -74,7 +77,19 @@ namespace easyCase.Attributes
             //If we're connected to another value and we're an input, we're fine.
             if (ConnectedTo != null && Type == FieldType.Input) { return true; }
 
-            //Attempt to get the new value. On fail, return false.
+            //If it's an integer-only field, test as integer instead.
+            if (IntegersOnly)
+            {
+                int newValueInt;
+                if (!int.TryParse(editorControl.Text, out newValueInt))
+                {
+                    return false;
+                }
+                SetPropertyValue(newValueInt);
+                return true;
+            }
+
+            //Attempt to get the new value as a float. On fail, return false.
             float newValue;
             if (!float.TryParse(editorControl.Text, out newValue))
             {

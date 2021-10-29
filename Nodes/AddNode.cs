@@ -20,19 +20,18 @@ namespace easyCase.Nodes
         [NodeFieldNumeric("Number", FieldType.Input)]
         public float SecondNumber { get; set; }
 
-        [NodeFieldFlow(null, FieldType.Output)]
-        public Action FlowOut { get; set; }
-
         [NodeFieldNumeric("Result", FieldType.Output)]
         public float AnotherOutput { get; set; }
 
-        public AddNode() : base("Addition", Color.Green, Color.White) { }
+        public AddNode() : base("Addition", Color.Green, Color.White) 
+        {
+            IsAutoNode = true;
+        }
 
         //Executes when the node is run.
         protected override void Run()
         {
             AnotherOutput = FirstNumber + SecondNumber;
-            FlowOut();
         }
     }
 }

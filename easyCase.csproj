@@ -53,6 +53,7 @@
     <Compile Include="Attributes\NodeFieldObject.cs" />
     <Compile Include="Controls\NodeGraphState.cs" />
     <Compile Include="Nodes\AddNode.cs" />
+    <Compile Include="Nodes\RepeatNode.cs" />
     <Compile Include="Nodes\Node.cs" />
     <Compile Include="Controls\NodeGraphControl.cs">
       <SubType>Component</SubType>
