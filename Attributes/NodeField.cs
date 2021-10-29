@@ -19,16 +19,24 @@ namespace easyCase.Attributes
 
     public abstract class NodeField : SnowflakeAttribute
     {
-        //The name of this field.
+        /// <summary>
+        /// The name of this field.
+        /// </summary>
         public string Name;
 
-        //The type of node field this is (input, output, etc.)
+        /// <summary>
+        /// The type of node field this is (input, output, etc.)
+        /// </summary>
         public FieldType Type;
 
-        //The underlying value type this field is expecting.
+        /// <summary>
+        /// The underlying value type this field is expecting.
+        /// </summary>
         public Type ValueType { get; protected set; }
 
-        //The field this node is currently connected to.
+        /// <summary>
+        /// The field this node is currently connected to.
+        /// </summary>
         public NodeField ConnectedTo 
         { 
             get { return connectedTo; }
@@ -40,31 +48,45 @@ namespace easyCase.Attributes
         }
         private NodeField connectedTo = null;
 
-        //The colour of the attach node for this field.
+        /// <summary>
+        /// The colour of the attach node for this field.
+        /// </summary>
         public Color NodeColour { get; protected set; }
 
-        //The current location of this field's connector.
+        /// <summary>
+        /// The current location of this field's connector.
+        /// </summary>
         public Vector2 ConnectorLocation { get; set; }
 
-        //The node that owns this field.
+        /// <summary>
+        /// The node that owns this field.
+        /// </summary>
         public Node Node { get; private set; }
 
-        //The underlying property for this field (if valid).
-        //Not guaranteed to have a non-null value.
+        /// <summary>
+        /// The underlying property for this field (if valid).
+        /// Not guaranteed to have a non-null value.
+        /// </summary>
         public PropertyInfo Property { get; private set; } = null;
 
-        //Whether this is an automatic field or not.
-        //If a field is automatic, output fields of this type will automatically set their
-        //value onto the input fields of other nodes when the node is executed.
+        /// <summary>
+        /// Whether this is an automatic field or not.
+        /// If a field is automatic, output fields of this type will automatically set their
+        /// value onto the input fields of other nodes when the node is executed.
+        /// </summary>
         public bool IsAutoField { get; protected set; } = true;
 
-        //Event that is fired every time the property on this object is altered.
-        public delegate void PropertyUpdatedHandler(NodeField sender);
+        /// <summary>
+        /// Event that is fired every time the property on this object is altered.
+        /// </summary>
         public event PropertyUpdatedHandler OnPropertyChanged;
+        public delegate void PropertyUpdatedHandler(NodeField sender);
 
-        //Event that is fired every time the field we are connected to is altered.
-        public delegate void ConnectedFieldChangedHandler(NodeField sender);
+        /// <summary>
+        /// Event that is fired every time the field we are connected to is altered.
+        /// </summary>
         public event ConnectedFieldChangedHandler OnConnectedFieldChanged;
+        public delegate void ConnectedFieldChangedHandler(NodeField sender);
 
         public NodeField(string name, FieldType type, Type valueType, Color nodeColour)
         {
