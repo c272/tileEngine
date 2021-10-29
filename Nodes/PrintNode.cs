@@ -8,13 +8,16 @@ using System.Threading.Tasks;
 
 namespace easyCase.Nodes
 {
-    [NodeFieldFlow(null, FieldType.Input)]
     public class PrintNode : Node
     {
+        [NodeFieldFlow(null, FieldType.Input)]
+        public Action FlowIn { get; set; }
+
+
         [NodeFieldObject("Input", FieldType.Input)]
         public object Input { get; set; } = null;
 
-        public PrintNode() : base("Print", Color.Green, Color.White) { }
+        public PrintNode() : base("Print", Color.Red, Color.White) { }
 
         //Writes the input to console.
         protected override void Run()

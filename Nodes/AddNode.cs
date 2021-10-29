@@ -11,7 +11,6 @@ namespace easyCase.Nodes
     /// <summary>
     /// An example node for testing.
     /// </summary>
-    [NodeFieldFlow(null, FieldType.Output)]
     public class AddNode : Node
     {
         //test value
@@ -21,15 +20,19 @@ namespace easyCase.Nodes
         [NodeFieldNumeric("Number", FieldType.Input)]
         public float SecondNumber { get; set; }
 
+        [NodeFieldFlow(null, FieldType.Output)]
+        public Action FlowOut { get; set; }
+
         [NodeFieldNumeric("Result", FieldType.Output)]
         public float AnotherOutput { get; set; }
 
-        public AddNode() : base("Addition", Color.Red, Color.White) { }
+        public AddNode() : base("Addition", Color.Green, Color.White) { }
 
         //Executes when the node is run.
         protected override void Run()
         {
             AnotherOutput = FirstNumber + SecondNumber;
+            FlowOut();
         }
     }
 }

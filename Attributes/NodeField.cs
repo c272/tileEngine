@@ -29,7 +29,16 @@ namespace easyCase.Attributes
         public Type ValueType { get; protected set; }
 
         //The field this node is currently connected to.
-        public NodeField ConnectedTo = null;
+        public NodeField ConnectedTo 
+        { 
+            get { return connectedTo; }
+            set 
+            {
+                connectedTo = value;
+                OnConnectedFieldChanged?.Invoke(this);
+            } 
+        }
+        private NodeField connectedTo = null;
 
         //The colour of the attach node for this field.
         public Color NodeColour { get; protected set; }
@@ -44,9 +53,18 @@ namespace easyCase.Attributes
         //Not guaranteed to have a non-null value.
         public PropertyInfo Property { get; private set; } = null;
 
+        //Whether this is an automatic field or not.
+        //If a field is automatic, output fields of this type will automatically set their
+        //value onto the input fields of other nodes when the node is executed.
+        public bool IsAutoField { get; protected set; } = true;
+
         //Event that is fired every time the property on this object is altered.
         public delegate void PropertyUpdatedHandler(NodeField sender);
         public event PropertyUpdatedHandler OnPropertyChanged;
+
+        //Event that is fired every time the field we are connected to is altered.
+        public delegate void ConnectedFieldChangedHandler(NodeField sender);
+        public event ConnectedFieldChangedHandler OnConnectedFieldChanged;
 
         public NodeField(string name, FieldType type, Type valueType, Color nodeColour)
         {

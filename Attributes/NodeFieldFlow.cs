@@ -13,7 +13,6 @@ namespace easyCase.Attributes
     /// <summary>
     /// Represents a single "logic flow" field (either in, or out) on a node.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class NodeFieldFlow : NodeField
     {
         /// <summary>
@@ -29,7 +28,12 @@ namespace easyCase.Attributes
         /// <summary>
         /// Simple passthrough constructor, passing in a name and type.
         /// </summary>
-        public NodeFieldFlow(string name, FieldType type) : base(name, type, typeof(NodeFieldFlow), Color.White) { }
+        public NodeFieldFlow(string name, FieldType type) : base(name, type, typeof(Action), Color.White)
+        {
+            IsAutoField = false;
+            OnConnectedFieldChanged += fieldConnectionChanged;
+            OnPropertyChanged += setDefaultValue;
+        }
 
         /// <summary>
         /// Draws the logic flow field to the node.
@@ -114,5 +118,22 @@ namespace easyCase.Attributes
         {
             return true;
         }
+
+        //Triggered when our connection to another field is altered.
+        private void fieldConnectionChanged(NodeField sender)
+        {
+            //If we're now connected to nothing, change the property appropriately.
+            if (ConnectedTo == null) { SetPropertyValue((Action)(() => { })); return; }
+
+            //Alter the underlying action property to point to the execute method of the new node.
+            SetPropertyValue((Action)ConnectedTo.Node.Execute);
+        }
+
+        //Sets the default value of the underlying property when the property is changed.
+        private void setDefaultValue(NodeField sender)
+        {
+            fieldConnectionChanged(sender);
+        }
+
     }
 }

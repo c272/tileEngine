@@ -45,6 +45,14 @@ namespace easyCase.Nodes
         public Vector2 Size { get; private set; } = null;
 
         /// <summary>
+        /// Whether this node is an automatic node or not.
+        /// When nodes are automatic, nodes they are connected to will automatically
+        /// execute them to get results for their input fields.
+        /// When nodes are not automatic, they must be invoked before they produce output.
+        /// </summary>
+        public bool IsAutoNode { get; protected set; } = false;
+
+        /// <summary>
         /// A list of fields that this node contains.
         /// </summary>
         public List<NodeField> Fields { get; private set; } = new List<NodeField>();
@@ -83,6 +91,39 @@ namespace easyCase.Nodes
                 Fields.Add(field);
             }
         }
+
+        /// <summary>
+        /// Runs the current node's operations, in a synchronised fashion.
+        /// Used by outside callers to execute the node.
+        /// </summary>
+        public void Execute()
+        {
+            //Get all connected input field values set.
+            foreach (var nodeFields in Fields.Where(x => x.Type == FieldType.Input && x.ConnectedTo != null).GroupBy(x => x.ConnectedTo.Node.ID))
+            {
+                var inputNode = nodeFields.First().ConnectedTo.Node;
+
+                //If this node doesn't want us to automatically run it retroactively to calculate values, we won't.
+                if (inputNode.IsAutoNode)
+                    inputNode.Execute();
+
+                //Run through inputs and set them, if the field is an auto-setting field.
+                foreach (var input in nodeFields)
+                {
+                    if (input.ConnectedTo.Property != null && input.ConnectedTo.IsAutoField)
+                        input.SetPropertyValue(input.ConnectedTo.GetPropertyValue<object>());
+                }
+            }
+
+            //Run the node's actions.
+            Run();
+        }
+
+        /// <summary>
+        /// Runs the operations of this node type.
+        /// Used by inheriting nodes to specify their behaviour, not to be called externally.
+        /// </summary>
+        protected abstract void Run();
 
         /// <summary>
         /// Draws the node onto the given control, with the provided graphics object.
@@ -239,29 +280,5 @@ namespace easyCase.Nodes
             Vector2 bottomRight = new Vector2(topLeft.X + Size.X, topLeft.Y + Size.Y);
             return control.GetPixelRectangle(topLeft, bottomRight).Contains(point);
         }
-
-        /// <summary>
-        /// Runs the current node's operations, in a synchronised fashion.
-        /// Used by outside callers to execute the node.
-        /// </summary>
-        public void Execute()
-        {
-            //Get all connected input field values set.
-            foreach (var input in Fields.Where(x => x.Type == FieldType.Input && x.ConnectedTo != null))
-            {
-                input.ConnectedTo.Node.Execute();
-                if (input.ConnectedTo.Property != null)
-                    input.SetPropertyValue(input.ConnectedTo.GetPropertyValue<object>());
-            }
-
-            //Run the node's actions.
-            Run();
-        }
-
-        /// <summary>
-        /// Runs the operations of this node type.
-        /// Used by inheriting nodes to specify their behaviour, not to be called externally.
-        /// </summary>
-        protected abstract void Run();
     }
 }

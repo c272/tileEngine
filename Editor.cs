@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -30,8 +31,8 @@ namespace easyCase
             }
         }
 
-        //The print node on the graph.
-        private PrintNode printNode;
+        //The node to execute first on the graph.
+        private Node toExecute;
 
         public Editor()
         {
@@ -39,22 +40,14 @@ namespace easyCase
             AutoScaleMode = AutoScaleMode.Dpi;
 
             //Some add nodes.
-            nodeGraphControl1.AddNode(new AddNode());
-            nodeGraphControl1.AddNode(new AddNode()
-            {
-                Location = new Utility.Vector2(200, 200)
-            });
-            nodeGraphControl1.AddNode(new AddNode()
-            {
-                Location = new Utility.Vector2(-200, 200)
-            });
+            toExecute = new AddNode();
+            nodeGraphControl1.AddNode(toExecute);
 
             //A print node.
-            printNode = new PrintNode()
+            nodeGraphControl1.AddNode(new PrintNode()
             {
                 Location = new Utility.Vector2(0, -200)
-            };
-            nodeGraphControl1.AddNode(printNode);
+            });
         }
 
         private void Editor_Load(object sender, EventArgs e)
@@ -65,7 +58,11 @@ namespace easyCase
         //Runs the print node on click.
         private void executeBtn_Click(object sender, EventArgs e)
         {
-            printNode.Execute();
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            toExecute.Execute();
+            watch.Stop();
+            System.Diagnostics.Debug.WriteLine("Execution path took " + watch.ElapsedMilliseconds + "ms.");
         }
     }
 }

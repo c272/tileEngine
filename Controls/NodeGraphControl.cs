@@ -519,7 +519,8 @@ namespace easyCase.Controls
             //If we're currently in the "connecting node" state, also draw the pending connection.
             if (state == NodeGraphState.ConnectingNode)
             {
-                DrawConnection(e, connectingField, lastMouseLocation, FieldType.Input);
+                FieldType mouseDirection = connectingField.Type == FieldType.Input ? FieldType.Output : FieldType.Input;
+                DrawConnection(e, connectingField, lastMouseLocation, mouseDirection);
             }
         }
 
