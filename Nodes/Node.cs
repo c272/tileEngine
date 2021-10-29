@@ -146,7 +146,7 @@ namespace easyCase.Nodes
             //Find and draw the title.
             Vector2 titleBottomRight = new Vector2(curPos.X + Size.X, curPos.Y + titleSize.Y); //+ control.GlobalPadding);
             Rectangle titleRect = control.GetPixelRectangle(curPos, titleBottomRight);
-            graphics.FillPath(brush, RoundedPaths.RoundedRect(titleRect, control.NodeRoundingRadius * control.Zoom, true, false));
+            RoundedPaths.DrawRoundedRect(graphics, brush, titleRect, control.NodeRoundingRadius * control.Zoom, true, false);
 
             //Draw title (with global padding).
             brush = new SolidBrush(TitleColour);
@@ -157,8 +157,7 @@ namespace easyCase.Nodes
             Color backgroundColour = Color.FromArgb(control.NodeBackgroundOpacity, control.NodeBackgroundColour);
             brush = new SolidBrush(backgroundColour);
             var mainRect = control.GetPixelRectangle(curPos, new Vector2(curPos.X + Size.X, curPos.Y - titleSize.Y + Size.Y));
-            var mainPath = RoundedPaths.RoundedRect(mainRect, control.NodeRoundingRadius, false, true);
-            graphics.FillPath(brush, mainPath);
+            RoundedPaths.DrawRoundedRect(graphics, brush, mainRect, control.NodeRoundingRadius, false, true);
             curPos.X += control.GlobalPadding;
             curPos.Y += control.TitlePadding;
 

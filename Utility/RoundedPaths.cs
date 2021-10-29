@@ -18,7 +18,7 @@ namespace easyCase.Utility
         /// </summary>
         /// <param name="rect">The rectangle to round off.</param>
         /// <param name="radius">The radius of the arc rounding it.</param>
-        public static GraphicsPath RoundedRect(Rectangle rect, float radius, bool roundTop = true, bool roundBottom = true)
+        private static GraphicsPath GetRoundedRect(Rectangle rect, float radius, bool roundTop = true, bool roundBottom = true)
         {
             var path = new GraphicsPath();
             path.StartFigure();
@@ -48,12 +48,29 @@ namespace easyCase.Utility
             }
             else
             {
-                path.AddRectangle(new RectangleF(rect.Left, rect.Bottom - radius, rect.Width, radius));
+                //Multiply radius by two here to avoid the scenario where the bottom of a circle pokes out when using a large radius
+                //and small rectangle region. This should be changed to * 1 if a clip is not being utilised.
+                path.AddRectangle(new RectangleF(rect.Left, rect.Bottom - radius, rect.Width, radius * 2));
             }
 
             //Set to winding to prevent colour over-draw.
             path.FillMode = FillMode.Winding;
             return path;
+        }
+
+        /// <summary>
+        /// Draws a rounded rectangle with the provided graphics and brush, using the specified parameters.
+        /// Uses a rounded rectangle path from GetRoundedRect().
+        /// </summary>
+        public static void DrawRoundedRect(Graphics graphics, Brush brush, Rectangle rect, float radius, bool roundTop = true, bool roundBottom = true)
+        {
+            GraphicsPath path = GetRoundedRect(rect, radius, roundTop, roundBottom);
+
+            //Clip to ensure no overdraw outside rectangle bounds.
+            Region priorClip = graphics.Clip;
+            graphics.SetClip(rect);
+            graphics.FillPath(brush, path);
+            graphics.Clip = priorClip;
         }
     }
 }
