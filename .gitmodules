@@ -1,3 +1,6 @@
 [submodule "Dependencies/DarkUI"]
 	path = Dependencies/DarkUI
 	url = https://github.com/c272/DarkUI.git
+[submodule "Dependencies/MonoGame.RuntimeBuilder"]
+	path = Dependencies/MonoGame.RuntimeBuilder
+	url = https://github.com/c272/MonoGame.RuntimeBuilder.git

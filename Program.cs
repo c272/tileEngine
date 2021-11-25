@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace nodeGame
+namespace tileEngine
 {
     static class Program
     {
@@ -16,7 +16,9 @@ namespace nodeGame
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Editor());
+            var landing = new LandingPage();
+            landing.Show();
+            Application.Run();
         }
     }
 }
