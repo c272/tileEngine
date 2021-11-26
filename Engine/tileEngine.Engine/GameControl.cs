@@ -1,5 +1,4 @@
-﻿using tileEngine.Engine.Scenes;
-using tileEngine.SDK;
+﻿using tileEngine.SDK;
 using Microsoft.Xna.Framework;
 using MonoGame.Forms.Controls;
 using System;
@@ -33,10 +32,11 @@ namespace tileEngine.Engine
                 //If the values are the same, do not change anything.
                 if (ReferenceEquals(scene, value)) { return; }
 
-                //Dispose of old scene properly.
+                //Dispose of old scene properly, initialize new.
                 Scene oldScene = scene;
                 scene = value;
                 oldScene?.Dispose();
+                scene.Initialize();
             }
         }
         private Scene scene = null;
@@ -111,54 +111,6 @@ namespace tileEngine.Engine
         {
             base.Draw();
             Scene?.Draw(Editor.spriteBatch);
-        }
-
-        /// <summary>
-        /// Triggered when the game control is double clicked.
-        /// </summary>
-        protected override void OnMouseDoubleClick(MouseEventArgs e)
-        {
-            base.OnDoubleClick(e);
-            bool handled = false;
-            Scene?.OnDoubleClick(ref handled, new Point(e.X, e.Y));
-        }
-
-        /// <summary>
-        /// Triggered when the mouse is pressed down on this game control.
-        /// </summary>
-        protected override void OnMouseDown(MouseEventArgs e)
-        {
-            base.OnMouseDown(e);
-            bool handled = false;
-            Scene?.OnMouseDown(ref handled, e.Button, new Point(e.X, e.Y));
-        }
-
-        /// <summary>
-        /// Triggered when the mouse moves on this game control.
-        /// </summary>
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            base.OnMouseMove(e);
-            Scene?.OnMouseMove(new Point(e.X, e.Y));
-        }
-
-        /// <summary>
-        /// Triggered when the mouse is released on this game control.
-        /// </summary>
-        protected override void OnMouseUp(MouseEventArgs e)
-        {
-            base.OnMouseUp(e);
-            Scene?.OnMouseUp(new Point(e.X, e.Y));
-        }
-
-        /// <summary>
-        /// Triggered when the user changes the position of the mouse wheel while
-        /// this control is in focus.
-        /// </summary>
-        protected override void OnMouseWheel(MouseEventArgs e)
-        {
-            base.OnMouseWheel(e);
-            Scene?.OnMouseWheel(e.Delta / Math.Abs(e.Delta));
         }
     }
 }

@@ -208,6 +208,46 @@ namespace tileEngine
             if (err != null)
                 return false;
 
+            //Try and create the C# solution for this project w/ default config.
+            var csRoot = Microsoft.Build.Construction.ProjectRootElement.Create();
+            csRoot.AddImport("$(MSBuildExtensionsPath)\\$(MSBuildToolsVersion)\\Microsoft.Common.props");
+            csRoot.AddImport("$(MSBuildToolsPath)\\Microsoft.CSharp.targets");
+                
+            //Build configuration.
+            var defaultGroup = csRoot.AddPropertyGroup();
+            defaultGroup.AddProperty("Configuration", "Debug");
+            defaultGroup.AddProperty("Platform", "x64");
+            defaultGroup.AddProperty("ProjectGuid", "{" + Guid.NewGuid().ToString().ToUpper() + "}");
+            defaultGroup.AddProperty("OutputType", "Library");
+            defaultGroup.AddProperty("OutputPath", "obj/out");
+            defaultGroup.AddProperty("RootNamespace", project.Name);
+            defaultGroup.AddProperty("AssemblyName", project.Name);
+            defaultGroup.AddProperty("TargetFrameworkVersion", "v4.7.2");
+            defaultGroup.AddProperty("FileAlignment", "512");
+            defaultGroup.AddProperty("AutoGenerateBindingRedirects", "true");
+            defaultGroup.AddProperty("Deterministic", "true");
+
+            //Compile properties.
+            defaultGroup.AddProperty("PlatformTarget", "x64");
+            defaultGroup.AddProperty("ErrorReport", "prompt");
+            defaultGroup.AddProperty("WarningLevel", "4");
+             
+            //Add references to basic stuff (System, etc.).
+            var refGroup = csRoot.AddItemGroup();
+            refGroup.AddItem("Reference", "System, Version=4.0.0.0");
+            refGroup.AddItem("Reference", "System.Core, Version=4.0.0.0");
+            refGroup.AddItem("Reference", "Microsoft.CSharp");
+
+            //Add an empty compile group.
+            var compile = csRoot.AddItemGroup();
+
+            //Save the project to file.
+            try
+            {
+                csRoot.Save(Path.Combine(new FileInfo(fileLoc).DirectoryName, project.Name + ".csproj"));
+            }
+            catch { return false; }
+
             //Set current project.
             CurrentProject = project;
             CurrentProjectLocation = fileLoc;

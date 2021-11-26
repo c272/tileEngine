@@ -7,60 +7,60 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ProtoBuf;
 
 namespace tileEngine.SDK
 {
     /// <summary>
     /// Represents a single scene within the tileEngine engine.
     /// </summary>
+    [ProtoContract]
     public abstract class Scene
     {
-        //The current zoom of the camera in this scene.
-        public float Zoom { get; protected set; } = 1f;
+        /// <summary>
+        /// The game objects that are currently a part of this scene.
+        /// </summary>
+        public List<GameObject> GameObjects { get; private set; } = new List<GameObject>();
 
-        //The current location of the camera in this scene.
+        /// <summary>
+        /// The tilemap for this scene.
+        /// </summary>
+        [ProtoMember(1)]
+        public TileMap Map { get; private set; } = new TileMap();
+
+        /// <summary>
+        /// The current location of the camera in this scene.
+        /// Represents the top left of the current view.
+        /// </summary>
         public Vector2 CameraPosition { get; protected set; } = new Vector2(0, 0);
+
+        /// <summary>
+        /// The current zoom of the camera in this scene.
+        /// </summary>
+        public float Zoom { get; protected set; } = 1f;
 
         /// <summary>
         /// Draws the scene.
         /// </summary>
-        public abstract void Draw(SpriteBatch spriteBatch);
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Called when the scene is first entered.
+        /// </summary>
+        public virtual void Initialize() { }
 
         /// <summary>
         /// Updates the scene object based on the time from the previous update.
         /// </summary>
-        public abstract void Update(GameTime delta);
+        public virtual void Update(GameTime delta) { }
 
         /// <summary>
         /// Dispose any active assets in the current scene.
         /// </summary>
         public abstract void Dispose();
-
-        /// <summary>
-        /// Triggered when the mouse is pressed down on this scene.
-        /// </summary>
-        public virtual void OnMouseDown(ref bool handled, MouseButtons button, Point location) { }
-
-        /// <summary>
-        /// Triggered when the mouse is double clicked on this scene.
-        /// </summary>
-        public virtual void OnDoubleClick(ref bool handled, Point point) { }
-
-        /// <summary>
-        /// Triggered when the mouse moves on this scene.
-        /// </summary>
-        public virtual void OnMouseMove(Point location) { }
-
-        /// <summary>
-        /// Triggered when the mouse is released on this scene.
-        /// </summary>
-        public virtual void OnMouseUp(Point location) { }
-
-        /// <summary>
-        /// Triggered when the mouse wheel is moved either up or down.
-        /// Passes "1" as the direction when the wheel moves up, and "-1" when the wheel is moved down.
-        /// </summary>
-        public virtual void OnMouseWheel(int direction) { }
 
         /////////////////////////
         /// UTILITY FUNCTIONS ///

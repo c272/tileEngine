@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using tileEngine.Utility;
 
 namespace tileEngine
 {
@@ -17,8 +18,9 @@ namespace tileEngine
     {
         /// <summary>
         /// Regex representing a valid project name.
+        /// This should be a valid C# namespace identifier. 
         /// </summary>
-        public const string VALID_NAME_REGEX = "^[A-Za-z0-9_ -]+$";
+        public const string VALID_NAME_REGEX = "^([a-z_A-Z]\\w+(?:\\.[a-z_A-Z]\\w+)*)$";
 
         /// <summary>
         /// The name of this project.

@@ -9,11 +9,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>tileEngine.Engine</RootNamespace>
     <AssemblyName>tileEngine.Engine</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cyotek.Drawing.BitmapFont, Version=1.0.0.0, Culture=neutral, PublicKeyToken=58daa28b0b2de221, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Cyotek.Drawing.BitmapFont.2.0.1\lib\net462\Cyotek.Drawing.BitmapFont.dll</HintPath>
+      <HintPath>..\..\packages\Cyotek.Drawing.BitmapFont.2.0.3\lib\net472\Cyotek.Drawing.BitmapFont.dll</HintPath>
     </Reference>
     <Reference Include="FontStashSharp.MonoGame, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\FontStashSharp.MonoGame.1.0.4\lib\net45\FontStashSharp.MonoGame.dll</HintPath>
@@ -78,7 +79,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scenes\GridBackgroundScene.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
