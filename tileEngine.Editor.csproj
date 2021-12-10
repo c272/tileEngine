@@ -144,6 +144,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\Documents\MapEditorDocument.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Documents\MapEditorDocument.Designer.cs">
+      <DependentUpon>MapEditorDocument.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Documents\ProjectDocument.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -174,6 +180,13 @@
     <Compile Include="Controls\Documents\Properties\PropertiesTab.Designer.cs">
       <DependentUpon>PropertiesTab.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Map\GridControlBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\MapEditorControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\MapEditorState.cs" />
     <Compile Include="Controls\Panels\ErrorWindow.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -211,10 +224,12 @@
       <DependentUpon>ProjectItemSelector.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SelectorItem.cs" />
+    <Compile Include="Project\AppDomainLoader.cs" />
     <Compile Include="Project\ProjectCompiler.cs" />
     <Compile Include="Tree\ProjectFolderNode.cs" />
     <Compile Include="Tree\ProjectAssetNode.cs" />
     <Compile Include="Tree\ProjectRootNode.cs" />
+    <Compile Include="Tree\ProjectSceneNode.cs" />
     <Compile Include="Tree\ProjectSpriteNode.cs" />
     <Compile Include="Tree\ProjectTreeNode.cs" />
     <Compile Include="Controls\Panels\ProjectTreeWindow.cs">
@@ -252,6 +267,9 @@
     </Compile>
     <Compile Include="Utility\ColourHelpers.cs" />
     <Compile Include="Utility\PathHelpers.cs" />
+    <EmbeddedResource Include="Controls\Documents\MapEditorDocument.resx">
+      <DependentUpon>MapEditorDocument.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\Documents\ProjectDocument.resx">
       <DependentUpon>ProjectDocument.cs</DependentUpon>
     </EmbeddedResource>
@@ -389,6 +407,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Icons\LayoutTransform_64x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Icons\CanvasElement_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Icons\Disconnect_16x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\MonoGame.Forms.DX.2.4.0\Build\MonoGame.Forms.DX.targets" Condition="Exists('packages\MonoGame.Forms.DX.2.4.0\Build\MonoGame.Forms.DX.targets')" />

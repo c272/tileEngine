@@ -257,6 +257,14 @@ namespace tileEngine
             ProjectManager.CurrentProject?.ProjectRoot.OpenProjectProperties();
         }
 
+        /// <summary>
+        /// Triggered when the user wants to reload the C# assembly. 
+        /// </summary>
+        private void reloadAssemblyBtn_Click(object sender, EventArgs e)
+        {
+            ProjectManager.ReloadProjectClasses();
+        }
+
         ////////////////////////////
         /// HOTKEY FUNCTIONALITY ///
         ////////////////////////////

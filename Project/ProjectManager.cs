@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Reflection;
+using tileEngine.SDK;
 
 namespace tileEngine
 {
@@ -52,6 +54,11 @@ namespace tileEngine
         }
         private static string curProjDir = null;
 
+        /// <summary>
+        /// The current assembly loaded for the project.
+        /// </summary>
+        public static Assembly CurrentProjectAssembly { get; private set; }
+
         //Event triggered when the currently open project changes.
         public delegate void ProjectChangedHandler(Project newProject);
         public static event ProjectChangedHandler OnProjectChanged;
@@ -59,6 +66,15 @@ namespace tileEngine
         //Event triggered when the current project directory changes.
         public delegate void ProjectDirectoryChangedHandler(string newDirectory);
         public static event ProjectDirectoryChangedHandler OnProjectDirectoryChanged;
+
+        //Event triggered when the project assembly is reloaded.
+        public delegate void ProjectAssemblyReloadedHandler();
+        public static event ProjectAssemblyReloadedHandler OnProjectAssemblyReload;
+
+        /// <summary>
+        /// A private app domain for dynamically loading and unloading assemblies.
+        /// </summary>
+        private static AppDomain dynamicLoaderDomain = null;
 
         //Whether the serializer has already been prepared or not.
         private static bool serializerPrepared = false;
@@ -133,7 +149,43 @@ namespace tileEngine
                 item.CompleteDeserialize();
             }
 
+            //Start a scan for classes in the built project ".dll" (if we can find it).
+            ReloadProjectClasses();
             return null;
+        }
+
+        /// <summary>
+        /// Searches for classes within the built project CLR ".dll" file to display in the editor.
+        /// </summary>
+        public static bool ReloadProjectClasses()
+        {
+            //Does the DLL exist?
+            string dllLoc = Path.Combine(CurrentProjectDirectory, "obj", "out", CurrentProject.Name + ".dll");
+            string pdbLoc = Path.Combine(CurrentProjectDirectory, "obj", "out", CurrentProject.Name + ".pdb");
+            if (!File.Exists(dllLoc))
+                return false;
+            FileInfo dllInfo = new FileInfo(dllLoc);
+
+            //If we've not cycled the dynamic loading AppDomain yet, do it.
+            if (dynamicLoaderDomain != null)
+                AppDomain.Unload(dynamicLoaderDomain);
+
+            //Create the new domain.
+            dynamicLoaderDomain = AppDomain.CreateDomain("tileEngine.DynamicLoader", null, new AppDomainSetup
+            {
+                ApplicationName = "tileEngine.DynamicLoader",
+                ShadowCopyFiles = "true",
+                PrivateBinPath = Path.Combine(CurrentProjectDirectory, "bin", "dynamic")
+            });
+
+            //Attempt to load the new assembly into the system.
+            var loader = new AppDomainLoader(dllLoc);
+            dynamicLoaderDomain.DoCallBack(loader.Run);
+            CurrentProjectAssembly = loader.Result;
+
+            //Finished!
+            OnProjectAssemblyReload?.Invoke();
+            return true;
         }
 
         /// <summary>
@@ -216,6 +268,7 @@ namespace tileEngine
             //Build configuration.
             var defaultGroup = csRoot.AddPropertyGroup();
             defaultGroup.AddProperty("Configuration", "Debug");
+            defaultGroup.AddProperty("DebugSymbols", "false");
             defaultGroup.AddProperty("Platform", "x64");
             defaultGroup.AddProperty("ProjectGuid", "{" + Guid.NewGuid().ToString().ToUpper() + "}");
             defaultGroup.AddProperty("OutputType", "Library");

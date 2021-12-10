@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using tileEngine.SDK;
 
 namespace tileEngine.Controls
 {
@@ -35,6 +36,9 @@ namespace tileEngine.Controls
         public ProjectTreeWindow()
         {
             InitializeComponent();
+
+            //Hook reload event for assembly.
+            ProjectManager.OnProjectAssemblyReload += assemblyReloaded;
         }
 
         /// <summary>
@@ -78,6 +82,42 @@ namespace tileEngine.Controls
             {
                 toSet[i].UnsavedChanges = false;
                 toSet.AddRange(toSet[i].Nodes.Select(x => (ProjectTreeNode)x));
+            }
+        }
+
+        /// <summary>
+        /// Triggered when the project's C# assembly is reloaded.
+        /// </summary>
+        private void assemblyReloaded()
+        {
+            //Iterate over the scene nodes, and either set types or create a new node.
+            var curSceneNodes = RootNode.GetNodesOfType<ProjectSceneNode>();
+            var sceneTypes = ProjectManager.CurrentProjectAssembly.GetTypes();
+            foreach (var sceneType in sceneTypes.Where(t => t.IsSubclassOf(typeof(Scene)) && !t.IsAbstract))
+            {
+                //Is there a node for this already? If so, load the type.
+                var sceneNode = curSceneNodes.FirstOrDefault(x => x.LinkedTypeName == sceneType.FullName);
+                if (sceneNode != null)
+                {
+                    sceneNode.LoadType(sceneType);
+                }
+                else
+                {
+                    //No existing node, make one.
+                    RootNode.Nodes.Add(new ProjectSceneNode(sceneType));
+                    RootNode.UnsavedChanges = true;
+                }
+            }
+
+            //Are there any nodes that are left stranded (type deleted)?
+            foreach (var scene in curSceneNodes)
+            {
+                if (sceneTypes.FirstOrDefault(x => x.FullName == scene.LinkedTypeName) == null)
+                {
+                    //Stranded. Inform the user via. a pop up that they need to reassign/delete.
+                    DarkMessageBox.ShowWarning($"Scene '{scene.Name}' has had it's base class deleted in the C# project file.\n" +
+                        $"The scene will not be editable until you reassign or delete this scene.", "tileEngine - Base Class Deleted", DarkDialogButton.Ok);
+                }
             }
         }
 

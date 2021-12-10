@@ -75,6 +75,8 @@ namespace tileEngine
             this.maximizeBtn = new System.Windows.Forms.PictureBox();
             this.closeWindowBtn = new System.Windows.Forms.PictureBox();
             this.logoPicture = new System.Windows.Forms.PictureBox();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.reloadAssemblyBtn = new System.Windows.Forms.ToolStripButton();
             this.statusStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -156,7 +158,9 @@ namespace tileEngine
             this.undoBtn,
             this.redoBtn,
             this.toolStripSeparator3,
-            this.startBtn});
+            this.startBtn,
+            this.toolStripSeparator8,
+            this.reloadAssemblyBtn});
             this.toolStrip.Location = new System.Drawing.Point(5, 41);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Padding = new System.Windows.Forms.Padding(8, 0, 1, 0);
@@ -585,6 +589,26 @@ namespace tileEngine
             this.logoPicture.TabIndex = 4;
             this.logoPicture.TabStop = false;
             // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.toolStripSeparator8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.toolStripSeparator8.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 34);
+            // 
+            // reloadAssemblyBtn
+            // 
+            this.reloadAssemblyBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.reloadAssemblyBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.reloadAssemblyBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.reloadAssemblyBtn.Image = ((System.Drawing.Image)(resources.GetObject("reloadAssemblyBtn.Image")));
+            this.reloadAssemblyBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.reloadAssemblyBtn.Name = "reloadAssemblyBtn";
+            this.reloadAssemblyBtn.Size = new System.Drawing.Size(29, 31);
+            this.reloadAssemblyBtn.Text = "Reload Assembly";
+            this.reloadAssemblyBtn.Click += new System.EventHandler(this.reloadAssemblyBtn_Click);
+            // 
             // Editor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
@@ -671,6 +695,8 @@ namespace tileEngine
         private System.Windows.Forms.ToolStripMenuItem buildToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem buildBtn;
         private System.Windows.Forms.ToolStripMenuItem rebuildProjectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+        private System.Windows.Forms.ToolStripButton reloadAssemblyBtn;
     }
 }
 
