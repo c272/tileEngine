@@ -161,7 +161,6 @@ namespace tileEngine
         {
             //Does the DLL exist?
             string dllLoc = Path.Combine(CurrentProjectDirectory, "obj", "out", CurrentProject.Name + ".dll");
-            string pdbLoc = Path.Combine(CurrentProjectDirectory, "obj", "out", CurrentProject.Name + ".pdb");
             if (!File.Exists(dllLoc))
                 return false;
             FileInfo dllInfo = new FileInfo(dllLoc);
