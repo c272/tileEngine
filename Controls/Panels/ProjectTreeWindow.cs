@@ -119,6 +119,7 @@ namespace tileEngine.Controls
                         $"The scene will not be editable until you reassign or delete this scene.", "tileEngine - Base Class Deleted", DarkDialogButton.Ok);
                 }
             }
+            Invalidate();
         }
 
         /// <summary>
