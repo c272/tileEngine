@@ -163,7 +163,6 @@ namespace tileEngine
             string dllLoc = Path.Combine(CurrentProjectDirectory, "obj", "out", CurrentProject.Name + ".dll");
             if (!File.Exists(dllLoc))
                 return false;
-            FileInfo dllInfo = new FileInfo(dllLoc);
 
             //If we've not cycled the dynamic loading AppDomain yet, do it.
             if (dynamicLoaderDomain != null)
