@@ -44,7 +44,7 @@ namespace tileEngine
             LinkedType = type;
             LinkedTypeName = type.FullName;
             Name = type.Name;
-            Icon = Resources.Icons.Disconnected;
+            Icon = Resources.Icons.Scene;
         }
 
         //Serialization constructor.

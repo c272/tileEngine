@@ -125,7 +125,11 @@ namespace tileEngine
             }
 
             //If no assets pending a compile, we return here.
-            if (fileNames.Count == 0) { return; }
+            if (fileNames.Count == 0) 
+            {
+                Logger?.LogMessage("Finished building assets.");
+                return; 
+            }
 
             //Compile all assets.
             await RuntimeBuilder.BuildContent(fileNames.ToArray());

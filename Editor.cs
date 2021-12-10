@@ -50,6 +50,9 @@ namespace tileEngine
         //The compile output window.
         OutputWindow outputWindow = new OutputWindow();
 
+        //The map palette window.
+        MapPaletteWindow paletteWindow = new MapPaletteWindow();
+
         //The last time this editor was clicked (for double click tracking, in-built event does not register).
         DateTime lastClickTime = DateTime.MinValue;
 
@@ -83,6 +86,7 @@ namespace tileEngine
 
             //Add dock panel content.
             dockPanel.AddContent(projectWindow);
+            dockPanel.AddContent(paletteWindow);
             dockPanel.AddContent(errorWindow);
             dockPanel.AddContent(outputWindow, errorWindow.DockGroup);
 
