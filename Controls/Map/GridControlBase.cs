@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using tileEngine.SDK.Map;
 using tileEngine.Utility;
 
 namespace tileEngine.Controls
@@ -103,6 +104,11 @@ namespace tileEngine.Controls
         }
         private Color bgLineColour = Color.LightGray;
 
+        /// <summary>
+        /// The tile map to be drawn.
+        /// </summary>
+        public TileMap Map { get; set; } = null;
+
         #endregion
 
         ////////////////////////////
@@ -154,7 +160,8 @@ namespace tileEngine.Controls
             e.Graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
             //Draw the tiles currently on the grid.
-            DrawTiles(e);
+            if (Map != null)
+                DrawTiles(e);
 
             //Draw the grid.
             DrawGrid(e);
@@ -165,7 +172,40 @@ namespace tileEngine.Controls
         /// </summary>
         private void DrawTiles(PaintEventArgs e)
         {
-            //...
+            //Get the top left and bottom right of the grid.
+            Vector2f screenTL = ToGridCoordinate(ClientRectangle.X, ClientRectangle.Y);
+            Vector2f screenBR = ToGridCoordinate(ClientRectangle.X + ClientRectangle.Width, ClientRectangle.Y + ClientRectangle.Height);
+            Vector2f topLeft = new Vector2f(screenTL.X - (screenTL.X % GridStep), screenTL.Y - (screenTL.Y % GridStep));
+            Vector2f bottomRight = new Vector2f(screenBR.X + (GridStep - (screenBR.X % GridStep)), screenBR.Y + (GridStep - (screenBR.Y % GridStep)));
+
+            //Draw all layers.
+            for (int i = 0; i < Map.Layers.Count; i++)
+            {
+                var layer = Map.Layers[i];
+                Vector2f curPos = topLeft;
+
+                //Loop over all visible tiles.
+                while (curPos.Y < bottomRight.Y)
+                {
+                    while (curPos.X < bottomRight.X)
+                    {
+                        //Get the current tile, check if it's in the layer.
+                        Microsoft.Xna.Framework.Point curTile = new Microsoft.Xna.Framework.Point((int)(curPos.X / GridStep), (int)(curPos.Y / GridStep));
+                        if (layer.Tiles.ContainsKey(curTile))
+                        {
+                            //Draw the tile.
+                            //...
+                        }
+
+                        curPos.X += GridStep;
+                    }
+
+                    //Go to the next line.
+                    curPos.X = topLeft.X;
+                    curPos.Y += GridStep;
+                }
+
+            }
         }
 
         /// <summary>

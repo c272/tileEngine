@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using tileEngine.SDK.Diagnostics;
 
 namespace tileEngine
 {
@@ -41,11 +42,11 @@ namespace tileEngine
         //The currently active instance of the editor.
         public static Editor Instance = null;
 
+        //The properties window.
+        public PropertiesWindow PropertiesWindow { get; private set; } = new PropertiesWindow();
+
         //The project tree window.
         ProjectTreeWindow projectWindow = new ProjectTreeWindow();
-
-        //The error list window.
-        ErrorWindow errorWindow = new ErrorWindow();
 
         //The compile output window.
         OutputWindow outputWindow = new OutputWindow();
@@ -58,6 +59,9 @@ namespace tileEngine
 
         //Whether the editor is currently saving to file.
         bool currentlySaving = false;
+
+        //The last selected document on the editor's document tab.
+        ProjectDocument lastSelectedDocument = null;
 
         public Editor()
         {
@@ -81,14 +85,18 @@ namespace tileEngine
             Application.AddMessageFilter(dockPanel.DockContentDragFilter);
             Application.AddMessageFilter(dockPanel.DockResizeFilter);
 
+            //Switch the diagnostics mode to editor.
+            DiagnosticsHook.Mode = DiagnosticsMode.Editor;
+
             //Hook into project manager to detect project changes.
             ProjectManager.OnProjectChanged += projectChanged;
 
             //Add dock panel content.
             dockPanel.AddContent(projectWindow);
             dockPanel.AddContent(paletteWindow);
-            dockPanel.AddContent(errorWindow);
-            dockPanel.AddContent(outputWindow, errorWindow.DockGroup);
+            dockPanel.AddContent(PropertiesWindow);
+            dockPanel.AddContent(outputWindow, PropertiesWindow.DockGroup);
+            dockPanel.ActiveContentChanged += activeDocumentChanged;
 
             //Set the size of the right, bottom region to be a normal size.
             var right = dockPanel.Regions[DarkDockArea.Right];
@@ -122,6 +130,22 @@ namespace tileEngine
         //////////////////////////////
         /// GENERAL EVENT HANDLERS ///
         //////////////////////////////
+
+        /// <summary>
+        /// Triggered when the active document open in the editor is changed.
+        /// Passes events down to the various documents to handle.
+        /// </summary>
+        private void activeDocumentChanged(object sender, DockContentEventArgs e)
+        {
+            if (dockPanel.ActiveContent is ProjectDocument)
+            {
+                var newDoc = ((ProjectDocument)dockPanel.ActiveContent);
+
+                lastSelectedDocument?.OnDocumentUnfocused();
+                newDoc.OnDocumentFocused();
+                lastSelectedDocument = newDoc;
+            }
+        }
 
         /// <summary>
         /// Triggered when the active project is changed.

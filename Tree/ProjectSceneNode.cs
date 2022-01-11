@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using tileEngine.Controls;
+using tileEngine.SDK;
+using tileEngine.SDK.Map;
 
 namespace tileEngine
 {
@@ -20,6 +22,12 @@ namespace tileEngine
         /// </summary>
         [ProtoMember(1)]
         public string LinkedTypeName { get; private set; }
+
+        /// <summary>
+        /// The tile map that is used for this scene.
+        /// </summary>
+        [ProtoMember(2)]
+        public TileMap TileMap { get; private set; } = new TileMap();
 
         /// <summary>
         /// The type linked to this scene.

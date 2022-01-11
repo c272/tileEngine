@@ -190,11 +190,11 @@
     <Compile Include="Controls\Map\MapPaletteControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\Panels\ErrorWindow.cs">
+    <Compile Include="Controls\Panels\PropertiesWindow.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Panels\ErrorWindow.Designer.cs">
-      <DependentUpon>ErrorWindow.cs</DependentUpon>
+    <Compile Include="Controls\Panels\PropertiesWindow.Designer.cs">
+      <DependentUpon>PropertiesWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Landing\CreateProjectControl.cs">
       <SubType>UserControl</SubType>
@@ -219,6 +219,18 @@
     </Compile>
     <Compile Include="Controls\Panels\OutputWindow.Designer.cs">
       <DependentUpon>OutputWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Properties\PropertiesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Properties\PropertiesControl.Designer.cs">
+      <DependentUpon>PropertiesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Properties\ScenePropertiesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Properties\ScenePropertiesControl.Designer.cs">
+      <DependentUpon>ScenePropertiesControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ItemSelector.cs">
       <SubType>Form</SubType>
@@ -291,8 +303,8 @@
     <EmbeddedResource Include="Controls\Documents\Properties\GeneralProperties.resx">
       <DependentUpon>GeneralProperties.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Panels\ErrorWindow.resx">
-      <DependentUpon>ErrorWindow.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\Panels\PropertiesWindow.resx">
+      <DependentUpon>PropertiesWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Landing\CreateProjectControl.resx">
       <DependentUpon>CreateProjectControl.cs</DependentUpon>
@@ -308,6 +320,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Panels\ProjectTreeWindow.resx">
       <DependentUpon>ProjectTreeWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Properties\PropertiesControl.resx">
+      <DependentUpon>PropertiesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Properties\ScenePropertiesControl.resx">
+      <DependentUpon>ScenePropertiesControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editor.resx">
       <DependentUpon>Editor.cs</DependentUpon>

@@ -1,7 +1,6 @@
-﻿
-namespace tileEngine.Controls
+﻿namespace tileEngine.Controls.Properties
 {
-    partial class ErrorWindow
+    partial class PropertiesControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -31,16 +30,13 @@ namespace tileEngine.Controls
         {
             this.SuspendLayout();
             // 
-            // ErrorWindow
+            // PropertiesControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.DefaultDockArea = DarkUI.Docking.DarkDockArea.Right;
-            this.DockText = "Error List";
-            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.Name = "ErrorWindow";
-            this.Size = new System.Drawing.Size(420, 197);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.Name = "PropertiesControl";
+            this.Size = new System.Drawing.Size(332, 258);
             this.ResumeLayout(false);
 
         }

@@ -160,7 +160,7 @@ namespace tileEngine
         public static bool ReloadProjectClasses()
         {
             //Does the DLL exist?
-            string dllLoc = Path.Combine(CurrentProjectDirectory, "obj", "out", CurrentProject.Name + ".dll");
+            string dllLoc = Path.Combine(CurrentProjectDirectory, "obj", "out", CurrentProject.AssemblyName + ".dll");
             if (!File.Exists(dllLoc))
                 return false;
 

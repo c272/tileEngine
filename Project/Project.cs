@@ -42,6 +42,13 @@ namespace tileEngine
         public event OnNameChangedHandler OnNameChanged;
 
         /// <summary>
+        /// The name of the C# assembly that this project is tied to.
+        /// This is immutable.
+        /// </summary>
+        [ProtoMember(5)]
+        public string AssemblyName { get; private set; }
+
+        /// <summary>
         /// The title of the project (as seen in-game).
         /// </summary>
         [ProtoMember(3)]
@@ -75,6 +82,7 @@ namespace tileEngine
         public Project(string name)
         {
             Name = name;
+            AssemblyName = name;
             Title = name;
             ProjectRoot = new ProjectRootNode(Name);
         }

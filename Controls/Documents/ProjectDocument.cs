@@ -43,5 +43,15 @@ namespace tileEngine.Controls
             InitializeComponent();
             DockText = node.DisplayText;
         }
+
+        /// <summary>
+        /// Called when the document is brought into focus.
+        /// </summary>
+        public virtual void OnDocumentFocused() { }
+
+        /// <summary>
+        /// Called when the document leaves focus.
+        /// </summary>
+        public virtual void OnDocumentUnfocused() { }
     }
 }
