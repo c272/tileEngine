@@ -26,9 +26,9 @@ namespace tileEngine.Controls
         }
 
         /// <summary>
-        /// Triggered every time the project is compiled.
+        /// Reloads the options available on the palette window.
         /// </summary>
-        private void projectCompiled(string assetPath)
+        public void ReloadOptions()
         {
             //Reload the available options on the sprite picker.
             spriteSelector.Items.Clear();
@@ -41,6 +41,14 @@ namespace tileEngine.Controls
                     Text = sprite.Name
                 });
             }
+        }
+
+        /// <summary>
+        /// Triggered every time the project is compiled.
+        /// </summary>
+        private void projectCompiled(string assetPath)
+        {
+            ReloadOptions();
         }
 
         /// <summary>
