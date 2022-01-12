@@ -31,6 +31,14 @@ namespace tileEngine.Utility
             Y = y;
         }
 
+        /// <summary>
+        /// Creates a clone of a vector2.
+        /// </summary>
+        public Vector2f(Vector2f other)
+        {
+            X = other.X;
+            Y = other.Y;
+        }
 
         /// <summary>
         /// Creates a vector from the values contained in the given Point.

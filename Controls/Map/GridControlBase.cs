@@ -1,13 +1,16 @@
 ﻿using DarkUI.Config;
+using DarkUI.Forms;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Text;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using tileEngine.SDK.Diagnostics;
 using tileEngine.SDK.Map;
 using tileEngine.Utility;
 
@@ -115,6 +118,9 @@ namespace tileEngine.Controls
         /// PROTECTED PROPERTIES ///
         ////////////////////////////
 
+        //The cache of assets that are used to draw the tiles on screen.
+        protected Dictionary<int, Image> assetCache = new Dictionary<int, Image>();
+
         //The current location of the camera (X and Y).
         protected Vector2f cameraPos = new Vector2f(0, 0);
 
@@ -178,11 +184,15 @@ namespace tileEngine.Controls
             Vector2f topLeft = new Vector2f(screenTL.X - (screenTL.X % GridStep), screenTL.Y - (screenTL.Y % GridStep));
             Vector2f bottomRight = new Vector2f(screenBR.X + (GridStep - (screenBR.X % GridStep)), screenBR.Y + (GridStep - (screenBR.Y % GridStep)));
 
+            //Enable nearest neighbour draw.
+            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
+
             //Draw all layers.
             for (int i = 0; i < Map.Layers.Count; i++)
             {
                 var layer = Map.Layers[i];
-                Vector2f curPos = topLeft;
+                Vector2f curPos = new Vector2f(topLeft);
 
                 //Loop over all visible tiles.
                 while (curPos.Y < bottomRight.Y)
@@ -191,12 +201,58 @@ namespace tileEngine.Controls
                     {
                         //Get the current tile, check if it's in the layer.
                         Microsoft.Xna.Framework.Point curTile = new Microsoft.Xna.Framework.Point((int)(curPos.X / GridStep), (int)(curPos.Y / GridStep));
-                        if (layer.Tiles.ContainsKey(curTile))
+                        if (!layer.Tiles.ContainsKey(curTile))
                         {
-                            //Draw the tile.
-                            //...
+                            //No tile here.
+                            curPos.X += GridStep;
+                            continue;
                         }
 
+                        //Get the texture for the tile, if it hasn't been loaded into cache already.
+                        TileData tile = layer.Tiles[curTile];
+                        Image tex = null;
+                        if (assetCache.ContainsKey(tile.TextureID))
+                        {
+                            //Cache hit.
+                            tex = assetCache[tile.TextureID];
+                        }
+                        else
+                        {
+                            //Cache miss, attempt to load from file.
+                            var assetNode = ProjectManager.CurrentProject.ProjectRoot.FindChild<ProjectSpriteNode>(tile.TextureID);
+                            string assetPath = Path.Combine(ProjectManager.CurrentProjectDirectory, assetNode.RelativeLocation);
+
+                            //On failure, just load the "invalid" texture.
+                            try
+                            {
+                                tex = Image.FromFile(assetPath);
+                            }
+                            catch (Exception ex)
+                            {
+                                tex = new Bitmap(Map.TileTextureSize, Map.TileTextureSize);
+                                DarkMessageBox.ShowError($"Failed to load texture '{assetNode.Name}' for draw, it may have been moved or deleted.\n{ex.Message}", "tileEngine - Texture Failed Load", DarkDialogButton.Ok);
+                            }
+
+                            //Add the texture to cache.
+                            assetCache.Add(tile.TextureID, tex);
+                        }
+
+                        //Calculate the source and destination rectangles on textures.
+                        PointF screenPoint = ToPixelPointF(curPos);
+                        RectangleF screenRect = new RectangleF(screenPoint, new SizeF(GridStep * Zoom, GridStep * Zoom));
+                        PointF sourcePoint = new PointF(tile.Position.X * Map.TileTextureSize, tile.Position.Y * Map.TileTextureSize);
+                        RectangleF sourceRect = new RectangleF(sourcePoint, new SizeF(Map.TileTextureSize, Map.TileTextureSize));
+
+                        //Check that the source rectangle is within bounds.
+                        if (sourceRect.Right > tex.Width || sourceRect.Bottom > tex.Height)
+                        {
+                            DiagnosticsHook.LogMessage(21005, "Source rectangle draw for map tile outside of bounds.");
+                            curPos.X += GridStep;
+                            continue;
+                        }
+
+                        //Draw the tile.
+                        e.Graphics.DrawImage(tex, screenRect, sourceRect, GraphicsUnit.Pixel);
                         curPos.X += GridStep;
                     }
 

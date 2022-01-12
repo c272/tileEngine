@@ -47,8 +47,9 @@ namespace tileEngine.Controls.Properties
             if (tileSizeY.Value != value)
                 tileSizeY.Value = value;
 
-            //Push to tile map.
+            //Push to tile map, alter palette.
             Scene.TileMap.TileTextureSize = value;
+            Editor.Instance.PaletteWindow.Palette.TileTextureSize = value;
         }
     }
 }

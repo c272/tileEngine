@@ -33,8 +33,9 @@ namespace tileEngine.Controls
         /// </summary>
         public override void OnDocumentFocused()
         {
-            //Open the properties window.
+            //Open the properties window, set palette size.
             Editor.Instance.PropertiesWindow.SetPropertiesControl(propsControl, Node.Name + " Properties");
+            Editor.Instance.PaletteWindow.Palette.TileTextureSize = ((ProjectSceneNode)Node).TileMap.TileTextureSize;
         }
 
         /// <summary>

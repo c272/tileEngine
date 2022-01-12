@@ -95,6 +95,5 @@ namespace tileEngine
         {
             Document = null;
         }
-
     }
 }

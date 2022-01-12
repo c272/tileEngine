@@ -45,14 +45,14 @@ namespace tileEngine
         //The properties window.
         public PropertiesWindow PropertiesWindow { get; private set; } = new PropertiesWindow();
 
+        //The map palette window.
+        public MapPaletteWindow PaletteWindow { get; private set; } = new MapPaletteWindow();
+
         //The project tree window.
         ProjectTreeWindow projectWindow = new ProjectTreeWindow();
 
         //The compile output window.
         OutputWindow outputWindow = new OutputWindow();
-
-        //The map palette window.
-        MapPaletteWindow paletteWindow = new MapPaletteWindow();
 
         //The last time this editor was clicked (for double click tracking, in-built event does not register).
         DateTime lastClickTime = DateTime.MinValue;
@@ -93,7 +93,7 @@ namespace tileEngine
 
             //Add dock panel content.
             dockPanel.AddContent(projectWindow);
-            dockPanel.AddContent(paletteWindow);
+            dockPanel.AddContent(PaletteWindow);
             dockPanel.AddContent(PropertiesWindow);
             dockPanel.AddContent(outputWindow, PropertiesWindow.DockGroup);
             dockPanel.ActiveContentChanged += activeDocumentChanged;

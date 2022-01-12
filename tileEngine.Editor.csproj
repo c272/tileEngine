@@ -288,6 +288,7 @@
     </Compile>
     <Compile Include="Utility\ColourHelpers.cs" />
     <Compile Include="Utility\PathHelpers.cs" />
+    <Compile Include="Utility\TaggedDropdownItem.cs" />
     <EmbeddedResource Include="Controls\Documents\MapEditorDocument.resx">
       <DependentUpon>MapEditorDocument.cs</DependentUpon>
     </EmbeddedResource>

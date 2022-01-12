@@ -1,4 +1,5 @@
-﻿using ProtoBuf;
+﻿using Microsoft.Xna.Framework;
+using ProtoBuf;
 using System;
 
 namespace tileEngine.SDK.Map
@@ -16,9 +17,9 @@ namespace tileEngine.SDK.Map
         public int TextureID;
 
         /// <summary>
-        /// The index of the tile on that texture.
+        /// The position of the tile on that texture.
         /// </summary>
         [ProtoMember(2)]
-        public int Index;
+        public Point Position;
     }
 }

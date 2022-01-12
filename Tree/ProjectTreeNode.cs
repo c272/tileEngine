@@ -160,6 +160,28 @@ namespace tileEngine
         }
 
         /// <summary>
+        /// Returns a child of this object with the given ID and type, if that child exists.
+        /// Mismatching type but equal ID will not return.
+        /// </summary>
+        public T FindChild<T>(int id) where T : class
+        {
+            foreach (var node in children)
+            {
+                //Is it this child?
+                if (node is T && node.ID == id)
+                    return node as T;
+
+                //See if it's a child of a child.
+                var childResult = node.FindChild<T>(id);
+                if (childResult != null)
+                    return childResult;
+            }
+
+            //Not found.
+            return null;
+        }
+
+        /// <summary>
         /// Triggered when the rename text box's text is changed.
         /// </summary>
         private void renameTextChanged(object sender, EventArgs e)
