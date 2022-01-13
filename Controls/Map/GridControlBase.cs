@@ -66,6 +66,20 @@ namespace tileEngine.Controls
         private float gridStep = 30f;
 
         /// <summary>
+        /// Whether to draw the grid lines over the tiles.
+        /// </summary>
+        public bool DoGridDraw
+        {
+            get { return doGridDraw; }
+            set
+            {
+                doGridDraw = value;
+                Invalidate();
+            }
+        }
+        private bool doGridDraw = true;
+
+        /// <summary>
         /// The width of the lines making up the grid.
         /// </summary>
         public int GridLineWidth
@@ -170,7 +184,8 @@ namespace tileEngine.Controls
                 DrawTiles(e);
 
             //Draw the grid.
-            DrawGrid(e);
+            if (DoGridDraw)
+                DrawGrid(e);
         }
 
         /// <summary>

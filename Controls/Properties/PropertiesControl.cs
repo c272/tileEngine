@@ -21,7 +21,7 @@ namespace tileEngine.Controls.Properties
             InitializeComponent();
 
             //Style in accordance with editor theme.
-            this.BackColor = ThemeProvider.Theme.Colors.DarkBackground;
+            this.BackColor = ThemeProvider.Theme.Colors.GreyBackground;
         }
     }
 }

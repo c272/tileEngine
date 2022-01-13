@@ -2,6 +2,7 @@
 using ProtoBuf;
 using System;
 using System.Collections.Generic;
+using tileEngine.Utility;
 
 namespace tileEngine.SDK.Map
 {
@@ -28,8 +29,14 @@ namespace tileEngine.SDK.Map
     /// Represents a single layer of tiles within a tilemap, containing a set of tiles, events, and a collision hull.
     /// </summary>
     [ProtoContract]
-    public class TileLayer
+    public class TileLayer : Snowflake
     {
+        /// <summary>
+        /// The name of this layer. Not relevant apart from in the editor.
+        /// </summary>
+        [ProtoMember(4)]
+        public string Name { get; set; } = "New Layer";
+
         /// <summary>
         /// Tile textures that are on this tile layer, lookup table by point.
         /// </summary>

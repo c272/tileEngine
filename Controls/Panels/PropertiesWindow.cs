@@ -35,6 +35,9 @@ namespace tileEngine.Controls
             c.Location = new Point(0, 0);
             c.Dock = DockStyle.Fill;
             DockText = title;
+
+            //Focus self in dock group.
+            this.DockGroup.SetVisibleContent(this);
         }
 
         /// <summary>

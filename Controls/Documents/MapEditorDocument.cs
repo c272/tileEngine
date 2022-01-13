@@ -22,10 +22,10 @@ namespace tileEngine.Controls
         public MapEditorDocument(ProjectSceneNode scene) : base(scene)
         {
             InitializeComponent();
-            propsControl = new ScenePropertiesControl(scene);
+            propsControl = new ScenePropertiesControl(this, scene);
 
             //Style document from DarkUI.
-            mapEditor.SetThemeFromDarkUI();
+            MapEditor.SetThemeFromDarkUI();
         }
 
         /// <summary>

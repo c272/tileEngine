@@ -53,6 +53,12 @@ namespace tileEngine
             LinkedTypeName = type.FullName;
             Name = type.Name;
             Icon = Resources.Icons.Scene;
+
+            //Initialize the first layer.
+            TileMap.Layers.Add(new TileLayer()
+            {
+                Name = "Background"
+            });
         }
 
         //Serialization constructor.

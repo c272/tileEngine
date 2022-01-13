@@ -117,4 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="layerToolbar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="addLayerButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACMSURBVDhP7ZI9DoAgDEZ7KAdnJo7heTyhOnEDNRgYNZ9S
+        0yAoDm42eQlp+z1/AnE559YnvPdNWL8WL9VttYOzUupEa70aY9ISDscCa5cdCPpuyEtkMAYzCKZxzktK
+        BVKCfojnP4Hh/yBBP8SP4mUp4KfG3AokqTDICjBIBWJ+wVcCXE8MSkm+wVuIiDYPFZs+2cPmIwAAAABJ
+        RU5ErkJggg==
+</value>
+  </data>
+  <data name="renameLayerButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABHSURBVDhPYxh48O3bt/+UYLABTk5OZGEUAz68/0gSxmoA
+        Oo0PYzUAJoGsEBcergag0/gwVgNIwRgGkIPhBlCCoTliwAADAwCNDHT/K+0G5gAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="removeLayerButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAnSURBVDhPYxgFgwF8+/btPyUYbMBCNV6yMPUMoARDQ2IU
+        DCBgYAAAcIm+uSn6/AcAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="layerMoveUpButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACqSURBVDhPY8AFvnz5YvD4yYePIAxiQ4WJAzDNQvGL/4Mw
+        SYYga2YIngPGRBuCTTPRhqBrBtHcUQvAGFkMqyHYND97/eE/f+xCMAax8Rry6dOnB4EdO1EUgMRgBoDY
+        yBaA1ILEoNohLvj69duHoM5dcNOB+ADMABAbJAaSC+7a9R+kFsSHaocAkADIVJgESBOyAdjU4AXYDCAJ
+        jBpAJQNevfv0H4RxG8DAAABEElUKodoBgwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="layerMoveDownButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAC3SURBVDhP7Y49CgIxEIXTWwiexKvodoJ4HfUMFoqncCuP
+        IogWChJD1nb0y2YkrKu7NlY+GDI/733EvJP3fnu6OKHo47q9CHXHK6H+gF8BHqa+c27HG+cXQNXzFIui
+        uNnhLJf9wV6ZCaUAdtyyeS54mWPcGKiD6UZMtpDeZB0g7BRAz44bHrzsYrz8QWrgPZ5tCFP06U1/GeOl
+        6iCd0TJUY1hVhaTVGFbVQVqHVSnk67BKIZ/DxtwB7dpVGvzx0UgAAAAASUVORK5CYII=
+</value>
+  </data>
 </root>

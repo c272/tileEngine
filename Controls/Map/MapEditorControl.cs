@@ -68,6 +68,13 @@ namespace tileEngine.Controls
             //Deselect any child elements.
             this.Select();
 
+            //If the user is left clicking, they want to place a tile.
+            if (e.Button == MouseButtons.Left)
+            {
+                //...todo
+                return;
+            }
+
             //Start the camera drag, deselect any nodes.
             state = MapEditorState.MovingCamera;
             lastMouseLocation = e.Location;

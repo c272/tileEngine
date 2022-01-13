@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using tileEngine.Utility;
 
 namespace tileEngine.Controls
 {
@@ -20,6 +21,7 @@ namespace tileEngine.Controls
         {
             InitializeComponent();
             ProjectCompiler.OnCompile += projectCompiled;
+            Palette.OnSizesUpdated += paletteSizesUpdated;
 
             //Set the theme from current DarkUI theme.
             Palette.SetThemeFromDarkUI();
@@ -41,6 +43,28 @@ namespace tileEngine.Controls
                     Text = sprite.Name
                 });
             }
+        }
+
+        /// <summary>
+        /// Triggered when either of the scroll bars have their scroll values changed.
+        /// </summary>
+        private void scrollValueChanged(object sender, DarkUI.Controls.ScrollValueEventArgs e)
+        {
+            Palette.ViewScroll = new Vector2f(horizontalScroll.Value, verticalScroll.Value);
+        }
+
+        /// <summary>
+        /// Triggered when the palette control updates sizes for view/total area.
+        /// </summary>
+        private void paletteSizesUpdated()
+        {
+            //Update scroll bar maximums & view sizes.
+            verticalScroll.Maximum = (int)Palette.TotalSize.Y;
+            horizontalScroll.Maximum = (int)Palette.TotalSize.X;
+
+            //Make sure view size isn't larger than the maximum, otherwise the control breaks.
+            verticalScroll.ViewSize = verticalScroll.Maximum < Palette.ViewSize.Y ? verticalScroll.Maximum : (int)Palette.ViewSize.Y;
+            horizontalScroll.ViewSize = horizontalScroll.Maximum < Palette.ViewSize.X ? horizontalScroll.Maximum : (int)Palette.ViewSize.X;
         }
 
         /// <summary>
