@@ -54,6 +54,12 @@ namespace tileEngine.SDK.Map
         /// </summary>
         [ProtoMember(3)]
         public Dictionary<Point, CollisionType> CollisionHull = new Dictionary<Point, CollisionType>();
+
+        /// <summary>
+        /// Runtime opacity of this layer.
+        /// Initializes at 1.0f (full opacity).
+        /// </summary>
+        public float Opacity = 1.0f;
     }
 
     /// <summary>

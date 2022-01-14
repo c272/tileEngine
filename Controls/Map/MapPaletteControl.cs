@@ -116,11 +116,9 @@ namespace tileEngine.Controls
         /// </summary>
         protected override void OnMouseClick(MouseEventArgs e)
         {
-            //Convert the click position to a grid location.
-            Vector2f clickPosition = ToGridCoordinate(e.X, e.Y);
-            int tileX = (int)((clickPosition.X - (clickPosition.X % GridStep)) / GridStep);
-            int tileY = (int)((clickPosition.Y - (clickPosition.Y % GridStep)) / GridStep);
-            Microsoft.Xna.Framework.Point tilePosition = new Microsoft.Xna.Framework.Point(tileX, tileY);
+            //Get the tile location that's been clicked.
+            Point clickTile = ToTileLocation(e.Location);
+            Microsoft.Xna.Framework.Point tilePosition = new Microsoft.Xna.Framework.Point(clickTile.X, clickTile.Y);
 
             //Is there a valid tile to select at that location?
             if (map.Layers.Count == 0 || !map.Layers[0].Tiles.ContainsKey(tilePosition))

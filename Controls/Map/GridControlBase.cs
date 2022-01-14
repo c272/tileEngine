@@ -3,6 +3,7 @@ using DarkUI.Forms;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
 using System.Linq;
@@ -17,7 +18,7 @@ using tileEngine.Utility;
 namespace tileEngine.Controls
 {
     /// <summary>
-    /// Base control for drawing node graphs.
+    /// Base control for drawing tile maps with a guide grid.
     /// Contains no user-interaction functionality.
     /// </summary>
     public abstract class GridControlBase : Control
@@ -209,6 +210,12 @@ namespace tileEngine.Controls
                 var layer = Map.Layers[i];
                 Vector2f curPos = new Vector2f(topLeft);
 
+                //Set up opacity ImageAttributes for this layer's tile draws.
+                ColorMatrix matrix = new ColorMatrix();
+                matrix.Matrix33 = layer.Opacity;
+                ImageAttributes imageAttribs = new ImageAttributes();
+                imageAttribs.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+
                 //Loop over all visible tiles.
                 while (curPos.Y < bottomRight.Y)
                 {
@@ -267,7 +274,7 @@ namespace tileEngine.Controls
                         }
 
                         //Draw the tile.
-                        e.Graphics.DrawImage(tex, screenRect, sourceRect, GraphicsUnit.Pixel);
+                        e.Graphics.DrawImage(tex, screenRect.ToPoints(), sourceRect, GraphicsUnit.Pixel, imageAttribs);
                         curPos.X += GridStep;
                     }
 
@@ -410,6 +417,21 @@ namespace tileEngine.Controls
             Vector2f center = new Vector2f(ClientRectangle.X + ClientRectangle.Width / 2f, ClientRectangle.Y + ClientRectangle.Height / 2f);
             Vector2f relativePixels = new Vector2f(relativeToCamera.X * zoom, relativeToCamera.Y * zoom);
             return new PointF(center.X + relativePixels.X, center.Y + relativePixels.Y);
+        }
+
+        /// <summary>
+        /// Converts the given mouse point location into the equivalent tile location on the map.
+        /// </summary>
+        public Point ToTileLocation(Point mousePoint)
+        {
+            //needs fixing.
+            Vector2f clickPosition = ToGridCoordinate(mousePoint.X, mousePoint.Y);
+            System.Diagnostics.Debug.WriteLine($"Clicked at grid location ({clickPosition.X}, {clickPosition.Y}).");
+
+            int tileX = (int)((clickPosition.X - Math.Abs(Math.Abs(clickPosition.X) % GridStep)) / GridStep);
+            int tileY = (int)((clickPosition.Y - Math.Abs(Math.Abs(clickPosition.Y) % GridStep)) / GridStep);
+            System.Diagnostics.Debug.WriteLine($"Calculated tile position ({tileX}, {tileY}).");
+            return new Point(tileX, tileY);
         }
 
         /////////////////////////////////

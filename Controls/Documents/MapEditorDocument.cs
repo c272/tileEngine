@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using tileEngine.Controls.Properties;
+using tileEngine.SDK.Map;
 
 namespace tileEngine.Controls
 {
@@ -17,15 +18,21 @@ namespace tileEngine.Controls
     public partial class MapEditorDocument : ProjectDocument
     {
         //The properties control for this map editor.
-        PropertiesControl propsControl = null;
+        ScenePropertiesControl propsControl = null;
 
         public MapEditorDocument(ProjectSceneNode scene) : base(scene)
         {
             InitializeComponent();
             propsControl = new ScenePropertiesControl(this, scene);
 
-            //Style document from DarkUI.
+            //Hook events from properties control.
+            propsControl.OnSelectedLayerChanged += selectedLayerChanged;
+
+            //Configure map editor.
+            MapEditor.Map = scene.TileMap;
+            MapEditor.Palette = Editor.Instance.PaletteWindow.Palette;
             MapEditor.SetThemeFromDarkUI();
+            MapEditor.OnSelectedLayerEdited += mapLayerEdited;
         }
 
         /// <summary>
@@ -37,7 +44,6 @@ namespace tileEngine.Controls
             Editor.Instance.PropertiesWindow.SetPropertiesControl(propsControl, Node.Name + " Properties");
             Editor.Instance.PaletteWindow.ReloadOptions();
             Editor.Instance.PaletteWindow.Palette.TileTextureSize = ((ProjectSceneNode)Node).TileMap.TileTextureSize;
-
         }
 
         /// <summary>
@@ -47,6 +53,23 @@ namespace tileEngine.Controls
         {
             //Close the properties tab for this document.
             Editor.Instance.PropertiesWindow.ClearPropertiesControl();
+        }
+
+        /// <summary>
+        /// Triggered when the user changes the selected layer in the properties window.
+        /// </summary>
+        private void selectedLayerChanged(TileLayer newLayer)
+        {
+            //Pass down to the tile map.
+            MapEditor.SetSelectedLayer(newLayer);
+        }
+
+        /// <summary>
+        /// Triggered when the user edits the selected layer on the map.
+        /// </summary>
+        private void mapLayerEdited()
+        {
+            Node.UnsavedChanges = true;
         }
     }
 }
