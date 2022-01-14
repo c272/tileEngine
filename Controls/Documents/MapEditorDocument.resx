@@ -117,4 +117,48 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="darkToolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="selectToolButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACRSURBVDhPtY7bCcAgDEUdoaN0hOIWbtMvF/Lflfzx8dl6
+        JSmlKNTQHgg+uDmJ+pyc81ErxBhX+poDAmutXAKB1louYYFYcheIJE/BtKQnmJKMBCiWULQPCxA2xrS7
+        9x6NV1G0DwI06XDONQFE9R0qC8XG0JRQStlw8haQpZR2ir0DDaItGITRRFu1mt7iZ5Q6AVRB/GG9LRsl
+        AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="panToolButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGQSURBVDhPdZOxTgJBEIbvEXwEHsFHMKGnh8riqLlWpLCQ
+        UEooJWIrFZLQSUIniRRU0hhiaAyF5GLQ3FEN+0124Y6sk/zZ29n5/5nZ2Qt89rvbnSdJMk/SVMw6MLgA
+        9thvJqBgcPOXppFZ4yiKpFQqyWg0ktVqJe+LhZizT+Is5Wiof2828tTvK+FtNpMwDGX8MlaRYrGoeOj1
+        VMRgQjJLV4FBq9WScrmshE6no4Ttz1b3tVpNhs9DqVarQhzVUZHhXaoAiteNhnTvuzJ9nUqlUjkIQAb4
+        8ZGkflVXEXhOIKJsDh2J4OXHUtp37ZyAS0IlVK5k+keAEinVBbOyzwqwsueu4AaMyvXpSqQKMrOC5m3z
+        ILD+WuvKZBi3CuAgkPL4JqsjO0DEz2S4I1N+7PqfMB6yEEhmhE4FHDjjwrV/zHwUuAPa4NJ8pCx4H4f+
+        nZnNI4+IQx/JIds/iS09CGKRM3piNMyYQJ8A5TN/Ezu31KPZHyjmFdKOTwB/7gWemopkpnIK/JzbcL85
+        gf+QFwiCPcd4hbkB1jq1AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="areaSelectToolButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADtSURBVDhPnVHLDYJAEN0SLMFSDF1wswNa8ERDFOCZO3dL
+        GA0Bjuu+5e1mGUYlvmQSzbzfsE5jnmevh6tjgKCqqjx/GzzllQ2mabqJyImU77AadF2Xz9FD2YplWS4W
+        qa7rOPitzSldEare27b1TdP4cRwfwfCM+oEoqQWE5XmUxvTrMAxx0fe9x3+uHO6nUU7fGICARCSjAZrE
+        RQFwINBjvju+BXUZaIAz+C2CH18FAl0rLwmmC8QwgRlX9ruDDFIy+pgOJIOyQUqi2WY26YBFKtJ25vq8
+        HUBASiBLMjDf/RdgZDXg+hgg0MMV4dwbGiPwbT/4S6sAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="pencilToolButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABsSURBVDhP7YzBDcAgDAMzUmdguKzbT8SXYhRKWqlg/j3J
+        QsI5C4uZHTnns6bEeD2ny6paUkp3qIEvmRqYycuBlYx/9H7+hJVx58rglzdlgLKmHW7LoMvvEUoGEIPQ
+        XloGfSCO0DJwIYaXReQC+3iKVGce17sAAAAASUVORK5CYII=
+</value>
+  </data>
 </root>

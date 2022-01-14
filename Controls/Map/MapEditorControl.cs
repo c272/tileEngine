@@ -25,7 +25,31 @@ namespace tileEngine.Controls
         /// <summary>
         /// The tile layer that is currently selected on this map editor control.
         /// </summary>
-        public TileLayer SelectedLayer { get; private set; } = null;
+        public TileLayer SelectedLayer
+        {
+            get { return _selectedLayer; }
+            set
+            {
+                _selectedLayer = value;
+                SelectedTile = null;
+            }
+        }
+        private TileLayer _selectedLayer = null;
+
+        /// <summary>
+        /// The currently selected tile on the current layer, if any.
+        /// </summary>
+        public Point? SelectedTile { get; private set; } = null;
+
+        /// <summary>
+        /// The current edit mode of the map editor (which surface the editor is editing).
+        /// </summary>
+        public MapEditMode EditMode { get; set; } = MapEditMode.Tiles;
+
+        /// <summary>
+        /// The current edit tool being used to edit the map.
+        /// </summary>
+        public MapEditTool EditTool { get; set; } = MapEditTool.Select;
 
         //Event for when the selected layer is edited..
         public delegate void OnSelectedLayerEditedHandler();
@@ -107,7 +131,9 @@ namespace tileEngine.Controls
             //}
         }
 
-        //Triggered when the user spins the mouse wheel.
+        /// <summary>
+        /// Triggered when the user spins the mouse wheel.
+        /// </summary>
         private void OnMouseWheel(object sender, MouseEventArgs e)
         {
             //Adjust zoom.
@@ -122,39 +148,51 @@ namespace tileEngine.Controls
             //Deselect any child elements.
             this.Select();
 
-            //If the user is left clicking, they want to place a tile.
+            //If the current tool is the grab and pan hand, all mouse actions result in pan.
+            if (EditTool == MapEditTool.GrabAndPan)
+            {
+                state = MapEditorState.MovingCamera;
+                lastMouseLocation = e.Location;
+                return;
+            }
+
+            //If the user is left clicking, tool action.
             if (e.Button == MouseButtons.Left)
             {
                 //If there is no layer selected, then pop up a warning.
                 if (SelectedLayer == null)
                 {
-                    DarkMessageBox.ShowError("You must select a layer before placing tiles on the map.", "tileEngine - Layer Select Error", DarkDialogButton.Ok);
+                    DarkMessageBox.ShowError("You must select a layer before performing edits on the map.", "tileEngine - Layer Select Error", DarkDialogButton.Ok);
                     return;
                 }
 
-                //If no palette configured, or no selected tile, ignore.
-                if (Palette == null || Palette.SelectedTile == null)
-                    return;
-
-                //Draw the tile at the current mouse position.
-                Point mouseTile = ToTileLocation(e.Location);
-                Microsoft.Xna.Framework.Point tileLocation = new Microsoft.Xna.Framework.Point(mouseTile.X, mouseTile.Y);
-                if (SelectedLayer.Tiles.ContainsKey(tileLocation))
+                bool success;
+                switch (EditTool)
                 {
-                    SelectedLayer.Tiles[tileLocation] = (TileData)Palette.SelectedTile;
-                }
-                else 
-                { 
-                    SelectedLayer.Tiles.Add(tileLocation, (TileData)Palette.SelectedTile); 
+                    //Pencil Tool
+                    case MapEditTool.Pencil:
+                        success = DoPencilTool(e);
+                        break;
+
+                    //Select Tool
+                    case MapEditTool.Select:
+                        success = DoSelectTool(e);
+                        break;
+
+                    //Area Select
+                    case MapEditTool.AreaSelect:
+                        throw new NotImplementedException();
+
+                    default:
+                        success = false;
+                        break;
                 }
 
                 //Done!
-                OnSelectedLayerEdited?.Invoke();
-                Invalidate();
                 return;
             }
 
-            //Start the camera drag, deselect any nodes.
+            //Start the camera drag.
             state = MapEditorState.MovingCamera;
             lastMouseLocation = e.Location;
         }
@@ -190,5 +228,66 @@ namespace tileEngine.Controls
             //Return to the default state.
             state = MapEditorState.Default;
         }
+
+        ////////////////////
+        /// TOOL ACTIONS ///
+        ////////////////////
+
+        /// <summary>
+        /// Performs a pencil tool action on the current tile.
+        /// </summary>
+        private bool DoPencilTool(MouseEventArgs e)
+        {
+            //If no palette configured, or no selected tile, ignore.
+            if (Palette == null || Palette.SelectedTile == null)
+                return false;
+
+            //Draw the tile at the current mouse position.
+            Point mouseTile = ToTileLocation(e.Location);
+            Microsoft.Xna.Framework.Point tileLocation = new Microsoft.Xna.Framework.Point(mouseTile.X, mouseTile.Y);
+            if (SelectedLayer.Tiles.ContainsKey(tileLocation))
+            {
+                SelectedLayer.Tiles[tileLocation] = (TileData)Palette.SelectedTile;
+            }
+            else
+            {
+                SelectedLayer.Tiles.Add(tileLocation, (TileData)Palette.SelectedTile);
+            }
+
+            //Done!
+            OnSelectedLayerEdited?.Invoke();
+            Invalidate();
+            return true;
+        }
+
+        /// <summary>
+        /// Performs a select tool action on the current tile.
+        /// </summary>
+        private bool DoSelectTool(MouseEventArgs e)
+        {
+            SelectedTile = ToTileLocation(e.Location);
+            return true;
+        }
+    }
+
+    /// <summary>
+    /// The edit mode of the map editor control.
+    /// </summary>
+    public enum MapEditMode
+    {
+        Tiles,
+        Events,
+        Collision
+    }
+
+    /// <summary>
+    /// The available map edit tools for the user.
+    /// </summary>
+    public enum MapEditTool
+    {
+        Select,
+        GrabAndPan,
+        AreaSelect,
+        Pencil
     }
 }

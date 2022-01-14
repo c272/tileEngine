@@ -71,5 +71,11 @@ namespace tileEngine.Controls
         {
             Node.UnsavedChanges = true;
         }
+
+        //Edit tool buttons, configures the edit tool on the map editor.
+        private void selectToolButton_Click(object sender, EventArgs e) { MapEditor.EditTool = MapEditTool.Select; }
+        private void panToolButton_Click(object sender, EventArgs e) { MapEditor.EditTool = MapEditTool.GrabAndPan; }
+        private void areaSelectToolButton_Click(object sender, EventArgs e) { MapEditor.EditTool = MapEditTool.AreaSelect; }
+        private void pencilToolButton_Click(object sender, EventArgs e) { MapEditor.EditTool = MapEditTool.Pencil; }
     }
 }
