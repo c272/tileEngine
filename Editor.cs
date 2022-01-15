@@ -210,6 +210,9 @@ namespace tileEngine
             }
         }
 
+        /// <summary>
+        /// Saves all documents in the project.
+        /// </summary>
         private void saveAll(object sender, EventArgs e) 
         {
             //Update all nodes from document.
@@ -291,6 +294,14 @@ namespace tileEngine
         private void reloadAssemblyBtn_Click(object sender, EventArgs e)
         {
             ProjectManager.ReloadProjectClasses();
+        }
+
+        /// <summary>
+        /// Triggered when the user clicks the "Exit" item in the "File" toolstrip menu.
+        /// </summary>
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            closeWindowBtn_Click(null, null);
         }
 
         ////////////////////////////

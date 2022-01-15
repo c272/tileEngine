@@ -380,6 +380,13 @@ namespace tileEngine.Controls
             Point mouseTile = ToTileLocation(e.Location);
             Microsoft.Xna.Framework.Point tileLocation = new Microsoft.Xna.Framework.Point(mouseTile.X, mouseTile.Y);
 
+            //If there is currently an area selected, and the tile isn't within it, ignore.
+            if (SelectedTiles != null)
+            {
+                if (!((Rectangle)SelectedTiles).Contains(new Point(tileLocation.X, tileLocation.Y)))
+                    return false;
+            }
+
             //Switch on the current edit mode, call the appropriate function.
             switch (EditMode)
             {
