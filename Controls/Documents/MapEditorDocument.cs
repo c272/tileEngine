@@ -32,9 +32,13 @@ namespace tileEngine.Controls
             MapEditor.Map = scene.TileMap;
             MapEditor.Palette = Editor.Instance.PaletteWindow.Palette;
             MapEditor.SetThemeFromDarkUI();
-            MapEditor.OnSelectedLayerEdited += mapLayerEdited;
-        }
 
+            //Hook editor events.
+            MapEditor.OnSelectedLayerEdited += mapLayerEdited;
+            MapEditor.OnEditModeChanged += mapEditModeChanged;
+            MapEditor.OnEditToolChanged += mapEditToolChanged;
+        }
+       
         /// <summary>
         /// Triggered when this document is focused for any reason.
         /// </summary>
@@ -72,10 +76,38 @@ namespace tileEngine.Controls
             Node.UnsavedChanges = true;
         }
 
+        /// <summary>
+        /// Triggered when the map's edit mode is altered.
+        /// </summary>
+        private void mapEditModeChanged(MapEditMode newMode)
+        {
+            //Check the correct button on the GUI.
+            tileEditModeBtn.Checked = newMode == MapEditMode.Tiles;
+            collisionEditModeBtn.Checked = newMode == MapEditMode.Collision;
+            eventEditModeBtn.Checked = newMode == MapEditMode.Events;
+        }
+
+        /// <summary>
+        /// Triggered when the map's edit tool is changed.
+        /// </summary>
+        private void mapEditToolChanged(MapEditTool newTool)
+        {
+            //Check the correct button on the GUI.
+            selectToolButton.Checked = newTool == MapEditTool.Select;
+            panToolButton.Checked = newTool == MapEditTool.GrabAndPan;
+            areaSelectToolButton.Checked = newTool == MapEditTool.AreaSelect;
+            pencilToolButton.Checked = newTool == MapEditTool.Pencil;
+        }
+
         //Edit tool buttons, configures the edit tool on the map editor.
         private void selectToolButton_Click(object sender, EventArgs e) { MapEditor.EditTool = MapEditTool.Select; }
         private void panToolButton_Click(object sender, EventArgs e) { MapEditor.EditTool = MapEditTool.GrabAndPan; }
         private void areaSelectToolButton_Click(object sender, EventArgs e) { MapEditor.EditTool = MapEditTool.AreaSelect; }
         private void pencilToolButton_Click(object sender, EventArgs e) { MapEditor.EditTool = MapEditTool.Pencil; }
+
+        //Edit mode buttons, configures which edit mode the editor is placed in.
+        private void tileEditModeBtn_Click(object sender, EventArgs e) { MapEditor.EditMode = MapEditMode.Tiles; }
+        private void collisionEditModeBtn_Click(object sender, EventArgs e) { MapEditor.EditMode = MapEditMode.Collision; }
+        private void eventEditModeBtn_Click(object sender, EventArgs e) { MapEditor.EditMode = MapEditMode.Events; }
     }
 }

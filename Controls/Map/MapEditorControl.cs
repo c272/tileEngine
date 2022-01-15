@@ -1,4 +1,5 @@
-﻿using DarkUI.Forms;
+﻿using DarkUI.Config;
+using DarkUI.Forms;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -31,29 +32,83 @@ namespace tileEngine.Controls
             set
             {
                 _selectedLayer = value;
-                SelectedTile = null;
+                SelectedTiles = null;
             }
         }
         private TileLayer _selectedLayer = null;
 
         /// <summary>
-        /// The currently selected tile on the current layer, if any.
+        /// The colour of the selection box that is used when a user selects tiles.
         /// </summary>
-        public Point? SelectedTile { get; private set; } = null;
+        public Color SelectionColour
+        {
+            get { return _selectionColour; }
+            set
+            {
+                _selectionColour = value;
+                Invalidate();
+            }
+        }
+        private Color _selectionColour = Color.White;
+
+        /// <summary>
+        /// The colour of the selection box that is used when a user selects tiles.
+        /// </summary>
+        public int SelectionWidth
+        {
+            get { return _selectionWidth; }
+            set
+            {
+                _selectionWidth = value;
+                Invalidate();
+            }
+        }
+        private int _selectionWidth = 2;
+
+        /// <summary>
+        /// The currently selected tiles on the current layer, if any.
+        /// </summary>
+        public Rectangle? SelectedTiles { get; private set; } = null;
 
         /// <summary>
         /// The current edit mode of the map editor (which surface the editor is editing).
         /// </summary>
-        public MapEditMode EditMode { get; set; } = MapEditMode.Tiles;
+        public MapEditMode EditMode
+        {
+            get { return _editMode; }
+            set
+            {
+                _editMode = value;
+                OnEditModeChanged?.Invoke(value);
+            }
+        }
+        private MapEditMode _editMode = MapEditMode.Tiles;
 
         /// <summary>
         /// The current edit tool being used to edit the map.
         /// </summary>
-        public MapEditTool EditTool { get; set; } = MapEditTool.Select;
+        public MapEditTool EditTool
+        {
+            get { return _editTool; }
+            set
+            {
+                _editTool = value;
+                OnEditToolChanged?.Invoke(value);
+            }
+        }
+        private MapEditTool _editTool = MapEditTool.Select;
 
         //Event for when the selected layer is edited..
         public delegate void OnSelectedLayerEditedHandler();
         public event OnSelectedLayerEditedHandler OnSelectedLayerEdited;
+
+        //Event for when the edit mode is changed.
+        public delegate void OnEditModeChangedHandler(MapEditMode newMode);
+        public event OnEditModeChangedHandler OnEditModeChanged;
+
+        //Event for when the edit tool is changed.
+        public delegate void OnEditToolChangedHandler(MapEditTool newTool);
+        public event OnEditToolChangedHandler OnEditToolChanged;
 
         //The current state of the NodeGraphControl.
         private MapEditorState state = MapEditorState.Default;
@@ -73,6 +128,7 @@ namespace tileEngine.Controls
             MouseUp += OnMouseUp;
             MouseMove += OnMouseMove;
             MouseWheel += OnMouseWheel;
+            OnEditModeChanged += editModeChanged;
 
             //Enable drag and drop from the node palette.
             AllowDrop = true;
@@ -86,10 +142,11 @@ namespace tileEngine.Controls
         public void SetSelectedLayer(TileLayer layer)
         {
             //Ignore if no map, or map does not contain layer.
-            if (Map == null || Map.Layers.FindIndex(x => x.ID == layer.ID) == -1)
+            if (layer == null || Map == null || Map.Layers.FindIndex(x => x.ID == layer.ID) == -1)
             {
                 SelectedLayer = null;
                 Map?.Layers.ForEach(x => x.Opacity = 1f);
+                Invalidate();
                 return;
             }
 
@@ -113,6 +170,44 @@ namespace tileEngine.Controls
 
             //Reconfigured, invalidate.
             Invalidate();
+        }
+
+        /// <summary>
+        /// Sets the theme of this control from the current theme settings within DarkUI configuration.
+        /// </summary>
+        public override void SetThemeFromDarkUI()
+        {
+            base.SetThemeFromDarkUI();
+            SelectionColour = ThemeProvider.Theme.Colors.LightText;
+        }
+
+        ///////////////////////
+        /// PAINT OVERRIDES ///
+        ///////////////////////
+
+        /// <summary>
+        /// Triggered when the control must be repainted.
+        /// </summary>
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            //Paint base.
+            base.OnPaint(e);
+
+            //Draw selection rectangle on selected square(s).
+            if (SelectedTiles != null) 
+            {
+                //Calculate selection in grid space.
+                Rectangle selected = (Rectangle)SelectedTiles;
+                Vector2f selectTopLeft = TileToGridCoordinate(selected.Location);
+                Vector2f selectBottomRight = TileToGridCoordinate(new Point(selected.Right, selected.Bottom));
+
+                //Draw in pixel space.
+                PointF topLeft = ToPixelPointF(selectTopLeft);
+                PointF bottomRight = ToPixelPointF(selectBottomRight);
+                Pen selectionPen = new Pen(new SolidBrush(SelectionColour), SelectionWidth);
+                selectionPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                e.Graphics.DrawRectangles(selectionPen, new RectangleF[] { new RectangleF(topLeft, new SizeF(bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y)) }); 
+            }
         }
 
         ///////////////////////
@@ -166,25 +261,19 @@ namespace tileEngine.Controls
                     return;
                 }
 
-                bool success;
+                //Invoke the appropriate tool.
                 switch (EditTool)
                 {
-                    //Pencil Tool
                     case MapEditTool.Pencil:
-                        success = DoPencilTool(e);
+                        DoPencilTool(e);
                         break;
 
-                    //Select Tool
                     case MapEditTool.Select:
-                        success = DoSelectTool(e);
+                        DoSelectTool(e);
                         break;
 
-                    //Area Select
                     case MapEditTool.AreaSelect:
-                        throw new NotImplementedException();
-
-                    default:
-                        success = false;
+                        DoAreaSelect(e);
                         break;
                 }
 
@@ -192,7 +281,7 @@ namespace tileEngine.Controls
                 return;
             }
 
-            //Start the camera drag.
+            //Not a left click, start the camera drag.
             state = MapEditorState.MovingCamera;
             lastMouseLocation = e.Location;
         }
@@ -206,6 +295,27 @@ namespace tileEngine.Controls
             Vector2f delta = new Vector2f(lastMouseLocation.X - e.Location.X, lastMouseLocation.Y - e.Location.Y);
             delta.X /= Zoom;
             delta.Y /= Zoom;
+
+            //Are we doing an area drag?
+            if (state == MapEditorState.SelectingArea && SelectedTiles != null)
+            {
+                //Yes, determine the current selection rectangle.
+                Rectangle curSelected = (Rectangle)SelectedTiles;
+                Point curTile = ToTileLocation(e.Location);
+                int rectWidth = curTile.X - curSelected.Location.X;
+                int rectHeight = curTile.Y - curSelected.Location.Y;
+
+                //Correct for under-1 values.
+                rectWidth = Math.Max(rectWidth, 1);
+                rectHeight = Math.Max(rectHeight, 1);
+
+                //If the width/height are any different, set and invalidate.
+                if (curSelected.Width != rectWidth || curSelected.Height != rectHeight)
+                {
+                    SelectedTiles = new Rectangle(curSelected.Location, new Size(rectWidth, rectHeight));
+                    Invalidate();
+                }
+            }
 
             //If we're currently moving the camera, alter camera based on the delta/zoom.
             if (state == MapEditorState.MovingCamera)
@@ -229,6 +339,34 @@ namespace tileEngine.Controls
             state = MapEditorState.Default;
         }
 
+        /// <summary>
+        /// Triggered when the event mode for this map editor control changes.
+        /// </summary>
+        private void editModeChanged(MapEditMode newMode)
+        {
+            //Disable/enable drawing for each layer.
+            switch (newMode)
+            {
+                case MapEditMode.Collision:
+                    DoEventDraw = false;
+                    DoCollisionDraw = true;
+                    break;
+
+                case MapEditMode.Events:
+                    DoCollisionDraw = false;
+                    DoEventDraw = true;
+                    break;
+
+                case MapEditMode.Tiles:
+                    DoCollisionDraw = false;
+                    DoEventDraw = false;
+                    break;
+
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
         ////////////////////
         /// TOOL ACTIONS ///
         ////////////////////
@@ -238,13 +376,74 @@ namespace tileEngine.Controls
         /// </summary>
         private bool DoPencilTool(MouseEventArgs e)
         {
+            //Calculate basic stuff like tile location.
+            Point mouseTile = ToTileLocation(e.Location);
+            Microsoft.Xna.Framework.Point tileLocation = new Microsoft.Xna.Framework.Point(mouseTile.X, mouseTile.Y);
+
+            //Switch on the current edit mode, call the appropriate function.
+            switch (EditMode)
+            {
+                case MapEditMode.Tiles:
+                    return DoPencilTile(tileLocation);
+                case MapEditMode.Events:
+                    return DoPencilEvent(tileLocation);
+                case MapEditMode.Collision:
+                    return DoPencilCollision(tileLocation);
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
+        /// Performs a pencil edit tool action in collision edit mode.
+        /// </summary>
+        private bool DoPencilCollision(Microsoft.Xna.Framework.Point tileLocation)
+        {
+            //Is there already a collision box at this location? If so, ignore.
+            if (SelectedLayer.CollisionHull.ContainsKey(tileLocation))
+                return false;
+
+            //Add the collision to the layer (default to colliding on all sides).
+            SelectedLayer.CollisionHull.Add(tileLocation, EntryDirection.None);
+            OnSelectedLayerEdited?.Invoke();
+            Invalidate();
+            return true;
+        }
+
+        /// <summary>
+        /// Performs a pencil edit tool action in event edit mode.
+        /// </summary>
+        private bool DoPencilEvent(Microsoft.Xna.Framework.Point tileLocation)
+        {
+            //Is there already an event at this location?
+            if (SelectedLayer.Events.ContainsKey(tileLocation))
+            {
+                DarkMessageBox.ShowError("There is already an event at this location. Use the select tool to edit it, or delete it first.", "tileEngine - Event Already Placed");
+                return false;
+            }
+
+            //Add an event to the given location.
+            SelectedLayer.Events.Add(tileLocation, new TileEvent());
+
+            //Open the edit menu for that event.
+            //...
+
+            //Done!
+            OnSelectedLayerEdited?.Invoke();
+            Invalidate();
+            return true;
+        }
+
+        /// <summary>
+        /// Performs a pencil edit tool action in tile edit mode.
+        /// </summary>
+        private bool DoPencilTile(Microsoft.Xna.Framework.Point tileLocation)
+        {
             //If no palette configured, or no selected tile, ignore.
             if (Palette == null || Palette.SelectedTile == null)
                 return false;
 
             //Draw the tile at the current mouse position.
-            Point mouseTile = ToTileLocation(e.Location);
-            Microsoft.Xna.Framework.Point tileLocation = new Microsoft.Xna.Framework.Point(mouseTile.X, mouseTile.Y);
             if (SelectedLayer.Tiles.ContainsKey(tileLocation))
             {
                 SelectedLayer.Tiles[tileLocation] = (TileData)Palette.SelectedTile;
@@ -265,7 +464,24 @@ namespace tileEngine.Controls
         /// </summary>
         private bool DoSelectTool(MouseEventArgs e)
         {
-            SelectedTile = ToTileLocation(e.Location);
+            SelectedTiles = new Rectangle(ToTileLocation(e.Location), new Size(1, 1));
+            Invalidate();
+            return true;
+        }
+
+        /// <summary>
+        /// Performs the start of an area select tool action on the current tile.
+        /// </summary>
+        private bool DoAreaSelect(MouseEventArgs e)
+        {
+            //Set the initial selection to just where the user's clicked.
+            Point selectionTopLeft = ToTileLocation(e.Location);
+            SelectedTiles = new Rectangle(selectionTopLeft, new Size(1, 1));
+
+            //Start the area selection state.
+            state = MapEditorState.SelectingArea;
+            lastMouseLocation = e.Location;
+            Invalidate();
             return true;
         }
     }

@@ -147,19 +147,19 @@
   <data name="layerMoveUpButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACqSURBVDhPY8AFvnz5YvD4yYePIAxiQ4WJAzDNQvGL/4Mw
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACqSURBVDhPY8AFvnz5YvD48YePIAxiQ4WJAzDNQvGL/4Mw
         SYYga2YIngPGRBuCTTPRhqBrBtHcUQvAGFkMqyHYND97/eE/f+xCMAax8Rry6dOnB4EdO1EUgMRgBoDY
         yBaA1ILEoNohLvj69duHoM5dcNOB+ADMABAbJAaSC+7a9R+kFsSHaocAkADIVJgESBOyAdjU4AXYDCAJ
-        jBpAJQNevfv0H4RxG8DAAABEElUKodoBgwAAAABJRU5ErkJggg==
+        jBpAJQNevfv0H4RxG8DAAAATSlT6xrlyiwAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="layerMoveDownButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAC3SURBVDhP7Y49CgIxEIXTWwiexKvodoJ4HfUMFoqncCuP
-        IogWChJD1nb0y2YkrKu7NlY+GDI/733EvJP3fnu6OKHo47q9CHXHK6H+gF8BHqa+c27HG+cXQNXzFIui
-        uNnhLJf9wV6ZCaUAdtyyeS54mWPcGKiD6UZMtpDeZB0g7BRAz44bHrzsYrz8QWrgPZ5tCFP06U1/GeOl
-        6iCd0TJUY1hVhaTVGFbVQVqHVSnk67BKIZ/DxtwB7dpVGvzx0UgAAAAASUVORK5CYII=
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAC3SURBVDhP7Y5NCsIwEIVn70LwJF5FuxPE66hncKF4Crvy
+        KELBhYLEkLqNfmlGQq22blz5YMj8vPcReSfn3P50sZ6ij+vuItSfbjz1B/wK8DANrbUH3ji/AOqep1iU
+        5c2MF7kvCnNlJpQC2HHLlrnHyxzjIlBH852XbOUHs22AsFMAPTtuePCyi/HqB6mB93g2IUzRpzf9ZYxX
+        aoL0JutQrWFVHZJWa1jVBOkcVqWQr8MqhXwOi9wBzUpU+rXKP0kAAAAASUVORK5CYII=
 </value>
   </data>
 </root>

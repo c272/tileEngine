@@ -53,7 +53,7 @@ namespace tileEngine.SDK.Map
         /// The collision hull for this tile layer, as a lookup table by point.
         /// </summary>
         [ProtoMember(3)]
-        public Dictionary<Point, CollisionType> CollisionHull = new Dictionary<Point, CollisionType>();
+        public Dictionary<Point, EntryDirection> CollisionHull = new Dictionary<Point, EntryDirection>();
 
         /// <summary>
         /// Runtime opacity of this layer.
@@ -63,10 +63,10 @@ namespace tileEngine.SDK.Map
     }
 
     /// <summary>
-    /// The method of collision for a single tile.
+    /// The directions of entry for a single tile.
     /// </summary>
     [Flags]
-    public enum CollisionType
+    public enum EntryDirection
     {
         None = 0x0,
         Left = 0x10,

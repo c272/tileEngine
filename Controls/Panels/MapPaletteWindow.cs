@@ -40,7 +40,8 @@ namespace tileEngine.Controls
                 spriteSelector.Items.Add(new TaggedDropdownItem<ProjectSpriteNode>()
                 {
                     Tag = sprite,
-                    Text = sprite.Name
+                    Text = sprite.Name,
+                    Icon = Resources.Icons.Sprite
                 });
             }
         }

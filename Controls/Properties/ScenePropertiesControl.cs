@@ -67,6 +67,7 @@ namespace tileEngine.Controls.Properties
             showGridCb.CheckedChanged += showGridChanged;
             tileSizeX.ValueChanged += tileSizeValueChanged;
             tileSizeY.ValueChanged += tileSizeValueChanged;
+            layerListView.OnBackgroundClicked += layerListBackgroundClicked;
 
             //Set up the layers from the current map.
             refreshLayers();
@@ -124,6 +125,9 @@ namespace tileEngine.Controls.Properties
                 Text = layer.Name,
                 Tag = layer
             });
+
+            //Set unsaved changes on the node.
+            Scene.UnsavedChanges = true;
         }
 
         /// <summary>
@@ -202,6 +206,9 @@ namespace tileEngine.Controls.Properties
             textBox.LostFocus -= endRename;
             Controls.Remove(textBox);
             textBox.Dispose();
+
+            //Set unsaved changes on the node.
+            Scene.UnsavedChanges = true;
         }
 
         /// <summary>
@@ -223,6 +230,65 @@ namespace tileEngine.Controls.Properties
 
             //Remove from the list view.
             layerListView.Items.RemoveAt(layerListView.SelectedIndices[0]);
+
+            //Set unsaved changes on the node.
+            Scene.UnsavedChanges = true;
+        }
+
+        /// <summary>
+        /// Triggered when the user wants to move a layer up by one.
+        /// </summary>
+        private void layerMoveUpButton_Click(object sender, EventArgs e)
+        {
+            //Ignore if no selected layer.
+            if (layerListView.SelectedIndices.Count == 0)
+                return;
+
+            //Attempt to shift the layer.
+            shiftLayer(1, Scene.TileMap.Layers.Count - 1);
+        }
+
+        /// <summary>
+        /// Triggered when the user wants to move a layer down by one.
+        /// </summary>
+        private void layerMoveDownButton_Click(object sender, EventArgs e)
+        {
+            //Ignore if no selected layer.
+            if (layerListView.SelectedIndices.Count == 0)
+                return;
+
+            //Attempt to shift the layer.
+            shiftLayer(-1, 0);
+        }
+
+        /// <summary>
+        /// Attempts to shift the currently selected layer in the given direction.
+        /// </summary>
+        private void shiftLayer(int direction, int indexLimit)
+        {
+            //Get the layer that's being shifted, try and shift on the backend.
+            TileLayer layer = (TileLayer)layerListView.Items[layerListView.SelectedIndices[0]].Tag;
+            for (int i = 0; i < Scene.TileMap.Layers.Count; i++)
+            {
+                var thisLayer = Scene.TileMap.Layers[i];
+                if (thisLayer.ID == layer.ID)
+                {
+                    //Can we shift? If not, ignore.
+                    if (i == indexLimit)
+                        return;
+
+                    //Swap the item to be one higher up/lower down.
+                    var swappingLayer = Scene.TileMap.Layers[i + direction];
+                    Scene.TileMap.Layers[i] = swappingLayer;
+                    Scene.TileMap.Layers[i + direction] = layer;
+                    break;
+                }
+            }
+
+            //Shift the layer one up in the list view.
+            int layerAbove = Math.Max(layerListView.SelectedIndices[0] - direction, 0);
+            layerListView.Items.Move(layerListView.SelectedIndices[0], layerAbove);
+            layerListView.SelectItem(layerAbove);
         }
 
         /// <summary>
@@ -245,6 +311,19 @@ namespace tileEngine.Controls.Properties
         private void showGridChanged(object sender, EventArgs e)
         {
             MapEditor.DoGridDraw = showGridCb.Checked;
+        }
+
+        /// <summary>
+        /// Triggered when the background of the layer list is clicked.
+        /// </summary>
+        private void layerListBackgroundClicked()
+        {
+            if (layerListView.SelectedIndices.Count == 0)
+                return;
+
+            //Deselect selected layer.
+            layerListView.ToggleItem(layerListView.SelectedIndices[0]);
+            selectedLayerChanged(null, null);
         }
     }
 }

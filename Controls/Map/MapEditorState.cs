@@ -3,6 +3,7 @@
     public enum MapEditorState
     {
         Default,
-        MovingCamera
+        MovingCamera,
+        SelectingArea
     }
 }

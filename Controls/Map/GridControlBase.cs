@@ -123,6 +123,120 @@ namespace tileEngine.Controls
         private Color bgLineColour = Color.LightGray;
 
         /// <summary>
+        /// Whether to draw events as semi-transparent squares over tiles.
+        /// </summary>
+        public bool DoEventDraw
+        {
+            get { return doEventDraw; }
+            set
+            {
+                doEventDraw = value;
+                Invalidate();
+            }
+        }
+        private bool doEventDraw = false;
+
+        /// <summary>
+        /// Property to set the colour of events drawn over tiles (if enabled).
+        /// </summary>
+        public Color EventColour
+        {
+            get { return eventColour; }
+            set
+            {
+                eventColour = value;
+                Invalidate();
+            }
+        }
+        private Color eventColour = Color.Orange;
+
+        /// <summary>
+        /// The opacity of events drawn over tiles (if enabled).
+        /// Ranges from 0.0f to 1.0f.
+        /// </summary>
+        public float EventOpacity
+        {
+            get { return eventOpacity; }
+            set
+            {
+                eventOpacity = value;
+                Invalidate();
+            }
+        }
+        private float eventOpacity = 0.75f;
+
+        /// <summary>
+        /// Whether to draw collision squares as semi-transparent squares over tiles.
+        /// </summary>
+        public bool DoCollisionDraw
+        {
+            get { return doCollisionDraw; }
+            set
+            {
+                doCollisionDraw = value;
+                Invalidate();
+            }
+        }
+        private bool doCollisionDraw = false;
+
+        /// <summary>
+        /// Property to set the colour of the background of collision squares drawn over tiles (if enabled).
+        /// </summary>
+        public Color CollisionBackgroundColour
+        {
+            get { return collisionBgColour; }
+            set
+            {
+                collisionBgColour = value;
+                Invalidate();
+            }
+        }
+        private Color collisionBgColour = Color.Red;
+
+        /// <summary>
+        /// Property to set the colour of the foreground of collision squares drawn over tiles (if enabled).
+        /// </summary>
+        public Color CollisionForegroundColour
+        {
+            get { return collisionFgColour; }
+            set
+            {
+                collisionFgColour = value;
+                Invalidate();
+            }
+        }
+        private Color collisionFgColour = Color.White;
+
+        /// <summary>
+        /// The opacity of collision squares backgrounds drawn over tiles (if enabled).
+        /// Ranges from 0.0f to 1.0f.
+        /// </summary>
+        public float CollisionOpacity
+        {
+            get { return collisionOpacity; }
+            set
+            {
+                collisionOpacity = value;
+                Invalidate();
+            }
+        }
+        private float collisionOpacity = 0.75f;
+
+        /// <summary>
+        /// The size of the pips indicating which direction entities can enter the collision square.
+        /// </summary>
+        public int CollisionPipSize
+        {
+            get { return collisionPipSize; }
+            set
+            {
+                collisionPipSize = value;
+                Invalidate();
+            }
+        }
+        private int collisionPipSize = 2;
+
+        /// <summary>
         /// The tile map to be drawn.
         /// </summary>
         public TileMap Map { get; set; } = null;
@@ -150,7 +264,7 @@ namespace tileEngine.Controls
         /// Sets the theme of the provided node graph based on the current theme of DarkUI,
         /// found at DarkUI.Config.ThemeProvider.Theme.
         /// </summary>
-        public void SetThemeFromDarkUI()
+        public virtual void SetThemeFromDarkUI()
         {
             BackgroundColour = ThemeProvider.Theme.Colors.DarkBackground;
             BackgroundLineColour = ThemeProvider.Theme.Colors.DarkBorder;
@@ -182,7 +296,7 @@ namespace tileEngine.Controls
 
             //Draw the tiles currently on the grid.
             if (Map != null)
-                DrawTiles(e);
+                DrawMap(e);
 
             //Draw the grid.
             if (DoGridDraw)
@@ -190,9 +304,9 @@ namespace tileEngine.Controls
         }
 
         /// <summary>
-        /// Draws all the tiles currently on the screen.
+        /// Draws all the map layer portions currently on the screen.
         /// </summary>
-        private void DrawTiles(PaintEventArgs e)
+        private void DrawMap(PaintEventArgs e)
         {
             //Get the top left and bottom right of the grid.
             Vector2f screenTL = ToGridCoordinate(ClientRectangle.X, ClientRectangle.Y);
@@ -213,68 +327,35 @@ namespace tileEngine.Controls
                 //Set up opacity ImageAttributes for this layer's tile draws.
                 ColorMatrix matrix = new ColorMatrix();
                 matrix.Matrix33 = layer.Opacity;
-                ImageAttributes imageAttribs = new ImageAttributes();
-                imageAttribs.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+                ImageAttributes tileImageAttribs = new ImageAttributes();
+                tileImageAttribs.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+
+                //Create the brush for drawing events.
+                SolidBrush eventBrush = new SolidBrush(Color.FromArgb((int)(EventOpacity * 255), EventColour));
+
+                //Create the brushes for drawing collisions.
+                SolidBrush collisionBgBrush = new SolidBrush(Color.FromArgb((int)(EventOpacity * 255), CollisionBackgroundColour));
+                SolidBrush collisionFgBrush = new SolidBrush(CollisionForegroundColour);
 
                 //Loop over all visible tiles.
                 while (curPos.Y < bottomRight.Y)
                 {
                     while (curPos.X < bottomRight.X)
                     {
-                        //Get the current tile, check if it's in the layer.
-                        Microsoft.Xna.Framework.Point curTile = new Microsoft.Xna.Framework.Point((int)(curPos.X / GridStep), (int)(curPos.Y / GridStep));
-                        if (!layer.Tiles.ContainsKey(curTile))
-                        {
-                            //No tile here.
-                            curPos.X += GridStep;
-                            continue;
-                        }
+                        //Calculate the tile point for this location.
+                        Microsoft.Xna.Framework.Point tilePoint = new Microsoft.Xna.Framework.Point((int)(curPos.X / GridStep), (int)(curPos.Y / GridStep));
 
-                        //Get the texture for the tile, if it hasn't been loaded into cache already.
-                        TileData tile = layer.Tiles[curTile];
-                        Image tex = null;
-                        if (assetCache.ContainsKey(tile.TextureID))
-                        {
-                            //Cache hit.
-                            tex = assetCache[tile.TextureID];
-                        }
-                        else
-                        {
-                            //Cache miss, attempt to load from file.
-                            var assetNode = ProjectManager.CurrentProject.ProjectRoot.FindChild<ProjectSpriteNode>(tile.TextureID);
-                            string assetPath = Path.Combine(ProjectManager.CurrentProjectDirectory, assetNode.RelativeLocation);
+                        //Get the current tile, draw it (if it exists).
+                        DrawTile(layer, curPos, tilePoint, tileImageAttribs, e);
 
-                            //On failure, just load the "invalid" texture.
-                            try
-                            {
-                                tex = Image.FromFile(assetPath);
-                            }
-                            catch (Exception ex)
-                            {
-                                tex = new Bitmap(Map.TileTextureSize, Map.TileTextureSize);
-                                DarkMessageBox.ShowError($"Failed to load texture '{assetNode.Name}' for draw, it may have been moved or deleted.\n{ex.Message}", "tileEngine - Texture Failed Load", DarkDialogButton.Ok);
-                            }
+                        //Draw events if enabled.
+                        if (DoEventDraw)
+                            DrawEvent(layer, curPos, tilePoint, eventBrush, e);
 
-                            //Add the texture to cache.
-                            assetCache.Add(tile.TextureID, tex);
-                        }
+                        //Draw collisions if enabled.
+                        if (DoCollisionDraw)
+                            DrawCollisionBox(layer, curPos, tilePoint, collisionBgBrush, collisionFgBrush, e);
 
-                        //Calculate the source and destination rectangles on textures.
-                        PointF screenPoint = ToPixelPointF(curPos);
-                        RectangleF screenRect = new RectangleF(screenPoint, new SizeF(GridStep * Zoom, GridStep * Zoom));
-                        PointF sourcePoint = new PointF(tile.Position.X * Map.TileTextureSize, tile.Position.Y * Map.TileTextureSize);
-                        RectangleF sourceRect = new RectangleF(sourcePoint, new SizeF(Map.TileTextureSize, Map.TileTextureSize));
-
-                        //Check that the source rectangle is within bounds.
-                        if (sourceRect.Right > tex.Width || sourceRect.Bottom > tex.Height)
-                        {
-                            DiagnosticsHook.LogMessage(21005, "Source rectangle draw for map tile outside of bounds.");
-                            curPos.X += GridStep;
-                            continue;
-                        }
-
-                        //Draw the tile.
-                        e.Graphics.DrawImage(tex, screenRect.ToPoints(), sourceRect, GraphicsUnit.Pixel, imageAttribs);
                         curPos.X += GridStep;
                     }
 
@@ -284,6 +365,102 @@ namespace tileEngine.Controls
                 }
 
             }
+        }
+
+        /// <summary>
+        /// Draws a single collision box at a provided tile location on a given layer.
+        /// Utilises the provided brushes for drawing the collision box.
+        /// If there is no valid collision box at the specified location, the call is ignored.
+        /// </summary>
+        private void DrawCollisionBox(TileLayer layer, Vector2f curPos, Microsoft.Xna.Framework.Point tilePoint, SolidBrush collisionBgBrush, SolidBrush collisionFgBrush, PaintEventArgs e)
+        {
+            //Ignore if no collision here.
+            if (!layer.CollisionHull.ContainsKey(tilePoint))
+                return;
+
+            //Draw the collision background rectangle.
+            PointF topLeft = ToPixelPointF(curPos);
+            PointF bottomRight = ToPixelPointF(curPos + new Vector2f(GridStep, GridStep));
+            e.Graphics.FillRectangle(collisionBgBrush, new RectangleF(topLeft, new SizeF(bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y)));
+
+            //Draw the four pips indicating the direction in which entities are allowed to enter the collision box.
+            //...
+        }
+
+        /// <summary>
+        /// Draws a single event at a provided tile location on a given layer.
+        /// Utilises the provided brush for drawing the event.
+        /// If there is no valid event at the specified location, the call is ignored.
+        /// </summary>
+        private void DrawEvent(TileLayer layer, Vector2f curPos, Microsoft.Xna.Framework.Point tilePoint, Brush brush, PaintEventArgs e)
+        {
+            //Ignore if no event here.
+            if (!layer.Events.ContainsKey(tilePoint))
+                return;
+
+            //Draw the event rectangle.
+            PointF topLeft = ToPixelPointF(curPos);
+            PointF bottomRight = ToPixelPointF(curPos + new Vector2f(GridStep, GridStep));
+            e.Graphics.FillRectangle(brush, new RectangleF(topLeft, new SizeF(bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y)));
+        }
+
+        /// <summary>
+        /// Draws a single tile at a provided tile location on a given layer.
+        /// Applies image attributes specified by a System.Drawing.ImageAttributes class.
+        /// If there is no valid tile at the specified location, the call is ignored.
+        /// </summary>
+        private void DrawTile(TileLayer layer, Vector2f curPos, Microsoft.Xna.Framework.Point tilePoint, ImageAttributes imageAttribs, PaintEventArgs e)
+        {
+            if (!layer.Tiles.ContainsKey(tilePoint))
+            {
+                //No tile here.
+                return;
+            }
+
+            //Get the texture for the tile, if it hasn't been loaded into cache already.
+            TileData tile = layer.Tiles[tilePoint];
+            Image tex = null;
+            if (assetCache.ContainsKey(tile.TextureID))
+            {
+                //Cache hit.
+                tex = assetCache[tile.TextureID];
+            }
+            else
+            {
+                //Cache miss, attempt to load from file.
+                var assetNode = ProjectManager.CurrentProject.ProjectRoot.FindChild<ProjectSpriteNode>(tile.TextureID);
+                string assetPath = Path.Combine(ProjectManager.CurrentProjectDirectory, assetNode.RelativeLocation);
+
+                //On failure, just load the "invalid" texture.
+                try
+                {
+                    tex = Image.FromFile(assetPath);
+                }
+                catch (Exception ex)
+                {
+                    tex = new Bitmap(Map.TileTextureSize, Map.TileTextureSize);
+                    DarkMessageBox.ShowError($"Failed to load texture '{assetNode.Name}' for draw, it may have been moved or deleted.\n{ex.Message}", "tileEngine - Texture Failed Load", DarkDialogButton.Ok);
+                }
+
+                //Add the texture to cache.
+                assetCache.Add(tile.TextureID, tex);
+            }
+
+            //Calculate the source and destination rectangles on textures.
+            PointF screenPoint = ToPixelPointF(curPos);
+            RectangleF screenRect = new RectangleF(screenPoint, new SizeF(GridStep * Zoom, GridStep * Zoom));
+            PointF sourcePoint = new PointF(tile.Position.X * Map.TileTextureSize, tile.Position.Y * Map.TileTextureSize);
+            RectangleF sourceRect = new RectangleF(sourcePoint, new SizeF(Map.TileTextureSize, Map.TileTextureSize));
+
+            //Check that the source rectangle is within bounds.
+            if (sourceRect.Right > tex.Width || sourceRect.Bottom > tex.Height)
+            {
+                DiagnosticsHook.LogMessage(21005, "Source rectangle draw for map tile outside of bounds.");
+                return;
+            }
+
+            //Draw the tile.
+            e.Graphics.DrawImage(tex, screenRect.ToPoints(), sourceRect, GraphicsUnit.Pixel, imageAttribs);
         }
 
         /// <summary>
@@ -384,6 +561,14 @@ namespace tileEngine.Controls
 
             //Convert this vector into grid space coordinates, then apply the vector to the camera position.
             return new Vector2f(cameraPos.X + relativeToCenter.X * pixelValue, cameraPos.Y + relativeToCenter.Y * pixelValue);
+        }
+
+        /// <summary>
+        /// Converts a given tile coordinate into a grid coordinate representing the top left of the tile.
+        /// </summary>
+        public Vector2f TileToGridCoordinate(Point tilePoint)
+        {
+            return new Vector2f(tilePoint.X * GridStep, tilePoint.Y * GridStep);
         }
 
         /// <summary>

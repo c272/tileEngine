@@ -209,6 +209,7 @@
             this.layerMoveUpButton.Size = new System.Drawing.Size(23, 25);
             this.layerMoveUpButton.Text = "toolStripButton4";
             this.layerMoveUpButton.ToolTipText = "Move Layer Up";
+            this.layerMoveUpButton.Click += new System.EventHandler(this.layerMoveUpButton_Click);
             // 
             // layerMoveDownButton
             // 
@@ -221,6 +222,7 @@
             this.layerMoveDownButton.Size = new System.Drawing.Size(23, 25);
             this.layerMoveDownButton.Text = "toolStripButton5";
             this.layerMoveDownButton.ToolTipText = "Move Layer Down";
+            this.layerMoveDownButton.Click += new System.EventHandler(this.layerMoveDownButton_Click);
             // 
             // ScenePropertiesControl
             // 
