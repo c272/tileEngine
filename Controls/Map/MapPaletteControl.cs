@@ -118,7 +118,7 @@ namespace tileEngine.Controls
         {
             //Get the tile location that's been clicked.
             Point clickTile = ToTileLocation(e.Location);
-            Microsoft.Xna.Framework.Point tilePosition = new Microsoft.Xna.Framework.Point(clickTile.X, clickTile.Y);
+            Microsoft.Xna.Framework.Point tilePosition = clickTile.ToXnaPoint();
 
             //Is there a valid tile to select at that location?
             if (map.Layers.Count == 0 || !map.Layers[0].Tiles.ContainsKey(tilePosition))

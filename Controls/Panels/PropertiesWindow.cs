@@ -19,6 +19,11 @@ namespace tileEngine.Controls
     /// </summary>
     public partial class PropertiesWindow : DarkToolWindow
     {
+        /// <summary>
+        /// The current properties control displayed on the window.
+        /// </summary>
+        public PropertiesControl Current { get; private set; } = null;
+
         public PropertiesWindow()
         {
             InitializeComponent();
@@ -28,15 +33,30 @@ namespace tileEngine.Controls
         /// Sets the control currently on the properties window to the provided control.
         /// Clears any existing controls on the properties window.
         /// </summary>
-        public void SetPropertiesControl(PropertiesControl c, string title)
+        public void SetPropertiesControl(PropertiesControl c, string title = null)
         {
+            //If this control is already active, ignore.
+            if (Current == c)
+                return;
+
+            //Clear controls, and re-add.
             Controls.Clear();
             Controls.Add(c);
             c.Location = new Point(0, 0);
             c.Dock = DockStyle.Fill;
-            DockText = title;
+
+            //Apply the title if custom one used, otherwise take from control.
+            if (title != null)
+            {
+                DockText = title;
+            }
+            else
+            {
+                DockText = c.DisplayName;
+            }
 
             //Focus self in dock group.
+            Current = c;
             this.DockGroup.SetVisibleContent(this);
         }
 
@@ -46,6 +66,7 @@ namespace tileEngine.Controls
         public void ClearPropertiesControl()
         {
             Controls.Clear();
+            Current = null;
             DockText = "Properties";
         }
     }

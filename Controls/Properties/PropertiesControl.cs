@@ -16,9 +16,15 @@ namespace tileEngine.Controls.Properties
     /// </summary>
     public partial class PropertiesControl : UserControl
     {
-        public PropertiesControl()
+        /// <summary>
+        /// The name of this properties control as it appears in the properties window bar.
+        /// </summary>
+        public string DisplayName { get; private set; }
+
+        public PropertiesControl(string name)
         {
             InitializeComponent();
+            DisplayName = name;
 
             //Style in accordance with editor theme.
             this.BackColor = ThemeProvider.Theme.Colors.GreyBackground;

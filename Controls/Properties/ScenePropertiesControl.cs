@@ -52,7 +52,7 @@ namespace tileEngine.Controls.Properties
         //The item currently being renamed, if any.
         private DarkListItem renameItem = null;
 
-        public ScenePropertiesControl(MapEditorDocument doc, ProjectSceneNode scene)
+        public ScenePropertiesControl(MapEditorDocument doc, ProjectSceneNode scene) : base(scene.Name + " Properties")
         {
             InitializeComponent();
             Scene = scene;

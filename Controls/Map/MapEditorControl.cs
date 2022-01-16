@@ -31,7 +31,12 @@ namespace tileEngine.Controls
             get { return _selectedLayer; }
             set
             {
+                //Configure selected layer, and also event/collide draw layers.
                 _selectedLayer = value;
+                EventDrawLayer = value;
+                CollisionDrawLayer = value;
+
+                //Deselect all tiles.
                 SelectedTiles = null;
             }
         }
@@ -68,7 +73,16 @@ namespace tileEngine.Controls
         /// <summary>
         /// The currently selected tiles on the current layer, if any.
         /// </summary>
-        public Rectangle? SelectedTiles { get; private set; } = null;
+        public Rectangle? SelectedTiles
+        {
+            get { return _selectedTiles; }
+            set
+            {
+                _selectedTiles = value;
+                OnSelectedTilesChanged?.Invoke(value);
+            }
+        }
+        private Rectangle? _selectedTiles = null;
 
         /// <summary>
         /// The current edit mode of the map editor (which surface the editor is editing).
@@ -97,6 +111,10 @@ namespace tileEngine.Controls
             }
         }
         private MapEditTool _editTool = MapEditTool.Select;
+
+        //Event for when the selected tiles are changed.
+        public delegate void OnSelectedTilesChangedHandler(Rectangle? newTiles);
+        public event OnSelectedTilesChangedHandler OnSelectedTilesChanged;
 
         //Event for when the selected layer is edited..
         public delegate void OnSelectedLayerEditedHandler();
@@ -129,6 +147,7 @@ namespace tileEngine.Controls
             MouseMove += OnMouseMove;
             MouseWheel += OnMouseWheel;
             OnEditModeChanged += editModeChanged;
+            OnEditToolChanged += editToolChanged;
 
             //Enable drag and drop from the node palette.
             AllowDrop = true;
@@ -358,12 +377,26 @@ namespace tileEngine.Controls
                     break;
 
                 case MapEditMode.Tiles:
-                    DoCollisionDraw = false;
                     DoEventDraw = false;
+                    DoCollisionDraw = false;
                     break;
 
                 default:
                     throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
+        /// Triggered when the edit tool is changed.
+        /// </summary>
+        private void editToolChanged(MapEditTool newTool)
+        {
+            switch (newTool)
+            {
+                case MapEditTool.GrabAndPan:
+                    SelectedTiles = null;
+                    Invalidate();
+                    break;
             }
         }
 
@@ -378,7 +411,7 @@ namespace tileEngine.Controls
         {
             //Calculate basic stuff like tile location.
             Point mouseTile = ToTileLocation(e.Location);
-            Microsoft.Xna.Framework.Point tileLocation = new Microsoft.Xna.Framework.Point(mouseTile.X, mouseTile.Y);
+            Microsoft.Xna.Framework.Point tileLocation = mouseTile.ToXnaPoint();
 
             //If there is currently an area selected, and the tile isn't within it, ignore.
             if (SelectedTiles != null)

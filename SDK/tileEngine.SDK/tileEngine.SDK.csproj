@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssetManager.cs" />
+    <Compile Include="Attributes\EventFunctionAttribute.cs" />
     <Compile Include="Attributes\SelectorIgnore.cs" />
     <Compile Include="Attributes\SelectorMetadata.cs" />
     <Compile Include="Diagnostics\DiagnosticsHook.cs" />

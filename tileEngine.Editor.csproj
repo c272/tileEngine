@@ -220,6 +220,12 @@
     <Compile Include="Controls\Panels\OutputWindow.Designer.cs">
       <DependentUpon>OutputWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Properties\EventPropertiesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Properties\EventPropertiesControl.Designer.cs">
+      <DependentUpon>EventPropertiesControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Properties\PropertiesControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -288,6 +294,7 @@
     </Compile>
     <Compile Include="Utility\ColourHelpers.cs" />
     <Compile Include="Utility\PathHelpers.cs" />
+    <Compile Include="Utility\PointHelpers.cs" />
     <Compile Include="Utility\RectangleFHelpers.cs" />
     <Compile Include="Utility\TaggedDropdownItem.cs" />
     <EmbeddedResource Include="Controls\Documents\MapEditorDocument.resx">
@@ -322,6 +329,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Panels\ProjectTreeWindow.resx">
       <DependentUpon>ProjectTreeWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Properties\EventPropertiesControl.resx">
+      <DependentUpon>EventPropertiesControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Properties\PropertiesControl.resx">
       <DependentUpon>PropertiesControl.cs</DependentUpon>

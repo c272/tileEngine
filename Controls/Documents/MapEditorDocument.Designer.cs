@@ -53,8 +53,6 @@
             this.MapEditor.CollisionOpacity = 0.75F;
             this.MapEditor.CollisionPipSize = 2;
             this.MapEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MapEditor.DoCollisionDraw = false;
-            this.MapEditor.DoEventDraw = false;
             this.MapEditor.DoGridDraw = true;
             this.MapEditor.EditMode = tileEngine.Controls.MapEditMode.Tiles;
             this.MapEditor.EditTool = tileEngine.Controls.MapEditTool.Select;

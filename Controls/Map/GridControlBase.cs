@@ -123,7 +123,8 @@ namespace tileEngine.Controls
         private Color bgLineColour = Color.LightGray;
 
         /// <summary>
-        /// Whether to draw events as semi-transparent squares over tiles.
+        /// Whether to draw event squares over the tiles.
+        /// Depends on EventDrawLayer being set to non-null.
         /// </summary>
         public bool DoEventDraw
         {
@@ -134,7 +135,21 @@ namespace tileEngine.Controls
                 Invalidate();
             }
         }
-        private bool doEventDraw = false;
+        private bool doEventDraw = true;
+
+        /// <summary>
+        /// The layer at which to draw events as semi-transparent squares over tiles.
+        /// </summary>
+        public TileLayer EventDrawLayer
+        {
+            get { return eventDrawLayer; }
+            set
+            {
+                eventDrawLayer = value;
+                Invalidate();
+            }
+        }
+        private TileLayer eventDrawLayer = null;
 
         /// <summary>
         /// Property to set the colour of events drawn over tiles (if enabled).
@@ -166,7 +181,8 @@ namespace tileEngine.Controls
         private float eventOpacity = 0.75f;
 
         /// <summary>
-        /// Whether to draw collision squares as semi-transparent squares over tiles.
+        /// Whether to draw collision squares over the tiles.
+        /// Depends on CollisionDrawLayer being set to non-null.
         /// </summary>
         public bool DoCollisionDraw
         {
@@ -177,7 +193,21 @@ namespace tileEngine.Controls
                 Invalidate();
             }
         }
-        private bool doCollisionDraw = false;
+        private bool doCollisionDraw = true;
+
+        /// <summary>
+        /// The layer at which to draw events as semi-transparent squares over tiles.
+        /// </summary>
+        public TileLayer CollisionDrawLayer
+        {
+            get { return collisionDrawLayer; }
+            set
+            {
+                collisionDrawLayer = value;
+                Invalidate();
+            }
+        }
+        private TileLayer collisionDrawLayer = null;
 
         /// <summary>
         /// Property to set the colour of the background of collision squares drawn over tiles (if enabled).
@@ -349,11 +379,11 @@ namespace tileEngine.Controls
                         DrawTile(layer, curPos, tilePoint, tileImageAttribs, e);
 
                         //Draw events if enabled.
-                        if (DoEventDraw)
+                        if (DoEventDraw && EventDrawLayer?.ID == layer.ID)
                             DrawEvent(layer, curPos, tilePoint, eventBrush, e);
 
                         //Draw collisions if enabled.
-                        if (DoCollisionDraw)
+                        if (DoCollisionDraw && CollisionDrawLayer?.ID == layer.ID)
                             DrawCollisionBox(layer, curPos, tilePoint, collisionBgBrush, collisionFgBrush, e);
 
                         curPos.X += GridStep;

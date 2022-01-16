@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DarkUI.Forms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,7 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using tileEngine.Controls.Properties;
+using tileEngine.SDK.Attributes;
 using tileEngine.SDK.Map;
+using tileEngine.Utility;
 
 namespace tileEngine.Controls
 {
@@ -17,6 +20,11 @@ namespace tileEngine.Controls
     /// </summary>
     public partial class MapEditorDocument : ProjectDocument
     {
+        /// <summary>
+        /// A list of event function names that are available for this scene.
+        /// </summary>
+        public List<string> EventFunctions { get; private set; } = new List<string>();
+
         //The properties control for this map editor.
         ScenePropertiesControl propsControl = null;
 
@@ -37,15 +45,45 @@ namespace tileEngine.Controls
             MapEditor.OnSelectedLayerEdited += mapLayerEdited;
             MapEditor.OnEditModeChanged += mapEditModeChanged;
             MapEditor.OnEditToolChanged += mapEditToolChanged;
+            MapEditor.OnSelectedTilesChanged += mapSelectedTilesChanged;
+
+            //Grab current event functions associated with this map, set up reloads.
+            reloadEventFunctions();
+            ProjectManager.OnProjectAssemblyReload += reloadEventFunctions;
         }
-       
+
+        /// <summary>
+        /// Reloads all event functions that are used for this map from the current project assembly.
+        /// </summary>
+        private void reloadEventFunctions()
+        {
+            //Get the class associated with the current map.
+            string sceneTypeName = ((ProjectSceneNode)Node).LinkedTypeName;
+            var sceneClass = ProjectManager.CurrentProjectAssembly.GetTypes().Where(t => t.FullName == sceneTypeName).FirstOrDefault();
+            if (sceneClass == null)
+            {
+                DarkMessageBox.ShowError($"Failed to load event methods for scene '{sceneTypeName}', no class found.", "tileEngine - Event Load Failure");
+                return;
+            }
+
+            //Grab all functions that have the "EventFunction" attribute, add their names to a list.
+            var eventMethods = sceneClass.GetMethods()
+                                         .SelectMany(m => m.GetCustomAttributes(typeof(EventFunctionAttribute), false))
+                                         .Select(x => (EventFunctionAttribute)x).ToList();
+            EventFunctions.Clear();
+            foreach (var eventFuncAttrib in eventMethods)
+            {
+                EventFunctions.Add(eventFuncAttrib.Name);
+            }
+        }
+
         /// <summary>
         /// Triggered when this document is focused for any reason.
         /// </summary>
         public override void OnDocumentFocused()
         {
             //Open the properties window, set palette size & reload options..
-            Editor.Instance.PropertiesWindow.SetPropertiesControl(propsControl, Node.Name + " Properties");
+            Editor.Instance.PropertiesWindow.SetPropertiesControl(propsControl);
             Editor.Instance.PaletteWindow.ReloadOptions();
             Editor.Instance.PaletteWindow.Palette.TileTextureSize = ((ProjectSceneNode)Node).TileMap.TileTextureSize;
         }
@@ -57,6 +95,39 @@ namespace tileEngine.Controls
         {
             //Close the properties tab for this document.
             Editor.Instance.PropertiesWindow.ClearPropertiesControl();
+        }
+
+        /// <summary>
+        /// Triggered when the user changes selected tiles on the map editor.
+        /// </summary>
+        private void mapSelectedTilesChanged(Rectangle? newTiles)
+        {
+            //Ignore if edit mode is not event mode.
+            var propsWindow = Editor.Instance.PropertiesWindow;
+            if (MapEditor.EditMode != MapEditMode.Events)
+            {
+                propsWindow.SetPropertiesControl(propsControl);
+                return;
+            }
+
+            //Ignore if null tiles or more than one tile.
+            if (newTiles == null || ((Rectangle)newTiles).Width > 1 || ((Rectangle)newTiles).Height > 1)
+            {
+                propsWindow.SetPropertiesControl(propsControl);
+                return;
+            }
+
+            //Get the selected tile out, see if there's a valid event there.
+            Point tilePoint = ((Rectangle)newTiles).Location;
+            if (!MapEditor.SelectedLayer.Events.ContainsKey(tilePoint.ToXnaPoint()))
+            {
+                propsWindow.SetPropertiesControl(propsControl);
+                return;
+            }
+
+            //There is! Create the events property window.
+            var eventProps = new EventPropertiesControl(this, tilePoint, MapEditor.SelectedLayer.Events[tilePoint.ToXnaPoint()]);
+            Editor.Instance.PropertiesWindow.SetPropertiesControl(eventProps);
         }
 
         /// <summary>

@@ -13,5 +13,25 @@ namespace tileEngine.SDK.Map
     [ProtoContract]
     public class TileEvent
     {
+        /// <summary>
+        /// The name of the event function that is linked to this event.
+        /// </summary>
+        [ProtoMember(1)]
+        public string LinkedFunction { get; set; } = null;
+
+        /// <summary>
+        /// The method by which this event is triggered.
+        /// </summary>
+        [ProtoMember(2)]
+        public EventTriggerType Trigger { get; set; } = EventTriggerType.Interaction;
+    }
+
+    /// <summary>
+    /// Methods by which a tile map event can be triggered.
+    /// </summary>
+    public enum EventTriggerType
+    {
+        Interaction,
+        GameObjectCollide
     }
 }
