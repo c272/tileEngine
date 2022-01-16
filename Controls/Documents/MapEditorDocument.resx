@@ -166,19 +166,19 @@
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACzSURBVDhPY8AG3r9/L/Dt27cPQPwfF4YqxQ6+fv3a8OjE
         4v+HaqUw8NVVOSADPkCVYgKY7Sd6THFq/vLliwFUOSbAZTtRmnHZTpRmEMBmO9GasdkO1YwVQ7UhAL6Q
-        R8YwF0G1IQBIEFvII2O83oE5DYbv7OwgXjMy+P79u8Lnd08+Hm1RJ10zCAAVTkC2nSTNoJhAtp0kzSAA
-        igmY7SRrBgGQBpDtZGkGAaAmkEYSNDMwAADfJ6H/wypDbwAAAABJRU5ErkJggg==
+        R8YwF0G1IQBIEFvII2O83oE5DYbv7OwgXjMy+P79u8Lnd48/Hm1RJ10zCAAVTkC2nSTNoJhAtp0kzSAA
+        igmY7SRrBgGQBpDtZGkGAaAmkEYSNDMwAADcx6H9rfHbUQAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="collisionEditModeBtn.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEeSURBVDhPpZI9boNAEIU3naVcIVXkk1BwgRwC+QZI7t1x
-        ATttpBSpuUMKVzS5RPwjBMiRwma+ZdbGgHEsP+lph2XeY2YY00VRFLOyLK2cT3r1f3jx4mNtbzbx4ufZ
+        ATttpBSpuUMKVzS5RPyDBMiRwma+ZdbGgHEsP+lph2XeY2YY00VRFLOyLK2cT3r1f3jx4mNtbzbx4ufZ
         uzUvr0cTwURTLqMr5uQ5z/Nf4UH4I8+ZMK7r+lFlDS6J0zS1URTZMAwdibnjXVVVU5Ubw8X87fNMnCSJ
         DYJgkLwj51gJg/ImnHyFxOVyZTffW0fitolWEjsD4E3omVJJQrjb7h2J2wbkSH6m8gZMGxP6vWZADoNV
         aQMxeGgbjLVADrkqPYGyfAtjHGwByGXshzjG3hA9+DWUdu03ytC/egvlwZJgwlcolX4hMXeIzxZpCFpJ
-        LGR93cA07q/yfTDmD7jcydidNi/1AAAAAElFTkSuQmCC
+        LGR93cA07q/yfTDmD5A+ycmmCfk/AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="tileEditModeBtn.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

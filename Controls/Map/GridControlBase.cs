@@ -485,7 +485,8 @@ namespace tileEngine.Controls
             //Check that the source rectangle is within bounds.
             if (sourceRect.Right > tex.Width || sourceRect.Bottom > tex.Height)
             {
-                DiagnosticsHook.LogMessage(21005, "Source rectangle draw for map tile outside of bounds.");
+                DiagnosticsHook.LogMessage(21005, $"Source rectangle draw for map tile ({tilePoint.X}, {tilePoint.Y}) outside of bounds.");
+                layer.Tiles.Remove(tilePoint);
                 return;
             }
 

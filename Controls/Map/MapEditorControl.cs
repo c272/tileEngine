@@ -239,10 +239,70 @@ namespace tileEngine.Controls
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
-            //switch (e.KeyCode)
-            //{
-            //    //Any shortcuts here.
-            //}
+
+            //Single-key shortcuts (eg. no CTRL/SHIFT).
+            if (e.Modifiers == Keys.None)
+            {
+                switch (e.KeyCode)
+                {
+                    //Tile Layer (1)
+                    case Keys.D1:
+                        EditMode = MapEditMode.Tiles;
+                        break;
+
+                    //Collision Layer (2)
+                    case Keys.D2:
+                        EditMode = MapEditMode.Collision;
+                        break;
+
+                    //Event Layer (3)
+                    case Keys.D3:
+                        EditMode = MapEditMode.Events;
+                        break;
+
+                    //Select Tool (V)
+                    case Keys.V:
+                        EditTool = MapEditTool.Select;
+                        break;
+
+                    //Area Select Tool (A)
+                    case Keys.A:
+                        EditTool = MapEditTool.AreaSelect;
+                        break;
+
+                    //Pencil Tool (P)
+                    case Keys.P:
+                        EditTool = MapEditTool.Pencil;
+                        break;
+
+                    //Grab and Pan (G)
+                    case Keys.G:
+                        EditTool = MapEditTool.GrabAndPan;
+                        break;
+
+                    //Delete selected tiles.
+                    case Keys.Delete:
+                        DeleteSelectedTiles();
+                        break;
+                }
+            }
+
+            //CTRL+(key) shortcuts.
+            else if (e.Modifiers.HasFlag(Keys.Control))
+            {
+                switch (e.KeyCode)
+                {
+                    //CTRL+(C)opy.
+                    case Keys.C:
+                        CopySelectedTiles();
+                        break;
+
+                    //CTRL+V (Paste)
+                    case Keys.V:
+                        PasteTiles();
+                        break;
+                }
+            }
         }
 
         /// <summary>
@@ -300,7 +360,8 @@ namespace tileEngine.Controls
                 return;
             }
 
-            //Not a left click, start the camera drag.
+            //Not a left click, start the camera drag and clear selection.
+            SelectedTiles = null;
             state = MapEditorState.MovingCamera;
             lastMouseLocation = e.Location;
         }
@@ -398,6 +459,34 @@ namespace tileEngine.Controls
                     Invalidate();
                     break;
             }
+        }
+
+        ////////////////////////////
+        /// SHORTCUT KEY ACTIONS ///
+        ////////////////////////////
+
+        /// <summary>
+        /// Deletes the currently selected tiles.
+        /// </summary>
+        private void DeleteSelectedTiles()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Pastes previously copied tiles at the selected location.
+        /// </summary>
+        private void PasteTiles()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Copies the currently selected tiles to clipboard.
+        /// </summary>
+        private void CopySelectedTiles()
+        {
+            throw new NotImplementedException();
         }
 
         ////////////////////

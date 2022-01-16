@@ -49,14 +49,18 @@
             this.MapEditor.BackgroundColour = System.Drawing.Color.White;
             this.MapEditor.BackgroundLineColour = System.Drawing.Color.LightGray;
             this.MapEditor.CollisionBackgroundColour = System.Drawing.Color.Red;
+            this.MapEditor.CollisionDrawLayer = null;
             this.MapEditor.CollisionForegroundColour = System.Drawing.Color.White;
             this.MapEditor.CollisionOpacity = 0.75F;
             this.MapEditor.CollisionPipSize = 2;
             this.MapEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MapEditor.DoCollisionDraw = false;
+            this.MapEditor.DoEventDraw = false;
             this.MapEditor.DoGridDraw = true;
             this.MapEditor.EditMode = tileEngine.Controls.MapEditMode.Tiles;
             this.MapEditor.EditTool = tileEngine.Controls.MapEditTool.Select;
             this.MapEditor.EventColour = System.Drawing.Color.Orange;
+            this.MapEditor.EventDrawLayer = null;
             this.MapEditor.EventOpacity = 0.75F;
             this.MapEditor.GridLineWidth = 2;
             this.MapEditor.GridStep = 30F;
@@ -66,6 +70,7 @@
             this.MapEditor.Name = "MapEditor";
             this.MapEditor.Palette = null;
             this.MapEditor.SelectedLayer = null;
+            this.MapEditor.SelectedTiles = null;
             this.MapEditor.SelectionColour = System.Drawing.Color.White;
             this.MapEditor.SelectionWidth = 2;
             this.MapEditor.Size = new System.Drawing.Size(423, 312);
@@ -106,8 +111,8 @@
             this.selectToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.selectToolButton.Name = "selectToolButton";
             this.selectToolButton.Size = new System.Drawing.Size(23, 25);
-            this.selectToolButton.Text = "Select";
-            this.selectToolButton.ToolTipText = "Select";
+            this.selectToolButton.Text = "Select (V)";
+            this.selectToolButton.ToolTipText = "Select (V)";
             this.selectToolButton.Click += new System.EventHandler(this.selectToolButton_Click);
             // 
             // panToolButton
@@ -119,8 +124,8 @@
             this.panToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.panToolButton.Name = "panToolButton";
             this.panToolButton.Size = new System.Drawing.Size(23, 25);
-            this.panToolButton.Text = "Grab & Pan";
-            this.panToolButton.ToolTipText = "Grab/Pan";
+            this.panToolButton.Text = "Grab & Pan (G)";
+            this.panToolButton.ToolTipText = "Grab/Pan (G)";
             this.panToolButton.Click += new System.EventHandler(this.panToolButton_Click);
             // 
             // areaSelectToolButton
@@ -132,7 +137,7 @@
             this.areaSelectToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.areaSelectToolButton.Name = "areaSelectToolButton";
             this.areaSelectToolButton.Size = new System.Drawing.Size(23, 25);
-            this.areaSelectToolButton.Text = "Area Select";
+            this.areaSelectToolButton.Text = "Area Select (A)";
             this.areaSelectToolButton.Click += new System.EventHandler(this.areaSelectToolButton_Click);
             // 
             // pencilToolButton
@@ -144,7 +149,7 @@
             this.pencilToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.pencilToolButton.Name = "pencilToolButton";
             this.pencilToolButton.Size = new System.Drawing.Size(23, 25);
-            this.pencilToolButton.Text = "Pencil";
+            this.pencilToolButton.Text = "Pencil (P)";
             this.pencilToolButton.Click += new System.EventHandler(this.pencilToolButton_Click);
             // 
             // toolStripSeparator1
@@ -165,7 +170,7 @@
             this.eventEditModeBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.eventEditModeBtn.Name = "eventEditModeBtn";
             this.eventEditModeBtn.Size = new System.Drawing.Size(23, 25);
-            this.eventEditModeBtn.Text = "Event Edit Mode";
+            this.eventEditModeBtn.Text = "Event Edit Mode (3)";
             this.eventEditModeBtn.Click += new System.EventHandler(this.eventEditModeBtn_Click);
             // 
             // collisionEditModeBtn
@@ -178,7 +183,7 @@
             this.collisionEditModeBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.collisionEditModeBtn.Name = "collisionEditModeBtn";
             this.collisionEditModeBtn.Size = new System.Drawing.Size(23, 25);
-            this.collisionEditModeBtn.Text = "Collision Edit Mode";
+            this.collisionEditModeBtn.Text = "Collision Edit Mode (2)";
             this.collisionEditModeBtn.Click += new System.EventHandler(this.collisionEditModeBtn_Click);
             // 
             // tileEditModeBtn
@@ -193,7 +198,7 @@
             this.tileEditModeBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tileEditModeBtn.Name = "tileEditModeBtn";
             this.tileEditModeBtn.Size = new System.Drawing.Size(23, 25);
-            this.tileEditModeBtn.Text = "Tile Edit Mode";
+            this.tileEditModeBtn.Text = "Tile Edit Mode (1)";
             this.tileEditModeBtn.Click += new System.EventHandler(this.tileEditModeBtn_Click);
             // 
             // toolStripLabel1
