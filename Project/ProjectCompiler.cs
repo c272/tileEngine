@@ -137,6 +137,7 @@ namespace tileEngine
 
             //Copy the linked assemblies for the project into the "external" subfolder.
             Logger?.LogMessage("Copying linked external game assemblies into 'external' directory...");
+            filesCopied = 0;
             try
             {
                 //Check that the DLL exists to be copied.
@@ -153,6 +154,7 @@ namespace tileEngine
                 if (File.Exists(outputLoc))
                     File.Delete(outputLoc);
                 File.Copy(dllLoc, outputLoc);
+                filesCopied++;
 
                 //todo: copy external DLL's dependencies
             }

@@ -332,6 +332,30 @@ namespace tileEngine
             return error;
         }
 
+        /// <summary>
+        /// Triggered when the "Clean Project" button is clicked.
+        /// </summary>
+        private void cleanProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //Delete contents of the compile directory, if there is one.
+            if (ProjectCompiler.CompilePath == null)
+                return;
+            try
+            {
+                //Delete all child files and folders.
+                var dirInfo = new DirectoryInfo(ProjectCompiler.CompilePath);
+                foreach (var file in dirInfo.GetFiles())
+                    File.Delete(file.FullName);
+                foreach (DirectoryInfo subDir in dirInfo.GetDirectories())
+                    subDir.Delete(true);
+        
+            }
+            catch (Exception ex)
+            {
+                DarkMessageBox.ShowError($"An error occured while cleaning the project: {ex.Message}", "tileEngine - Clean Error");
+            }
+        }
+
         ////////////////////////////
         /// HOTKEY FUNCTIONALITY ///
         ////////////////////////////

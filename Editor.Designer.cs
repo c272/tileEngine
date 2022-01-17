@@ -77,6 +77,7 @@ namespace tileEngine
             this.maximizeBtn = new System.Windows.Forms.PictureBox();
             this.closeWindowBtn = new System.Windows.Forms.PictureBox();
             this.logoPicture = new System.Windows.Forms.PictureBox();
+            this.cleanProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -305,7 +306,7 @@ namespace tileEngine
             this.startProjectBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.startProjectBtn.Image = ((System.Drawing.Image)(resources.GetObject("startProjectBtn.Image")));
             this.startProjectBtn.Name = "startProjectBtn";
-            this.startProjectBtn.Size = new System.Drawing.Size(224, 26);
+            this.startProjectBtn.Size = new System.Drawing.Size(209, 26);
             this.startProjectBtn.Text = "Start Project";
             this.startProjectBtn.Click += new System.EventHandler(this.startProjectBtn_Click);
             // 
@@ -315,7 +316,7 @@ namespace tileEngine
             this.toolStripSeparator7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.toolStripSeparator7.Margin = new System.Windows.Forms.Padding(0, 0, 0, 1);
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(221, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(206, 6);
             // 
             // projectPropertiesBtn
             // 
@@ -323,7 +324,7 @@ namespace tileEngine
             this.projectPropertiesBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.projectPropertiesBtn.Image = ((System.Drawing.Image)(resources.GetObject("projectPropertiesBtn.Image")));
             this.projectPropertiesBtn.Name = "projectPropertiesBtn";
-            this.projectPropertiesBtn.Size = new System.Drawing.Size(224, 26);
+            this.projectPropertiesBtn.Size = new System.Drawing.Size(209, 26);
             this.projectPropertiesBtn.Text = "Project Properties";
             // 
             // toolStripSeparator8
@@ -360,7 +361,7 @@ namespace tileEngine
             this.menuStrip.Location = new System.Drawing.Point(42, 9);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip.Size = new System.Drawing.Size(227, 28);
+            this.menuStrip.Size = new System.Drawing.Size(377, 28);
             this.menuStrip.TabIndex = 3;
             this.menuStrip.Text = "darkMenuStrip1";
             // 
@@ -515,7 +516,8 @@ namespace tileEngine
             this.buildToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.buildToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.buildBtn,
-            this.rebuildProjectToolStripMenuItem});
+            this.rebuildProjectToolStripMenuItem,
+            this.cleanProjectToolStripMenuItem});
             this.buildToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.buildToolStripMenuItem.Name = "buildToolStripMenuItem";
             this.buildToolStripMenuItem.Size = new System.Drawing.Size(57, 24);
@@ -527,7 +529,7 @@ namespace tileEngine
             this.buildBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.buildBtn.Image = ((System.Drawing.Image)(resources.GetObject("buildBtn.Image")));
             this.buildBtn.Name = "buildBtn";
-            this.buildBtn.Size = new System.Drawing.Size(193, 26);
+            this.buildBtn.Size = new System.Drawing.Size(224, 26);
             this.buildBtn.Text = "Build Project";
             this.buildBtn.Click += new System.EventHandler(this.buildBtn_Click);
             // 
@@ -536,7 +538,7 @@ namespace tileEngine
             this.rebuildProjectToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.rebuildProjectToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.rebuildProjectToolStripMenuItem.Name = "rebuildProjectToolStripMenuItem";
-            this.rebuildProjectToolStripMenuItem.Size = new System.Drawing.Size(193, 26);
+            this.rebuildProjectToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.rebuildProjectToolStripMenuItem.Text = "Rebuild Project";
             // 
             // projectNameLabel
@@ -610,6 +612,15 @@ namespace tileEngine
             this.logoPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.logoPicture.TabIndex = 4;
             this.logoPicture.TabStop = false;
+            // 
+            // cleanProjectToolStripMenuItem
+            // 
+            this.cleanProjectToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.cleanProjectToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.cleanProjectToolStripMenuItem.Name = "cleanProjectToolStripMenuItem";
+            this.cleanProjectToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.cleanProjectToolStripMenuItem.Text = "Clean Project";
+            this.cleanProjectToolStripMenuItem.Click += new System.EventHandler(this.cleanProjectToolStripMenuItem_Click);
             // 
             // Editor
             // 
@@ -699,6 +710,7 @@ namespace tileEngine
         private System.Windows.Forms.ToolStripMenuItem rebuildProjectToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
         private System.Windows.Forms.ToolStripButton reloadAssemblyBtn;
+        private System.Windows.Forms.ToolStripMenuItem cleanProjectToolStripMenuItem;
     }
 }
 

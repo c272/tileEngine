@@ -30,6 +30,10 @@ namespace tileEngine.Controls
         }
 
         //Set unsaved changes when things are altered.
-        private void windowSizeChanged(object sender, EventArgs e) { Document.Node.UnsavedChanges = true; }
+        private void windowSizeChanged(object sender, EventArgs e) 
+        {
+            ProjectManager.CurrentProject.WindowSize = new Microsoft.Xna.Framework.Point((int)windowSizeX.Value, (int)windowSizeY.Value);
+            Document.Node.UnsavedChanges = true; 
+        }
     }
 }

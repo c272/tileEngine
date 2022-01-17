@@ -23,4 +23,4 @@ Error codes start from TE-1001, and go upwards.
 The current highest used error code is TE-1006.
 
 Internal error codes start from TE-21000.
-The current highest used error code is TE-21010.
+The current highest used error code is TE-21011.
