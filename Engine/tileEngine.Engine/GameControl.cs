@@ -72,6 +72,7 @@ namespace tileEngine.Engine
         public GameControl()
         {
             Instance = this;
+            TileEngine.SetInstance(this);
         }
 
         /// <summary>
