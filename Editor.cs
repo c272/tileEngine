@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using tileEngine.SDK.Diagnostics;
+using System.IO;
 
 namespace tileEngine
 {
@@ -268,16 +269,7 @@ namespace tileEngine
         /// </summary>
         private void buildBtn_Click(object sender, EventArgs e)
         {
-            //Always save all before a compile.
-            saveAll(null, null);
-
-            //Reset output window, launch a compile.
-            outputWindow.Reset();
-            outputWindow.DockGroup.SetVisibleContent(outputWindow);
-            outputWindow.Focus();
-            string error = ProjectCompiler.Compile();
-            if (error != null)
-                DarkMessageBox.ShowError("Compile Error: " + error, "tileEngine - Placeholder Compile Error");
+            doBuild();
         }
 
         /// <summary>
@@ -302,6 +294,42 @@ namespace tileEngine
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             closeWindowBtn_Click(null, null);
+        }
+
+        /// <summary>
+        /// Triggered when the user clicks "start project".
+        /// </summary>
+        private void startProjectBtn_Click(object sender, EventArgs e)
+        {
+            //Compile the project first.
+            if (doBuild() != null)
+                return;
+
+            //Open the player via. compile folder.
+            string playerLoc = Path.Combine(ProjectCompiler.CompilePath, "tileEngine.Player.exe");
+            Process.Start(new ProcessStartInfo()
+            {
+                FileName = playerLoc,
+                WorkingDirectory = ProjectCompiler.CompilePath
+            });
+        }
+
+        /// <summary>
+        /// Performs a build of the current project, and returns an error code if present.
+        /// </summary>
+        private string doBuild()
+        {
+            //Always save all before a compile.
+            saveAll(null, null);
+
+            //Reset output window, launch a compile.
+            outputWindow.Reset();
+            outputWindow.DockGroup.SetVisibleContent(outputWindow);
+            outputWindow.Focus();
+            string error = ProjectCompiler.Compile();
+            if (error != null)
+                DarkMessageBox.ShowError("Compile Error: " + error, "tileEngine - Compile Error");
+            return error;
         }
 
         ////////////////////////////

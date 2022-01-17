@@ -251,7 +251,6 @@
       <DependentUpon>ProjectItemSelector.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SelectorItem.cs" />
-    <Compile Include="Project\AppDomainLoader.cs" />
     <Compile Include="Project\ProjectCompiler.cs" />
     <Compile Include="Tree\ProjectFolderNode.cs" />
     <Compile Include="Tree\ProjectAssetNode.cs" />
@@ -468,7 +467,7 @@
     <Error Condition="!Exists('packages\MonoGame.Forms.DX.2.4.0\Build\MonoGame.Forms.DX.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\MonoGame.Forms.DX.2.4.0\Build\MonoGame.Forms.DX.targets'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>if not exist "$(ProjectDir)$(OutDir)resources" mkdir "$(ProjectDir)$(OutDir)resources"
-copy "$(ProjectDir)Resources\Static\"  "$(ProjectDir)$(OutDir)resources\"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

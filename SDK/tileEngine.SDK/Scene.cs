@@ -14,6 +14,7 @@ namespace tileEngine.SDK
 {
     /// <summary>
     /// Represents a single scene within the tileEngine engine.
+    /// All scenes must have an accessible zero-parameter constructor for instance creation.
     /// </summary>
     [ProtoContract]
     public abstract class Scene
@@ -40,6 +41,10 @@ namespace tileEngine.SDK
         /// </summary>
         public float Zoom { get; protected set; } = 1f;
 
+        //////////////////
+        /// PUBLIC API ///
+        //////////////////
+
         /// <summary>
         /// Draws the scene.
         /// </summary>
@@ -61,7 +66,15 @@ namespace tileEngine.SDK
         /// <summary>
         /// Dispose any active assets in the current scene.
         /// </summary>
-        public abstract void Dispose();
+        public virtual void Dispose() { }
+
+        /// <summary>
+        /// Sets the tile map on this scene to the provided new map.
+        /// </summary>
+        public void SetTileMap(TileMap map)
+        {
+            Map = map;
+        }
 
         /////////////////////////
         /// UTILITY FUNCTIONS ///

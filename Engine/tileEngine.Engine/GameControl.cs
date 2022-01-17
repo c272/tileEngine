@@ -8,13 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using tileEngine.SDK.Diagnostics;
 
 namespace tileEngine.Engine
 {
     /// <summary>
     /// Represents a control where all MonoGame output and logic is routed.
     /// </summary>
-    public class GameControl : MonoGameControl
+    public class GameControl : MonoGameControl, ITileEngine
     {
         /// <summary>
         /// Singleton instance of this control.
@@ -61,10 +62,62 @@ namespace tileEngine.Engine
         }
         private string contentDir = null;
 
+        /// <summary>
+        /// The game data container loaded for this control.
+        /// Contains map information, and other non-XNB and non-C# assembly data.
+        /// </summary>
+        public GameDataContainer GameData { get; private set; } = null;
+
         //Singleton constructor.
         public GameControl()
         {
             Instance = this;
+        }
+
+        /// <summary>
+        /// Sets the current scene of the game to a new instance of the given scene type.
+        /// </summary>
+        public void SetScene(Type sceneType)
+        {
+            //Does the type inherit from Scene, and is it non-abstract?
+            if (!sceneType.IsSubclassOf(typeof(Scene)) || sceneType.IsAbstract)
+            {
+                DiagnosticsHook.LogMessage(21004, $"Cannot switch to scene '{sceneType.Name}', type does not inherit from scene/is abstract.");
+                return;
+            }
+
+            //Yes, attempt to create an instance.
+            Scene sceneInstance = null;
+            try
+            {
+                sceneInstance = (Scene)Activator.CreateInstance(sceneType);
+            }
+            catch (Exception ex)
+            {
+                DiagnosticsHook.LogMessage(21005, $"Failed to create scene instance for '{sceneType.Name}':\n{ex.Message}");
+                return;
+            }
+
+            //If there is a map registered for this scene in the game data, load it.
+            if (GameData != null && GameData.Maps.ContainsKey(sceneType.FullName))
+                sceneInstance.SetTileMap(GameData.Maps[sceneType.FullName]);
+
+            //Load the scene.
+            Scene = sceneInstance;
+        }
+
+        /// <summary>
+        /// Sets the game data container for this game control instance.
+        /// Once the container has been loaded, no other containers can then be loaded.
+        /// </summary>
+        public void SetGameData(GameDataContainer container)
+        {
+            if (GameData != null)
+            {
+                DiagnosticsHook.LogMessage(21003, "Failed to load game data container - there was already a game data container loaded.");
+                return;
+            }
+            GameData = container;
         }
 
         /// <summary>

@@ -60,12 +60,17 @@
     <Compile Include="Attributes\SelectorMetadata.cs" />
     <Compile Include="Diagnostics\DiagnosticsHook.cs" />
     <Compile Include="Diagnostics\DiagnosticsMessage.cs" />
+    <Compile Include="Serializer\AppDomainLoader.cs" />
+    <Compile Include="Serializer\GameDataContainer.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="Map\TileEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene.cs" />
     <Compile Include="Map\TileMap.cs" />
     <Compile Include="Map\TileData.cs" />
+    <Compile Include="Serializer\ProtobufSerializer.cs" />
+    <Compile Include="TileEngine.cs" />
+    <Compile Include="TileEngineGame.cs" />
     <Compile Include="Utility\MathsUtility.cs" />
     <Compile Include="Utility\RectF.cs" />
     <Compile Include="Utility\Snowflake.cs" />

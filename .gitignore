@@ -11,3 +11,8 @@
 /Player/tileEngine.Player
 /SDK/tileEngine.SDK/bin/Debug
 /SDK/tileEngine.SDK/obj/Debug
+/Engine/tileEngine.Engine/bin/Release
+/Engine/tileEngine.Engine/obj/Release
+/obj/Release
+/SDK/tileEngine.SDK/bin/Release
+/SDK/tileEngine.SDK/obj/Release

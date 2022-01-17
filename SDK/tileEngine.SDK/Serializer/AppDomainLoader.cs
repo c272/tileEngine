@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace tileEngine
+namespace tileEngine.SDK.Serializer
 {
     /// <summary>
     /// Allows for the loading of an assembly in a separate domain without loading in the
