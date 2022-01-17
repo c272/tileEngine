@@ -117,7 +117,26 @@ namespace tileEngine.SDK
         /// <summary>
         /// Updates the scene object based on the time from the previous update.
         /// </summary>
-        public virtual void Update(GameTime delta) { }
+        public virtual void Update(GameTime delta) 
+        { 
+            //Update all GameObjects.
+            for (int i = 0; i < GameObjects.Count; i++)
+            {
+                GameObjects[i].Update(delta);
+            }
+
+            //Collision check.
+            CheckCollisions();
+        }
+
+        /// <summary>
+        /// Checks collisions between game objects and the collision hull.
+        /// </summary>
+        private void CheckCollisions()
+        {
+            //Loop over game objects. Are they in a tile that is a collider?
+            //...
+        }
 
         /// <summary>
         /// Dispose any active assets in the current scene.
