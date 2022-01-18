@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using tileEngine.SDK.Diagnostics;
+using Microsoft.Xna.Framework.Input;
+using tileEngine.SDK.Input;
 
 namespace tileEngine.Engine
 {
@@ -67,6 +69,11 @@ namespace tileEngine.Engine
         /// Contains map information, and other non-XNB and non-C# assembly data.
         /// </summary>
         public GameDataContainer GameData { get; private set; } = null;
+        
+        /// <summary>
+        /// The keyboard input handler for this game control.
+        /// </summary>
+        public KeyboardInputHandler KeyboardInput { get; set; } = new KeyboardInputHandler();
 
         //Singleton constructor.
         public GameControl()
@@ -156,6 +163,9 @@ namespace tileEngine.Engine
         {
             base.Update(delta);
             Scene?.Update(delta);
+
+            //Update input handlers.
+            KeyboardInput?.Update(Keyboard.GetState());
         }
 
         /// <summary>

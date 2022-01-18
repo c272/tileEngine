@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using tileEngine.SDK.Input;
 
 namespace tileEngine.SDK
 {
@@ -32,6 +33,11 @@ namespace tileEngine.SDK
     /// </summary>
     public interface ITileEngine
     {
+        /// <summary>
+        /// The keyboard input handler for this tileEngine instance.
+        /// </summary>
+        KeyboardInputHandler KeyboardInput { get; set; }
+
         /// <summary>
         /// Changes the scene to the given scene type.
         /// </summary>
