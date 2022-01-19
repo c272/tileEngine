@@ -69,6 +69,7 @@
     <Compile Include="Input\InputHandler.cs" />
     <Compile Include="Input\KeyBindingData.cs" />
     <Compile Include="Input\KeyboardInputHandler.cs" />
+    <Compile Include="Map\TileEventData.cs" />
     <Compile Include="Serializer\AppDomainLoader.cs" />
     <Compile Include="Serializer\GameDataContainer.cs" />
     <Compile Include="GameObject.cs" />

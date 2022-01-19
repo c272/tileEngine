@@ -1,0 +1,76 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../..",
+          "files": [
+            "tileEngine.Editor.csproj",
+            "SDK/tileEngine.SDK/tileEngine.SDK.csproj",
+            "Engine/tileEngine.Engine/tileEngine.csproj",
+            "Player/tileEngine.Player/tileEngine.Player.csproj"
+          ],
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        }
+      ],
+      "dest": "obj/api"
+    }
+  ],
+  "build": {
+    "globalMetadata": {
+      "_appTitle": "tileEngine - Documentation",
+      "_appLogoPath": "images/tileEngineLogo.png",
+      "_enableSearch": true
+    },
+    "content": [
+      {
+        "files": [
+          "api/**.yml"
+        ],
+        "cwd": "obj"
+      },
+      {
+        "files": [
+          "api/*.md",
+          "articles/**.md",
+          "toc.yml",
+          "*.md"
+        ],
+        "exclude": [
+          "obj/**",
+          "_site/**"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ],
+        "exclude": [
+          "obj/**",
+          "_site/**"
+        ]
+      }
+    ],
+    "overwrite": [
+      {
+        "files": [
+          "apidoc/**.md"
+        ],
+        "exclude": [
+          "obj/**",
+          "_site/**"
+        ]
+      }
+    ],
+    "dest": "_site",
+    "template": [
+      "statictoc"
+    ]
+  }
+}

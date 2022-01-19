@@ -16,3 +16,11 @@
 /obj/Release
 /SDK/tileEngine.SDK/bin/Release
 /SDK/tileEngine.SDK/obj/Release
+/Documentation/tileEngine.Docs/obj/Debug
+/Documentation/tileEngine.Docs/obj
+/Documentation/tileEngine.Docs/bin/Debug
+/Documentation/tileEngine.Docs/_site
+/Documentation/tileEngine.Docs/log.txt
+/Engine/tileEngine.Engine/obj/xdoc/cache
+/obj/xdoc/cache
+/SDK/tileEngine.SDK/obj/xdoc/cache
