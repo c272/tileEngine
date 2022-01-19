@@ -134,6 +134,10 @@ namespace tileEngine.Controls
         //Tracking variables for mouse drag on the graph.
         private Point lastMouseLocation;
 
+        //Tiles that have been copied from the map, and their originating mode.
+        private List<List<object>> copiedTiles = null;
+        private MapEditMode copiedTilesMode = MapEditMode.Tiles;
+
         ///////////////////////////
         /// METHODS & OVERRIDES ///
         ///////////////////////////
@@ -478,7 +482,20 @@ namespace tileEngine.Controls
         /// </summary>
         private void PasteTiles()
         {
-            throw new NotImplementedException();
+            //If there is no selection, ignore.
+            if (SelectedTiles == null)
+                return;
+
+            //If the current mode differs from the originating mode, ignore.
+            if (EditMode != copiedTilesMode)
+            {
+                DarkMessageBox.ShowError($"Cannot copy tiles from {Enum.GetName(typeof(MapEditMode), copiedTilesMode)} mode into {Enum.GetName(typeof(MapEditMode), EditMode)} mode.", "tileEngine - Paste Error");
+                return;
+            }
+
+            //...
+            OnSelectedLayerEdited?.Invoke();
+            Invalidate();
         }
 
         /// <summary>
@@ -486,7 +503,41 @@ namespace tileEngine.Controls
         /// </summary>
         private void CopySelectedTiles()
         {
-            throw new NotImplementedException();
+            //If there is no selection, ignore.
+            if (SelectedTiles == null)
+                return;
+
+            //Set the copy source.
+            copiedTilesMode = EditMode;
+
+            //Create an array of tiles to copy from the rectangle.
+            var selected = (Rectangle)SelectedTiles;
+            copiedTiles = new List<List<object>>();
+            for (int y=selected.Top; y<=selected.Bottom; y++)
+            {
+                copiedTiles.Add(new List<object>());
+                for (int x=selected.Left; x<=selected.Right; x++)
+                {
+                    Point tile = new Point(x, y);
+
+                    //Get the tile to add here. If no tile, make a null entry.
+                    object toAdd = null;
+                    if (EditMode == MapEditMode.Tiles && SelectedLayer.Tiles.ContainsKey(tile.ToXnaPoint()))
+                    {
+                        toAdd = SelectedLayer.Tiles[tile.ToXnaPoint()];
+                    }
+                    else if (EditMode == MapEditMode.Events && SelectedLayer.Events.ContainsKey(tile.ToXnaPoint()))
+                    {
+                        toAdd = SelectedLayer.Events[tile.ToXnaPoint()];
+                    }
+                    else if (EditMode == MapEditMode.Collision && SelectedLayer.CollisionHull.ContainsKey(tile.ToXnaPoint()))
+                    {
+                        toAdd = SelectedLayer.CollisionHull[tile.ToXnaPoint()];
+                    }
+
+                    copiedTiles.Last().Add(toAdd);
+                }
+            }
         }
 
         ////////////////////
