@@ -32,7 +32,7 @@ namespace tileEngine.SDK.Map
     public class TileLayer : Snowflake
     {
         /// <summary>
-        /// The name of this layer. Not relevant apart from in the editor.
+        /// The name of this layer.
         /// </summary>
         [ProtoMember(4)]
         public string Name { get; set; } = "New Layer";

@@ -64,8 +64,10 @@
     <Compile Include="Components\SpriteComponent.cs" />
     <Compile Include="Diagnostics\DiagnosticsHook.cs" />
     <Compile Include="Diagnostics\DiagnosticsMessage.cs" />
+    <Compile Include="Input\AxisBindingData.cs" />
     <Compile Include="Input\GenericInput.cs" />
     <Compile Include="Input\InputHandler.cs" />
+    <Compile Include="Input\KeyBindingData.cs" />
     <Compile Include="Input\KeyboardInputHandler.cs" />
     <Compile Include="Serializer\AppDomainLoader.cs" />
     <Compile Include="Serializer\GameDataContainer.cs" />

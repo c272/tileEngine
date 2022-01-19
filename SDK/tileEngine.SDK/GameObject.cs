@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using tileEngine.SDK.Components;
+using tileEngine.SDK.Diagnostics;
 using tileEngine.Utility;
 
 namespace tileEngine.SDK
@@ -17,10 +19,10 @@ namespace tileEngine.SDK
         public Vector2 Position { get; set; } = new Vector2();
 
         /// <summary>
-        /// The layer that this game object is on.
+        /// The ID of the layer that this game object is on.
         /// This corresponds to what layer on the map events/collisions will occur on.
         /// </summary>
-        public int Layer { get; set; } = 0;
+        public int Layer { get; private set; } = 0;
 
         /// <summary>
         /// The components currently attached to this GameObject.
@@ -41,6 +43,34 @@ namespace tileEngine.SDK
             }
         }
         internal Scene _scene = null;
+
+        
+        /// <summary>
+        /// Sets the layer based on a search for the given layer name.
+        /// Not guaranteed to find a single layer, as layers are not bound to have unique names.
+        /// If no layer is found, the layer is not changed.
+        /// </summary>
+        public void SetLayer(string name)
+        {
+            //Throw if no scene.
+            if (Scene == null)
+            {
+                DiagnosticsHook.LogMessage(21012, "Attempted to switch layer by name, but the GameObject was not in a scene.", DiagnosticsSeverity.Warning);
+                return;
+            }
+
+            //Get the layer out, set ID.
+            var layer = Scene.Map.Layers.FirstOrDefault(x => x.Name == name);
+            if (layer == null)
+                return;
+
+            Layer = layer.ID;
+        }
+
+        /// <summary>
+        /// Sets the current layer to the given layer ID.
+        /// </summary>
+        public void SetLayer(int layerID) => Layer = layerID;
 
         /// <summary>
         /// Called every update tick.

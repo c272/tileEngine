@@ -18,6 +18,12 @@
         public delegate void OnDiagnosticsMessageHandler(DiagnosticsMessage msg);
 
         /// <summary>
+        /// Triggered when a new debug message is logged in the engine.
+        /// </summary>
+        public static event OnDebugMessageHandler OnDebugMessage;
+        public delegate void OnDebugMessageHandler(string msg);
+
+        /// <summary>
         /// Logs a diagnostics message to all diagnostics hooks.
         /// </summary>
         /// <param name="code">The title of the message.</param>
@@ -35,6 +41,18 @@
             //If we're in debug mode, also output to console.
             #if DEBUG
                 System.Diagnostics.Debug.WriteLine($"[TE-{code}] {severity} - {msg}");
+            #endif
+        }
+
+        /// <summary>
+        /// Logs a debug message to all diagnostics hooks.
+        /// </summary>
+        /// <param name="msg">The debug message to log.</param>
+        public static void DebugMessage(string msg)
+        {
+            //This only ever runs in debug mode.
+            #if DEBUG
+                OnDebugMessage?.Invoke(msg);
             #endif
         }
     }

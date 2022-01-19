@@ -15,6 +15,7 @@ using ProtoBuf.Meta;
 using System.IO;
 using tileEngine.SDK.Diagnostics;
 using System.Reflection;
+using tileEngine.SDK.Input;
 
 namespace tileEngine.Player
 {
@@ -45,6 +46,11 @@ namespace tileEngine.Player
         /// Used by 3rd parties for running scene independent actions such as initialization and shutdown/disposal.
         /// </summary>
         TileEngineGame gameMain = null;
+
+        /// <summary>
+        /// The debug window for the player. Used while in development mode.
+        /// </summary>
+        DebugWindow debugWindow = null;
 
         public Main()
         {
@@ -77,6 +83,12 @@ namespace tileEngine.Player
             //Load the game data container into the engine.
             game.SetGameData(gameData);
 
+            //Start debug window if in debug mode.
+            #if DEBUG
+            debugWindow = new DebugWindow();
+            game.KeyboardInput.AddBinding(Microsoft.Xna.Framework.Input.Keys.F12, "OpenDebug", false, false, openDebugWindow);
+            #endif
+
             //Hook for running when initialized. If already initialized, start now.
             if (game.Initialized)
             {
@@ -84,6 +96,27 @@ namespace tileEngine.Player
                 return;
             }
             game.OnInitialized += gameInitialized;
+        }
+
+        ///////////////////////////
+        /// FORM EVENT HANDLERS ///
+        ///////////////////////////
+
+        /// <summary>
+        /// Triggered when the form is closing for any reason.
+        /// </summary>
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            gameMain?.Shutdown();
+            base.OnFormClosing(e);
+        }
+
+        /// <summary>
+        /// Shows the debug window when the appropriate key is pressed.
+        /// </summary>
+        private void openDebugWindow()
+        {
+            debugWindow?.Show();
         }
 
         /// <summary>
@@ -94,15 +127,6 @@ namespace tileEngine.Player
             //Run main class' initialization method to start the game.
             gameMain.Initialize();
             this.Visible = true;
-        }
-
-        /// <summary>
-        /// Triggered when the form is closing for any reason.
-        /// </summary>
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            gameMain?.Shutdown();
-            base.OnFormClosing(e);
         }
 
         /// <summary>

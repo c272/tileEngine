@@ -174,11 +174,12 @@ namespace tileEngine.Engine
         /// </summary>
         protected override void Update(GameTime delta)
         {
-            base.Update(delta);
-            Scene?.Update(delta);
-
             //Update input handlers.
             KeyboardInput?.Update(Keyboard.GetState());
+
+            //Inputs are updated, now do scenes.
+            base.Update(delta);
+            Scene?.Update(delta);
         }
 
         /// <summary>

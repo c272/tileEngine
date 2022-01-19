@@ -22,6 +22,11 @@ namespace tileEngine.SDK
     public abstract class Scene
     {
         /// <summary>
+        /// Utility texture, single pixel texture used for drawing solid colours.
+        /// </summary>
+        public static Texture2D PointTexture { get; private set; } = null;
+
+        /// <summary>
         /// The game objects that are currently a part of this scene.
         /// </summary>
         public List<GameObject> GameObjects { get; private set; } = new List<GameObject>();
@@ -36,7 +41,7 @@ namespace tileEngine.SDK
         /// The current location of the camera in this scene.
         /// Represents the top left of the current view.
         /// </summary>
-        public Vector2 CameraPosition { get; protected set; } = new Vector2(0, 0);
+        public Vector2 CameraPosition { get; set; } = new Vector2(0, 0);
 
         /// <summary>
         /// The current zoom of the camera in this scene.
@@ -77,12 +82,18 @@ namespace tileEngine.SDK
         /// </summary>
         public void Draw(SpriteBatch spriteBatch)
         {
+            //Generate point texture if null.
+            if (PointTexture == null)
+            {
+                PointTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+                PointTexture.SetData(new Color[] { Color.White });
+            }
+
             //Calculate the top-left most and bottom-right most tile to draw.
-            Vector2 topLeft = ToGridLocation(new Point(0, 0));
-            Vector2 bottomRight = ToGridLocation(new Point(spriteBatch.GraphicsDevice.PresentationParameters.BackBufferWidth,
-                                                           spriteBatch.GraphicsDevice.PresentationParameters.BackBufferHeight));
-            Point topLeftTile = new Point((int)topLeft.X, (int)topLeft.Y);
-            Point bottomRightTile = new Point((int)bottomRight.X, (int)bottomRight.Y);
+            Vector2 topLeft = CameraPosition;
+            Vector2 bottomRight = ToGridLocation(new Point(spriteBatch.GraphicsDevice.PresentationParameters.BackBufferWidth, spriteBatch.GraphicsDevice.PresentationParameters.BackBufferHeight));
+            Point topLeftTile = GridToTileLocation(topLeft);
+            Point bottomRightTile = GridToTileLocation(bottomRight, true);
 
             //Begin layer draws.
             spriteBatch.Begin();
@@ -110,25 +121,25 @@ namespace tileEngine.SDK
 
                         //Get the texture from cache, draw to screen.
                         Texture2D tileTex = tileTextureCache[tileData.TextureID];
-                        float pixelsPerTile = Zoom * Map.TileTextureSize;
-                        Vector2 screenPos = new Vector2(curTile.X * pixelsPerTile, curTile.Y * pixelsPerTile);
+                        Vector2 gridPos = TileToGridLocation(curTile);
+                        Vector2 screenPos = ToScreenPointF(gridPos);
                         Rectangle sourceRect = new Rectangle(tileData.Position.X * Map.TileTextureSize,
                                                              tileData.Position.Y * Map.TileTextureSize,
                                                              Map.TileTextureSize, Map.TileTextureSize);
-                        float relativeScale = pixelsPerTile / Map.TileTextureSize;
 
-                        spriteBatch.Draw(tileTex, screenPos, sourceRect, Color.White * layer.Opacity, 0f, new Vector2(0,0), 
-                                         new Vector2(relativeScale, relativeScale), SpriteEffects.None, 0);
+                        spriteBatch.Draw(tileTex, screenPos, sourceRect, Color.White * layer.Opacity, 0f, new Vector2(0, 0),
+                                         new Vector2(Zoom, Zoom), SpriteEffects.None, 0);
                     }
                 }
 
-                //Draw the game objects for this layer.
+                //Draw any game object components for this layer.
                 var layerObjects = GameObjects.Where(x => x.Layer == layer.ID).ToList();
                 for (int i = 0; i < layerObjects.Count; i++)
                 {
-                    //...
+                    layerObjects[i].Components.ForEach(x => x.Draw(layerObjects[i], spriteBatch));
                 }
             }
+
             spriteBatch.End();
         }
 
@@ -163,6 +174,11 @@ namespace tileEngine.SDK
             //Loop over game objects, check any attached colliders.
             for (int i=0; i<GameObjects.Count; i++)
             {
+                //No collisions if layer is invalid.
+                if (!Map.Layers.Any(x => x.ID == GameObjects[i].Layer))
+                    continue;
+                var layer = Map.Layers.Find(x => x.ID == GameObjects[i].Layer);
+
                 //Get colliders for this object.
                 var colliders = GameObjects[i].Components.Where(x => x is ColliderComponent)
                                                          .Select(x => (ColliderComponent)x)
@@ -173,10 +189,6 @@ namespace tileEngine.SDK
                 //Process whether there are colliding tiles.
                 foreach (var collider in colliders)
                 {
-                    //No collisions if layer is invalid.
-                    if (GameObjects[i].Layer >= Map.Layers.Count)
-                        break;
-
                     //Attempt to move the GameObject away from any colliding tiles.
                     //Limit to 5 iterations per update loop.
                     int limit = 5;
@@ -184,15 +196,21 @@ namespace tileEngine.SDK
                     do
                     {
                         //If no colliding tiles, break.
-                        var collidingTiles = collider.Colliding(GameObjects[i], Map.Layers[GameObjects[i].Layer]);
+                        var collidingTiles = collider.Colliding(GameObjects[i], layer);
                         if (collidingTiles.Count == 0)
                             break;
 
                         //Step GameObject away from first colliding tile.
-                        Vector2 vectorToTile = new Vector2(collidingTiles[0].X - GameObjects[i].Position.X,
-                                                           collidingTiles[0].Y - GameObjects[i].Position.Y);
+                        Vector2 tileGridLoc = TileToGridLocation(collidingTiles[0]);
+                        Vector2 vectorToTile = new Vector2(tileGridLoc.X + (Map.TileTextureSize / 2f) - GameObjects[i].Position.X,
+                                                           tileGridLoc.Y + (Map.TileTextureSize / 2f) - GameObjects[i].Position.Y);
                         vectorToTile.Normalize();
-                        GameObjects[i].Position -= vectorToTile * 0.1f;
+                        do
+                        {
+                            GameObjects[i].Position -= vectorToTile * 0.01f;
+                        }
+                        while (collider.CollidingWith(GameObjects[i], layer, collidingTiles[0]));
+                        iteration++;
                     }
                     while (iteration < limit);
                 }
@@ -234,6 +252,26 @@ namespace tileEngine.SDK
             Point tlScreen = ToScreenPoint(topLeft);
             Point brScreen = ToScreenPoint(bottomRight);
             return new Rectangle(tlScreen, new Point(brScreen.X - tlScreen.X, brScreen.Y - tlScreen.Y));
+        }
+
+        /// <summary>
+        /// Converts a tile coordinate into a grid location.
+        /// </summary>
+        public Vector2 TileToGridLocation(Point tileLocation)
+        {
+            return new Vector2(tileLocation.X * Map.TileTextureSize, tileLocation.Y * Map.TileTextureSize);
+        }
+
+        /// <summary>
+        /// Converts a given grid location to the appropriate tile coordinate.
+        /// By default rounds to the closest tile to the top left of the point given.
+        /// </summary>
+        /// <param name="roundUp">Whether to round up to the tile to the bottom right of the point.</param>
+        public Point GridToTileLocation(Vector2 gridLocation, bool roundUp = false)
+        {
+            if (roundUp)
+                return new Point((int)Math.Ceiling(gridLocation.X / Map.TileTextureSize), (int)Math.Ceiling(gridLocation.Y / Map.TileTextureSize));
+            return new Point((int)Math.Floor(gridLocation.X / Map.TileTextureSize), (int)Math.Floor(gridLocation.Y / Map.TileTextureSize));
         }
 
         /// <summary>

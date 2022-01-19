@@ -26,7 +26,7 @@ namespace tileEngine.SDK.Components
         /// <summary>
         /// The scale of this sprite, relative to texture size.
         /// </summary>
-        public Vector2 Scale { get; set; }
+        public Vector2 Scale { get; set; } = new Vector2(1, 1);
 
         /// <summary>
         /// The opacity of this sprite, from 0.0f (transparent) to 1.0f (opaque).

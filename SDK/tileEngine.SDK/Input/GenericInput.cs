@@ -6,13 +6,8 @@ namespace tileEngine.SDK.Input
     /// Represents a single generic input from an input source.
     /// Can optionally have a two-axis component.
     /// </summary>
-    public struct GenericInput
+    public class GenericInput
     {
-        /// <summary>
-        /// The generic name of the input.
-        /// </summary>
-        public string Name { get; set; }
-
         /// <summary>
         /// The two-axis value of the input, if any.
         /// </summary>
