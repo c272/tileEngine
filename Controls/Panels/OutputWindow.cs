@@ -35,6 +35,8 @@ namespace tileEngine.Controls
         private void messageLogged(string message)
         {
             logText.Text = logger.Log.ToString();
+            logText.SelectionStart = logText.Text.Length;
+            logText.ScrollToCaret();
         }
 
         /// <summary>

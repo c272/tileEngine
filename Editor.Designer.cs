@@ -77,6 +77,7 @@ namespace tileEngine
             this.maximizeBtn = new System.Windows.Forms.PictureBox();
             this.closeWindowBtn = new System.Windows.Forms.PictureBox();
             this.logoPicture = new System.Windows.Forms.PictureBox();
+            this.cleanProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -92,9 +93,10 @@ namespace tileEngine
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dockPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
-            this.dockPanel.Location = new System.Drawing.Point(4, 63);
+            this.dockPanel.Location = new System.Drawing.Point(5, 79);
+            this.dockPanel.Margin = new System.Windows.Forms.Padding(4);
             this.dockPanel.Name = "dockPanel";
-            this.dockPanel.Size = new System.Drawing.Size(1250, 565);
+            this.dockPanel.Size = new System.Drawing.Size(1562, 706);
             this.dockPanel.TabIndex = 0;
             // 
             // statusStrip
@@ -107,10 +109,10 @@ namespace tileEngine
             this.statusIndicator,
             this.statusLabel,
             this.ramUsageLabel});
-            this.statusStrip.Location = new System.Drawing.Point(6, 631);
+            this.statusStrip.Location = new System.Drawing.Point(8, 789);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Padding = new System.Windows.Forms.Padding(0, 5, 0, 3);
-            this.statusStrip.Size = new System.Drawing.Size(1248, 29);
+            this.statusStrip.Padding = new System.Windows.Forms.Padding(0, 6, 0, 4);
+            this.statusStrip.Size = new System.Drawing.Size(1559, 36);
             this.statusStrip.SizingGrip = false;
             this.statusStrip.TabIndex = 1;
             this.statusStrip.Text = "darkStatusStrip1";
@@ -121,19 +123,19 @@ namespace tileEngine
             this.statusIndicator.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.statusIndicator.Margin = new System.Windows.Forms.Padding(8, 3, 0, 2);
             this.statusIndicator.Name = "statusIndicator";
-            this.statusIndicator.Size = new System.Drawing.Size(20, 16);
+            this.statusIndicator.Size = new System.Drawing.Size(20, 21);
             // 
             // statusLabel
             // 
             this.statusLabel.Margin = new System.Windows.Forms.Padding(5, 3, 0, 2);
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(39, 16);
+            this.statusLabel.Size = new System.Drawing.Size(50, 21);
             this.statusLabel.Text = "Ready";
             // 
             // ramUsageLabel
             // 
             this.ramUsageLabel.Name = "ramUsageLabel";
-            this.ramUsageLabel.Size = new System.Drawing.Size(1176, 16);
+            this.ramUsageLabel.Size = new System.Drawing.Size(1476, 20);
             this.ramUsageLabel.Spring = true;
             this.ramUsageLabel.Text = "0MB";
             this.ramUsageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -160,10 +162,10 @@ namespace tileEngine
             this.startBtn,
             this.toolStripSeparator8,
             this.reloadAssemblyBtn});
-            this.toolStrip.Location = new System.Drawing.Point(4, 33);
+            this.toolStrip.Location = new System.Drawing.Point(5, 41);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Padding = new System.Windows.Forms.Padding(6, 0, 1, 0);
-            this.toolStrip.Size = new System.Drawing.Size(1260, 27);
+            this.toolStrip.Padding = new System.Windows.Forms.Padding(8, 0, 1, 0);
+            this.toolStrip.Size = new System.Drawing.Size(1575, 34);
             this.toolStrip.TabIndex = 2;
             this.toolStrip.Text = "darkToolStrip1";
             // 
@@ -175,7 +177,7 @@ namespace tileEngine
             this.navigateBackBtn.Image = ((System.Drawing.Image)(resources.GetObject("navigateBackBtn.Image")));
             this.navigateBackBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.navigateBackBtn.Name = "navigateBackBtn";
-            this.navigateBackBtn.Size = new System.Drawing.Size(33, 24);
+            this.navigateBackBtn.Size = new System.Drawing.Size(34, 31);
             this.navigateBackBtn.Text = "Navigate Backwards";
             this.navigateBackBtn.ToolTipText = "Navigate Backwards";
             // 
@@ -187,7 +189,7 @@ namespace tileEngine
             this.navigateForwardsBtn.Image = ((System.Drawing.Image)(resources.GetObject("navigateForwardsBtn.Image")));
             this.navigateForwardsBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.navigateForwardsBtn.Name = "navigateForwardsBtn";
-            this.navigateForwardsBtn.Size = new System.Drawing.Size(24, 24);
+            this.navigateForwardsBtn.Size = new System.Drawing.Size(29, 31);
             this.navigateForwardsBtn.Text = "Navigate Forwards";
             this.navigateForwardsBtn.ToolTipText = "Navigate Forwards";
             // 
@@ -197,7 +199,7 @@ namespace tileEngine
             this.toolStripSeparator1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.toolStripSeparator1.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 34);
             // 
             // newProjectBtn
             // 
@@ -207,7 +209,7 @@ namespace tileEngine
             this.newProjectBtn.Image = ((System.Drawing.Image)(resources.GetObject("newProjectBtn.Image")));
             this.newProjectBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newProjectBtn.Name = "newProjectBtn";
-            this.newProjectBtn.Size = new System.Drawing.Size(33, 24);
+            this.newProjectBtn.Size = new System.Drawing.Size(34, 31);
             this.newProjectBtn.Text = "New Project";
             // 
             // openProjectBtn
@@ -218,7 +220,7 @@ namespace tileEngine
             this.openProjectBtn.Image = ((System.Drawing.Image)(resources.GetObject("openProjectBtn.Image")));
             this.openProjectBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openProjectBtn.Name = "openProjectBtn";
-            this.openProjectBtn.Size = new System.Drawing.Size(24, 24);
+            this.openProjectBtn.Size = new System.Drawing.Size(29, 31);
             this.openProjectBtn.Text = "Open Project";
             this.openProjectBtn.Click += new System.EventHandler(this.openProject);
             // 
@@ -230,7 +232,7 @@ namespace tileEngine
             this.saveDocumentBtn.Image = ((System.Drawing.Image)(resources.GetObject("saveDocumentBtn.Image")));
             this.saveDocumentBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveDocumentBtn.Name = "saveDocumentBtn";
-            this.saveDocumentBtn.Size = new System.Drawing.Size(24, 24);
+            this.saveDocumentBtn.Size = new System.Drawing.Size(29, 31);
             this.saveDocumentBtn.Text = "Save Document";
             this.saveDocumentBtn.Click += new System.EventHandler(this.saveDocument);
             // 
@@ -242,7 +244,7 @@ namespace tileEngine
             this.saveAllBtn.Image = ((System.Drawing.Image)(resources.GetObject("saveAllBtn.Image")));
             this.saveAllBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveAllBtn.Name = "saveAllBtn";
-            this.saveAllBtn.Size = new System.Drawing.Size(24, 24);
+            this.saveAllBtn.Size = new System.Drawing.Size(29, 31);
             this.saveAllBtn.Text = "Save All";
             this.saveAllBtn.Click += new System.EventHandler(this.saveAll);
             // 
@@ -252,7 +254,7 @@ namespace tileEngine
             this.toolStripSeparator2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.toolStripSeparator2.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 34);
             // 
             // undoBtn
             // 
@@ -262,7 +264,7 @@ namespace tileEngine
             this.undoBtn.Image = ((System.Drawing.Image)(resources.GetObject("undoBtn.Image")));
             this.undoBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.undoBtn.Name = "undoBtn";
-            this.undoBtn.Size = new System.Drawing.Size(33, 24);
+            this.undoBtn.Size = new System.Drawing.Size(34, 31);
             this.undoBtn.Text = "Undo";
             // 
             // redoBtn
@@ -273,7 +275,7 @@ namespace tileEngine
             this.redoBtn.Image = ((System.Drawing.Image)(resources.GetObject("redoBtn.Image")));
             this.redoBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.redoBtn.Name = "redoBtn";
-            this.redoBtn.Size = new System.Drawing.Size(33, 24);
+            this.redoBtn.Size = new System.Drawing.Size(34, 31);
             this.redoBtn.Text = "Redo";
             // 
             // toolStripSeparator3
@@ -282,7 +284,7 @@ namespace tileEngine
             this.toolStripSeparator3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.toolStripSeparator3.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 34);
             // 
             // startBtn
             // 
@@ -295,7 +297,7 @@ namespace tileEngine
             this.startBtn.Image = ((System.Drawing.Image)(resources.GetObject("startBtn.Image")));
             this.startBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.startBtn.Name = "startBtn";
-            this.startBtn.Size = new System.Drawing.Size(64, 24);
+            this.startBtn.Size = new System.Drawing.Size(74, 31);
             this.startBtn.Text = "Start";
             // 
             // startProjectBtn
@@ -304,8 +306,9 @@ namespace tileEngine
             this.startProjectBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.startProjectBtn.Image = ((System.Drawing.Image)(resources.GetObject("startProjectBtn.Image")));
             this.startProjectBtn.Name = "startProjectBtn";
-            this.startProjectBtn.Size = new System.Drawing.Size(171, 26);
+            this.startProjectBtn.Size = new System.Drawing.Size(209, 26);
             this.startProjectBtn.Text = "Start Project";
+            this.startProjectBtn.Click += new System.EventHandler(this.startProjectBtn_Click);
             // 
             // toolStripSeparator7
             // 
@@ -313,7 +316,7 @@ namespace tileEngine
             this.toolStripSeparator7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.toolStripSeparator7.Margin = new System.Windows.Forms.Padding(0, 0, 0, 1);
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(168, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(206, 6);
             // 
             // projectPropertiesBtn
             // 
@@ -321,7 +324,7 @@ namespace tileEngine
             this.projectPropertiesBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.projectPropertiesBtn.Image = ((System.Drawing.Image)(resources.GetObject("projectPropertiesBtn.Image")));
             this.projectPropertiesBtn.Name = "projectPropertiesBtn";
-            this.projectPropertiesBtn.Size = new System.Drawing.Size(171, 26);
+            this.projectPropertiesBtn.Size = new System.Drawing.Size(209, 26);
             this.projectPropertiesBtn.Text = "Project Properties";
             // 
             // toolStripSeparator8
@@ -330,7 +333,7 @@ namespace tileEngine
             this.toolStripSeparator8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.toolStripSeparator8.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 34);
             // 
             // reloadAssemblyBtn
             // 
@@ -340,7 +343,7 @@ namespace tileEngine
             this.reloadAssemblyBtn.Image = ((System.Drawing.Image)(resources.GetObject("reloadAssemblyBtn.Image")));
             this.reloadAssemblyBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.reloadAssemblyBtn.Name = "reloadAssemblyBtn";
-            this.reloadAssemblyBtn.Size = new System.Drawing.Size(24, 24);
+            this.reloadAssemblyBtn.Size = new System.Drawing.Size(29, 31);
             this.reloadAssemblyBtn.Text = "Reload Assembly";
             this.reloadAssemblyBtn.Click += new System.EventHandler(this.reloadAssemblyBtn_Click);
             // 
@@ -355,10 +358,10 @@ namespace tileEngine
             this.editToolStripMenuItem,
             this.projectToolStripMenuItem,
             this.buildToolStripMenuItem});
-            this.menuStrip.Location = new System.Drawing.Point(34, 7);
+            this.menuStrip.Location = new System.Drawing.Point(42, 9);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Padding = new System.Windows.Forms.Padding(3, 2, 0, 2);
-            this.menuStrip.Size = new System.Drawing.Size(303, 24);
+            this.menuStrip.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
+            this.menuStrip.Size = new System.Drawing.Size(377, 28);
             this.menuStrip.TabIndex = 3;
             this.menuStrip.Text = "darkMenuStrip1";
             // 
@@ -379,7 +382,7 @@ namespace tileEngine
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // newToolStripMenuItem
@@ -387,7 +390,7 @@ namespace tileEngine
             this.newToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.newToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.newToolStripMenuItem.Text = "New";
             // 
             // openToolStripMenuItem
@@ -395,7 +398,7 @@ namespace tileEngine
             this.openToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.openToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.openToolStripMenuItem.Text = "Open";
             // 
             // cloneRepositoryToolStripMenuItem
@@ -405,7 +408,7 @@ namespace tileEngine
             this.cloneRepositoryToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("cloneRepositoryToolStripMenuItem.Image")));
             this.cloneRepositoryToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.cloneRepositoryToolStripMenuItem.Name = "cloneRepositoryToolStripMenuItem";
-            this.cloneRepositoryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cloneRepositoryToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.cloneRepositoryToolStripMenuItem.Text = "Clone Repository";
             // 
             // toolStripSeparator4
@@ -414,7 +417,7 @@ namespace tileEngine
             this.toolStripSeparator4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.toolStripSeparator4.Margin = new System.Windows.Forms.Padding(0, 0, 0, 1);
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(213, 6);
             // 
             // saveDocumentFileStripBtn
             // 
@@ -424,7 +427,7 @@ namespace tileEngine
             this.saveDocumentFileStripBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.saveDocumentFileStripBtn.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.saveDocumentFileStripBtn.Name = "saveDocumentFileStripBtn";
-            this.saveDocumentFileStripBtn.Size = new System.Drawing.Size(180, 22);
+            this.saveDocumentFileStripBtn.Size = new System.Drawing.Size(216, 26);
             this.saveDocumentFileStripBtn.Text = "Save Document";
             this.saveDocumentFileStripBtn.Click += new System.EventHandler(this.saveDocument);
             // 
@@ -435,7 +438,7 @@ namespace tileEngine
             this.saveAllFileStripBtn.Image = ((System.Drawing.Image)(resources.GetObject("saveAllFileStripBtn.Image")));
             this.saveAllFileStripBtn.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.saveAllFileStripBtn.Name = "saveAllFileStripBtn";
-            this.saveAllFileStripBtn.Size = new System.Drawing.Size(180, 22);
+            this.saveAllFileStripBtn.Size = new System.Drawing.Size(216, 26);
             this.saveAllFileStripBtn.Text = "Save All";
             this.saveAllFileStripBtn.Click += new System.EventHandler(this.saveAll);
             // 
@@ -445,14 +448,14 @@ namespace tileEngine
             this.toolStripSeparator5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.toolStripSeparator5.Margin = new System.Windows.Forms.Padding(0, 0, 0, 1);
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(213, 6);
             // 
             // recentProjectsToolStripMenuItem
             // 
             this.recentProjectsToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.recentProjectsToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.recentProjectsToolStripMenuItem.Name = "recentProjectsToolStripMenuItem";
-            this.recentProjectsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.recentProjectsToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.recentProjectsToolStripMenuItem.Text = "Recent Documents";
             // 
             // recentProjectsToolStripMenuItem1
@@ -460,7 +463,7 @@ namespace tileEngine
             this.recentProjectsToolStripMenuItem1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.recentProjectsToolStripMenuItem1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.recentProjectsToolStripMenuItem1.Name = "recentProjectsToolStripMenuItem1";
-            this.recentProjectsToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.recentProjectsToolStripMenuItem1.Size = new System.Drawing.Size(216, 26);
             this.recentProjectsToolStripMenuItem1.Text = "Recent Projects";
             // 
             // toolStripSeparator6
@@ -469,14 +472,14 @@ namespace tileEngine
             this.toolStripSeparator6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.toolStripSeparator6.Margin = new System.Windows.Forms.Padding(0, 0, 0, 1);
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(213, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.exitToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -485,7 +488,7 @@ namespace tileEngine
             this.editToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.editToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(49, 24);
             this.editToolStripMenuItem.Text = "Edit";
             // 
             // projectToolStripMenuItem
@@ -495,7 +498,7 @@ namespace tileEngine
             this.projectPropertiesMenuBtn});
             this.projectToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
-            this.projectToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.projectToolStripMenuItem.Size = new System.Drawing.Size(69, 24);
             this.projectToolStripMenuItem.Text = "Project";
             // 
             // projectPropertiesMenuBtn
@@ -504,7 +507,7 @@ namespace tileEngine
             this.projectPropertiesMenuBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.projectPropertiesMenuBtn.Image = ((System.Drawing.Image)(resources.GetObject("projectPropertiesMenuBtn.Image")));
             this.projectPropertiesMenuBtn.Name = "projectPropertiesMenuBtn";
-            this.projectPropertiesMenuBtn.Size = new System.Drawing.Size(171, 26);
+            this.projectPropertiesMenuBtn.Size = new System.Drawing.Size(209, 26);
             this.projectPropertiesMenuBtn.Text = "Project Properties";
             this.projectPropertiesMenuBtn.Click += new System.EventHandler(this.openProjectProperties);
             // 
@@ -513,10 +516,11 @@ namespace tileEngine
             this.buildToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.buildToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.buildBtn,
-            this.rebuildProjectToolStripMenuItem});
+            this.rebuildProjectToolStripMenuItem,
+            this.cleanProjectToolStripMenuItem});
             this.buildToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.buildToolStripMenuItem.Name = "buildToolStripMenuItem";
-            this.buildToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            this.buildToolStripMenuItem.Size = new System.Drawing.Size(57, 24);
             this.buildToolStripMenuItem.Text = "Build";
             // 
             // buildBtn
@@ -525,7 +529,7 @@ namespace tileEngine
             this.buildBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.buildBtn.Image = ((System.Drawing.Image)(resources.GetObject("buildBtn.Image")));
             this.buildBtn.Name = "buildBtn";
-            this.buildBtn.Size = new System.Drawing.Size(158, 26);
+            this.buildBtn.Size = new System.Drawing.Size(224, 26);
             this.buildBtn.Text = "Build Project";
             this.buildBtn.Click += new System.EventHandler(this.buildBtn_Click);
             // 
@@ -534,7 +538,7 @@ namespace tileEngine
             this.rebuildProjectToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.rebuildProjectToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.rebuildProjectToolStripMenuItem.Name = "rebuildProjectToolStripMenuItem";
-            this.rebuildProjectToolStripMenuItem.Size = new System.Drawing.Size(158, 26);
+            this.rebuildProjectToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.rebuildProjectToolStripMenuItem.Text = "Rebuild Project";
             // 
             // projectNameLabel
@@ -544,11 +548,11 @@ namespace tileEngine
             this.projectNameLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
             this.projectNameLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.projectNameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.projectNameLabel.Location = new System.Drawing.Point(1039, 4);
-            this.projectNameLabel.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.projectNameLabel.Location = new System.Drawing.Point(1299, 5);
+            this.projectNameLabel.Margin = new System.Windows.Forms.Padding(4);
             this.projectNameLabel.Name = "projectNameLabel";
-            this.projectNameLabel.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.projectNameLabel.Size = new System.Drawing.Size(79, 23);
+            this.projectNameLabel.Padding = new System.Windows.Forms.Padding(4);
+            this.projectNameLabel.Size = new System.Drawing.Size(99, 29);
             this.projectNameLabel.TabIndex = 8;
             this.projectNameLabel.Text = " projectName";
             this.projectNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -557,9 +561,10 @@ namespace tileEngine
             // 
             this.minimizeBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.minimizeBtn.Image = ((System.Drawing.Image)(resources.GetObject("minimizeBtn.Image")));
-            this.minimizeBtn.Location = new System.Drawing.Point(1124, 0);
+            this.minimizeBtn.Location = new System.Drawing.Point(1405, 0);
+            this.minimizeBtn.Margin = new System.Windows.Forms.Padding(4);
             this.minimizeBtn.Name = "minimizeBtn";
-            this.minimizeBtn.Size = new System.Drawing.Size(46, 26);
+            this.minimizeBtn.Size = new System.Drawing.Size(58, 32);
             this.minimizeBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.minimizeBtn.TabIndex = 7;
             this.minimizeBtn.TabStop = false;
@@ -571,9 +576,10 @@ namespace tileEngine
             // 
             this.maximizeBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.maximizeBtn.Image = ((System.Drawing.Image)(resources.GetObject("maximizeBtn.Image")));
-            this.maximizeBtn.Location = new System.Drawing.Point(1170, 0);
+            this.maximizeBtn.Location = new System.Drawing.Point(1462, 0);
+            this.maximizeBtn.Margin = new System.Windows.Forms.Padding(4);
             this.maximizeBtn.Name = "maximizeBtn";
-            this.maximizeBtn.Size = new System.Drawing.Size(46, 26);
+            this.maximizeBtn.Size = new System.Drawing.Size(58, 32);
             this.maximizeBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.maximizeBtn.TabIndex = 6;
             this.maximizeBtn.TabStop = false;
@@ -585,9 +591,10 @@ namespace tileEngine
             // 
             this.closeWindowBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.closeWindowBtn.Image = ((System.Drawing.Image)(resources.GetObject("closeWindowBtn.Image")));
-            this.closeWindowBtn.Location = new System.Drawing.Point(1215, 0);
+            this.closeWindowBtn.Location = new System.Drawing.Point(1519, 0);
+            this.closeWindowBtn.Margin = new System.Windows.Forms.Padding(4);
             this.closeWindowBtn.Name = "closeWindowBtn";
-            this.closeWindowBtn.Size = new System.Drawing.Size(46, 26);
+            this.closeWindowBtn.Size = new System.Drawing.Size(58, 32);
             this.closeWindowBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.closeWindowBtn.TabIndex = 5;
             this.closeWindowBtn.TabStop = false;
@@ -598,18 +605,28 @@ namespace tileEngine
             // logoPicture
             // 
             this.logoPicture.Image = ((System.Drawing.Image)(resources.GetObject("logoPicture.Image")));
-            this.logoPicture.Location = new System.Drawing.Point(12, 8);
+            this.logoPicture.Location = new System.Drawing.Point(15, 10);
+            this.logoPicture.Margin = new System.Windows.Forms.Padding(4);
             this.logoPicture.Name = "logoPicture";
-            this.logoPicture.Size = new System.Drawing.Size(19, 19);
+            this.logoPicture.Size = new System.Drawing.Size(24, 24);
             this.logoPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.logoPicture.TabIndex = 4;
             this.logoPicture.TabStop = false;
             // 
+            // cleanProjectToolStripMenuItem
+            // 
+            this.cleanProjectToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.cleanProjectToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.cleanProjectToolStripMenuItem.Name = "cleanProjectToolStripMenuItem";
+            this.cleanProjectToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.cleanProjectToolStripMenuItem.Text = "Clean Project";
+            this.cleanProjectToolStripMenuItem.Click += new System.EventHandler(this.cleanProjectToolStripMenuItem_Click);
+            // 
             // Editor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(1260, 665);
+            this.ClientSize = new System.Drawing.Size(1575, 831);
             this.Controls.Add(this.projectNameLabel);
             this.Controls.Add(this.minimizeBtn);
             this.Controls.Add(this.maximizeBtn);
@@ -623,9 +640,9 @@ namespace tileEngine
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.MinimumSize = new System.Drawing.Size(643, 488);
+            this.MinimumSize = new System.Drawing.Size(799, 598);
             this.Name = "Editor";
-            this.Padding = new System.Windows.Forms.Padding(6, 0, 6, 5);
+            this.Padding = new System.Windows.Forms.Padding(8, 0, 8, 6);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "tileEngine - Internal Use Beta";
             this.Load += new System.EventHandler(this.Editor_Load);
@@ -693,6 +710,7 @@ namespace tileEngine
         private System.Windows.Forms.ToolStripMenuItem rebuildProjectToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
         private System.Windows.Forms.ToolStripButton reloadAssemblyBtn;
+        private System.Windows.Forms.ToolStripMenuItem cleanProjectToolStripMenuItem;
     }
 }
 

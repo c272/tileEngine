@@ -41,7 +41,7 @@
             this.darkLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.darkLabel1.Location = new System.Drawing.Point(6, 10);
             this.darkLabel1.Name = "darkLabel1";
-            this.darkLabel1.Size = new System.Drawing.Size(63, 14);
+            this.darkLabel1.Size = new System.Drawing.Size(76, 18);
             this.darkLabel1.TabIndex = 0;
             this.darkLabel1.Text = "Trigger On";
             // 
@@ -52,7 +52,7 @@
             this.darkLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.darkLabel2.Location = new System.Drawing.Point(6, 63);
             this.darkLabel2.Name = "darkLabel2";
-            this.darkLabel2.Size = new System.Drawing.Size(85, 14);
+            this.darkLabel2.Size = new System.Drawing.Size(104, 18);
             this.darkLabel2.TabIndex = 2;
             this.darkLabel2.Text = "Calls Function";
             // 
@@ -74,8 +74,8 @@
             // 
             // EventPropertiesControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.triggerDropdown);
             this.Controls.Add(this.functionDropdown);
             this.Controls.Add(this.darkLabel2);

@@ -71,8 +71,8 @@ namespace tileEngine
         {
             if (!CanEdit)
             {
-                DarkMessageBox.ShowError("Cannot edit this scene: There is currently no C# class attached to this scene. You" +
-                    "must reassign it by using 'Right Click -> Reassign Class', or delete the scene.", "tileEngine - Edit Error");
+                DarkMessageBox.ShowError("Cannot edit this scene: There is currently no C# class attached to this scene, or the project has not been built." +
+                    "\nYou can reassign the map by using 'Right Click -> Reassign Class', or build the project.", "tileEngine - Edit Error");
                 return;
             }
 

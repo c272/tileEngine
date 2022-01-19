@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ProtoBuf;
 using tileEngine.SDK.Map;
+using tileEngine.SDK.Diagnostics;
 
 namespace tileEngine.SDK
 {
     /// <summary>
     /// Represents a single scene within the tileEngine engine.
+    /// All scenes must have an accessible zero-parameter constructor for instance creation.
     /// </summary>
     [ProtoContract]
     public abstract class Scene
@@ -40,12 +42,71 @@ namespace tileEngine.SDK
         /// </summary>
         public float Zoom { get; protected set; } = 1f;
 
+        //Cache of textures used for drawing map tiles.
+        private Dictionary<int, Texture2D> tileTextureCache = new Dictionary<int, Texture2D>();
+
+        //////////////////
+        /// PUBLIC API ///
+        //////////////////
+
         /// <summary>
         /// Draws the scene.
         /// </summary>
         public void Draw(SpriteBatch spriteBatch)
         {
-            throw new NotImplementedException();
+            //Calculate the top-left most and bottom-right most tile to draw.
+            Vector2 topLeft = ToGridLocation(new Point(0, 0));
+            Vector2 bottomRight = ToGridLocation(new Point(spriteBatch.GraphicsDevice.PresentationParameters.BackBufferWidth,
+                                                           spriteBatch.GraphicsDevice.PresentationParameters.BackBufferHeight));
+            Point topLeftTile = new Point((int)topLeft.X, (int)topLeft.Y);
+            Point bottomRightTile = new Point((int)bottomRight.X, (int)bottomRight.Y);
+
+            //Begin layer draws.
+            spriteBatch.Begin();
+            foreach (var layer in Map.Layers)
+            {
+                //Draw the tiles for this layer.
+                for (int y = topLeftTile.Y; y <= bottomRightTile.Y; y++)
+                {
+                    for (int x = topLeftTile.X; x <= bottomRightTile.X; x++)
+                    {
+                        //Ignore if there is nothing at this tile.
+                        Point curTile = new Point(x, y);
+                        if (!layer.Tiles.ContainsKey(curTile))
+                            continue;
+
+                        //If this tile's texture isn't in cache yet, pull it to cache.
+                        TileData tileData = layer.Tiles[curTile];
+                        if (!tileTextureCache.ContainsKey(tileData.TextureID))
+                        {
+                            var tex = AssetManager.AttemptLoad<Texture2D>(tileData.TextureID);
+                            if (tex == null)
+                                DiagnosticsHook.LogMessage(21011, $"Failed to load texture ID {tileData.TextureID} for map draw.", DiagnosticsSeverity.Warning);
+                            tileTextureCache.Add(tileData.TextureID, tex);
+                        }
+
+                        //Get the texture from cache, draw to screen.
+                        Texture2D tileTex = tileTextureCache[tileData.TextureID];
+                        float pixelsPerTile = Zoom * Map.TileTextureSize;
+                        Vector2 screenPos = new Vector2(curTile.X * pixelsPerTile, curTile.Y * pixelsPerTile);
+                        Rectangle sourceRect = new Rectangle(tileData.Position.X * Map.TileTextureSize,
+                                                             tileData.Position.Y * Map.TileTextureSize,
+                                                             Map.TileTextureSize, Map.TileTextureSize);
+                        float relativeScale = pixelsPerTile / Map.TileTextureSize;
+
+                        spriteBatch.Draw(tileTex, screenPos, sourceRect, Color.White * layer.Opacity, 0f, new Vector2(0,0), 
+                                         new Vector2(relativeScale, relativeScale), SpriteEffects.None, 0);
+                    }
+                }
+
+                //Draw the game objects for this layer.
+                var layerObjects = GameObjects.Where(x => x.Layer == layer.ID).ToList();
+                for (int i = 0; i < layerObjects.Count; i++)
+                {
+                    //...
+                }
+            }
+            spriteBatch.End();
         }
 
         /// <summary>
@@ -56,12 +117,39 @@ namespace tileEngine.SDK
         /// <summary>
         /// Updates the scene object based on the time from the previous update.
         /// </summary>
-        public virtual void Update(GameTime delta) { }
+        public virtual void Update(GameTime delta) 
+        { 
+            //Update all GameObjects.
+            for (int i = 0; i < GameObjects.Count; i++)
+            {
+                GameObjects[i].Update(delta);
+            }
+
+            //Collision check.
+            CheckCollisions();
+        }
+
+        /// <summary>
+        /// Checks collisions between game objects and the collision hull.
+        /// </summary>
+        private void CheckCollisions()
+        {
+            //Loop over game objects. Are they in a tile that is a collider?
+            //...
+        }
 
         /// <summary>
         /// Dispose any active assets in the current scene.
         /// </summary>
-        public abstract void Dispose();
+        public virtual void Dispose() { }
+
+        /// <summary>
+        /// Sets the tile map on this scene to the provided new map.
+        /// </summary>
+        public void SetTileMap(TileMap map)
+        {
+            Map = map;
+        }
 
         /////////////////////////
         /// UTILITY FUNCTIONS ///

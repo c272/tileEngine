@@ -31,9 +31,6 @@ namespace tileEngine.Controls
         /// </summary>
         public ProjectTreeNode Node { get; private set; }
 
-        //The name of the font used for editor documents.
-        protected const string EDITOR_FONT_NAME = "Roboto-Medium.ttf";
-
         //Designer constructor.
         private ProjectDocument() { }
 

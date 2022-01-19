@@ -67,7 +67,7 @@ namespace tileEngine
                 OnWindowSizeChanged?.Invoke(value);
             }
         }
-        private Point windowSize = new Point(300, 600);
+        private Point windowSize = new Point(800, 600);
 
         //Event for when the window size of the project is changed.
         public delegate void OnWindowSizeChangedHandler(Point size);
