@@ -58,6 +58,10 @@
     <Compile Include="Attributes\EventFunctionAttribute.cs" />
     <Compile Include="Attributes\SelectorIgnore.cs" />
     <Compile Include="Attributes\SelectorMetadata.cs" />
+    <Compile Include="Components\BoxColliderComponent.cs" />
+    <Compile Include="Components\ColliderComponent.cs" />
+    <Compile Include="Components\Component.cs" />
+    <Compile Include="Components\SpriteComponent.cs" />
     <Compile Include="Diagnostics\DiagnosticsHook.cs" />
     <Compile Include="Diagnostics\DiagnosticsMessage.cs" />
     <Compile Include="Input\GenericInput.cs" />

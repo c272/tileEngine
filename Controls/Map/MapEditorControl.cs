@@ -474,7 +474,42 @@ namespace tileEngine.Controls
         /// </summary>
         private void DeleteSelectedTiles()
         {
-            throw new NotImplementedException();
+            //Ignore if no selection.
+            if (SelectedTiles == null)
+                return;
+
+            //Remove the selected tiles based on mode.
+            var selected = (Rectangle)SelectedTiles;
+            for (int y = selected.Y; y < selected.Y + selected.Height; y++)
+            {
+                for (int x = selected.X; x < selected.X + selected.Width; x++)
+                {
+                    var tile = new Microsoft.Xna.Framework.Point(x, y);
+                    switch (EditMode)
+                    {
+                        case MapEditMode.Tiles:
+                            if (SelectedLayer.Tiles.ContainsKey(tile))
+                                SelectedLayer.Tiles.Remove(tile);
+                            break;
+
+                        case MapEditMode.Collision:
+                            if (SelectedLayer.CollisionHull.ContainsKey(tile))
+                                SelectedLayer.CollisionHull.Remove(tile);
+                            break;
+
+                        case MapEditMode.Events:
+                            if (SelectedLayer.Events.ContainsKey(tile))
+                                SelectedLayer.Events.Remove(tile);
+                            break;
+
+                        default:
+                            throw new NotImplementedException();
+                    }
+                }
+            }
+
+            //Invalidate, we're done.
+            Invalidate();
         }
 
         /// <summary>

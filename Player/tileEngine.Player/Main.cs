@@ -60,6 +60,7 @@ namespace tileEngine.Player
             game = new GameControl();
             Controls.Add(game);
             game.Dock = DockStyle.Fill;
+            game.ContentDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "compiled");
 
             //Configure diagnostics to display errors.
             DiagnosticsHook.Mode = DiagnosticsMode.Standalone;
@@ -76,6 +77,20 @@ namespace tileEngine.Player
             //Load the game data container into the engine.
             game.SetGameData(gameData);
 
+            //Hook for running when initialized. If already initialized, start now.
+            if (game.Initialized)
+            {
+                gameInitialized();
+                return;
+            }
+            game.OnInitialized += gameInitialized;
+        }
+
+        /// <summary>
+        /// Triggers when tileEngine has finished initializing.
+        /// </summary>
+        private void gameInitialized()
+        {
             //Run main class' initialization method to start the game.
             gameMain.Initialize();
             this.Visible = true;

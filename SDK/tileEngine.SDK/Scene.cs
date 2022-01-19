@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using ProtoBuf;
 using tileEngine.SDK.Map;
 using tileEngine.SDK.Diagnostics;
+using tileEngine.SDK.Components;
 
 namespace tileEngine.SDK
 {
@@ -48,6 +49,28 @@ namespace tileEngine.SDK
         //////////////////
         /// PUBLIC API ///
         //////////////////
+
+        /// <summary>
+        /// Adds the provided GameObject to the scene.
+        /// If it is already present, the call is ignored.
+        /// </summary>
+        public void AddObject(GameObject obj)
+        {
+            //Ignore duplicate adds.
+            if (GameObjects.Any(x => x.ID == obj.ID))
+                return;
+            GameObjects.Add(obj);
+            obj._scene = this;
+        }
+
+        /// <summary>
+        /// Removes the provided GameObject from the scene.
+        /// </summary>
+        public void RemoveObject(GameObject obj)
+        {
+            GameObjects.RemoveAll(x => x.ID == obj.ID);
+            obj._scene = null;
+        }
 
         /// <summary>
         /// Draws the scene.
@@ -123,6 +146,9 @@ namespace tileEngine.SDK
             for (int i = 0; i < GameObjects.Count; i++)
             {
                 GameObjects[i].Update(delta);
+
+                //Update all this GameObject's components.
+                GameObjects[i].Components.ForEach(x => x.Update(GameObjects[i], delta));
             }
 
             //Collision check.
@@ -134,8 +160,43 @@ namespace tileEngine.SDK
         /// </summary>
         private void CheckCollisions()
         {
-            //Loop over game objects. Are they in a tile that is a collider?
-            //...
+            //Loop over game objects, check any attached colliders.
+            for (int i=0; i<GameObjects.Count; i++)
+            {
+                //Get colliders for this object.
+                var colliders = GameObjects[i].Components.Where(x => x is ColliderComponent)
+                                                         .Select(x => (ColliderComponent)x)
+                                                         .ToList();
+                if (colliders.Count == 0)
+                    continue;
+
+                //Process whether there are colliding tiles.
+                foreach (var collider in colliders)
+                {
+                    //No collisions if layer is invalid.
+                    if (GameObjects[i].Layer >= Map.Layers.Count)
+                        break;
+
+                    //Attempt to move the GameObject away from any colliding tiles.
+                    //Limit to 5 iterations per update loop.
+                    int limit = 5;
+                    int iteration = 0;
+                    do
+                    {
+                        //If no colliding tiles, break.
+                        var collidingTiles = collider.Colliding(GameObjects[i], Map.Layers[GameObjects[i].Layer]);
+                        if (collidingTiles.Count == 0)
+                            break;
+
+                        //Step GameObject away from first colliding tile.
+                        Vector2 vectorToTile = new Vector2(collidingTiles[0].X - GameObjects[i].Position.X,
+                                                           collidingTiles[0].Y - GameObjects[i].Position.Y);
+                        vectorToTile.Normalize();
+                        GameObjects[i].Position -= vectorToTile * 0.1f;
+                    }
+                    while (iteration < limit);
+                }
+            }
         }
 
         /// <summary>

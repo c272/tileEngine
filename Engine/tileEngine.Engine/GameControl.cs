@@ -75,6 +75,17 @@ namespace tileEngine.Engine
         /// </summary>
         public KeyboardInputHandler KeyboardInput { get; set; } = new KeyboardInputHandler();
 
+        /// <summary>
+        /// Whether this game control is fully initialized yet.
+        /// </summary>
+        public bool Initialized { get; private set; } = false;
+
+        /// <summary>
+        /// Event triggered when this game control has initialized fully.
+        /// </summary>
+        public event OnInitializedHandler OnInitialized;
+        public delegate void OnInitializedHandler();
+
         //Singleton constructor.
         public GameControl()
         {
@@ -153,6 +164,8 @@ namespace tileEngine.Engine
 
             //Set back buffer as preserving.
             Editor.graphics.PresentationParameters.RenderTargetUsage = Microsoft.Xna.Framework.Graphics.RenderTargetUsage.PreserveContents;
+            Initialized = true;
+            OnInitialized?.Invoke();
         }
 
         /// <summary>
