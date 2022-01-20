@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
 using tileEngine.SDK.Components;
@@ -81,6 +82,6 @@ namespace tileEngine.SDK
         /// <summary>
         /// Called when this game object must be drawn.
         /// </summary>
-        public virtual void Draw() { }
+        public virtual void Draw(SpriteBatch spriteBatch) { }
     }
 }
