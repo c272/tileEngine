@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DarkUI.Forms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,7 +17,7 @@ namespace tileEngine.Player
     /// Represents a debugging window within the tileEngine player, used for
     /// development debugging purposes.
     /// </summary>
-    public partial class DebugWindow : Form
+    public partial class DebugWindow : DarkForm
     {
         public DebugWindow()
         {

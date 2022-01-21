@@ -28,36 +28,43 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.debugOutput = new System.Windows.Forms.TextBox();
-            this.drawCollidersCb = new System.Windows.Forms.CheckBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DebugWindow));
+            this.debugOutput = new DarkUI.Controls.DarkTextBox();
+            this.drawCollidersCb = new DarkUI.Controls.DarkCheckBox();
             this.SuspendLayout();
             // 
             // debugOutput
             // 
-            this.debugOutput.Location = new System.Drawing.Point(-1, 30);
+            this.debugOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.debugOutput.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.debugOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.debugOutput.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.debugOutput.Location = new System.Drawing.Point(1, 34);
             this.debugOutput.Multiline = true;
             this.debugOutput.Name = "debugOutput";
-            this.debugOutput.Size = new System.Drawing.Size(346, 279);
-            this.debugOutput.TabIndex = 0;
+            this.debugOutput.Size = new System.Drawing.Size(459, 340);
+            this.debugOutput.TabIndex = 2;
             // 
             // drawCollidersCb
             // 
             this.drawCollidersCb.AutoSize = true;
-            this.drawCollidersCb.Location = new System.Drawing.Point(6, 6);
+            this.drawCollidersCb.Location = new System.Drawing.Point(8, 7);
             this.drawCollidersCb.Name = "drawCollidersCb";
-            this.drawCollidersCb.Size = new System.Drawing.Size(93, 17);
-            this.drawCollidersCb.TabIndex = 1;
+            this.drawCollidersCb.Size = new System.Drawing.Size(116, 20);
+            this.drawCollidersCb.TabIndex = 3;
             this.drawCollidersCb.Text = "Draw Colliders";
-            this.drawCollidersCb.UseVisualStyleBackColor = true;
-            this.drawCollidersCb.CheckedChanged += new System.EventHandler(this.drawCollidersChanged);
             // 
             // DebugWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(345, 305);
+            this.ClientSize = new System.Drawing.Size(460, 375);
             this.Controls.Add(this.drawCollidersCb);
             this.Controls.Add(this.debugOutput);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "DebugWindow";
             this.Text = "tileEngine Player - Debug Window";
             this.ResumeLayout(false);
@@ -66,8 +73,7 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox debugOutput;
-        private System.Windows.Forms.CheckBox drawCollidersCb;
+        private DarkUI.Controls.DarkTextBox debugOutput;
+        private DarkUI.Controls.DarkCheckBox drawCollidersCb;
     }
 }
