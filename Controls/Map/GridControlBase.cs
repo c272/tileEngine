@@ -267,6 +267,34 @@ namespace tileEngine.Controls
         private int collisionPipSize = 2;
 
         /// <summary>
+        /// The colour of the selection box that is used for selected tiles.
+        /// </summary>
+        public Color SelectionColour
+        {
+            get { return _selectionColour; }
+            set
+            {
+                _selectionColour = value;
+                Invalidate();
+            }
+        }
+        private Color _selectionColour = Color.White;
+
+        /// <summary>
+        /// The colour of the selection box that is used when a user selects tiles.
+        /// </summary>
+        public int SelectionWidth
+        {
+            get { return _selectionWidth; }
+            set
+            {
+                _selectionWidth = value;
+                Invalidate();
+            }
+        }
+        private int _selectionWidth = 2;
+
+        /// <summary>
         /// The tile map to be drawn.
         /// </summary>
         public TileMap Map { get; set; } = null;
@@ -395,6 +423,22 @@ namespace tileEngine.Controls
                 }
 
             }
+        }
+
+        /// <summary>
+        /// Draws a selection box at the given tile locations.
+        /// </summary>
+        protected void DrawSelectionBox(PaintEventArgs e, Rectangle selectedTiles)
+        {
+            Vector2f selectTopLeft = TileToGridCoordinate(selectedTiles.Location);
+            Vector2f selectBottomRight = TileToGridCoordinate(new Point(selectedTiles.Right, selectedTiles.Bottom));
+
+            //Draw in pixel space.
+            PointF topLeft = ToPixelPointF(selectTopLeft);
+            PointF bottomRight = ToPixelPointF(selectBottomRight);
+            Pen selectionPen = new Pen(new SolidBrush(SelectionColour), SelectionWidth);
+            selectionPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+            e.Graphics.DrawRectangles(selectionPen, new RectangleF[] { new RectangleF(topLeft, new SizeF(bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y)) });
         }
 
         /// <summary>

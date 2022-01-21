@@ -190,6 +190,7 @@
     <Compile Include="Controls\Map\MapPaletteControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\Map\MapPaletteState.cs" />
     <Compile Include="Controls\Panels\PropertiesWindow.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -47,10 +47,10 @@ namespace tileEngine
         public PropertiesWindow PropertiesWindow { get; private set; } = new PropertiesWindow();
 
         //The map palette window.
-        public MapPaletteWindow PaletteWindow { get; private set; } = new MapPaletteWindow();
+        public MapPaletteWindow PaletteWindow { get; private set; }
 
         //The project tree window.
-        ProjectTreeWindow projectWindow = new ProjectTreeWindow();
+        public ProjectTreeWindow ProjectWindow { get; private set; } = new ProjectTreeWindow();
 
         //The compile output window.
         OutputWindow outputWindow = new OutputWindow();
@@ -93,7 +93,8 @@ namespace tileEngine
             ProjectManager.OnProjectChanged += projectChanged;
 
             //Add dock panel content.
-            dockPanel.AddContent(projectWindow);
+            PaletteWindow = new MapPaletteWindow(ProjectWindow);
+            dockPanel.AddContent(ProjectWindow);
             dockPanel.AddContent(PaletteWindow);
             dockPanel.AddContent(PropertiesWindow);
             dockPanel.AddContent(outputWindow, PropertiesWindow.DockGroup);
@@ -158,7 +159,7 @@ namespace tileEngine
             updateProjectNameLabel(newProject.Name);
 
             //Copy in the project items from the project to the node tree.
-            projectWindow.SetNodes(newProject.ProjectRoot);
+            ProjectWindow.SetNodes(newProject.ProjectRoot);
 
             //Set labels that are dependent on project name.
             newProject.OnNameChanged += projectNameChanged;
@@ -217,13 +218,13 @@ namespace tileEngine
         private void saveAll(object sender, EventArgs e) 
         {
             //Update all nodes from document.
-            foreach (var node in projectWindow.RootNode.Nodes.Select(x => (ProjectTreeNode)x))
+            foreach (var node in ProjectWindow.RootNode.Nodes.Select(x => (ProjectTreeNode)x))
             {
                 node.UpdateFromDocument();
             }
 
             //Save the project.
-            ProjectManager.CurrentProject.ProjectRoot = projectWindow.RootNode;
+            ProjectManager.CurrentProject.ProjectRoot = ProjectWindow.RootNode;
             currentlySaving = true;
             Task.Run(() =>
             {
@@ -234,8 +235,8 @@ namespace tileEngine
 
             //Register the changes as saved.
             currentlySaving = false;
-            projectWindow.RootNode.UnsavedChanges = false;
-            foreach (var node in projectWindow.RootNode.Nodes.Select(x => (ProjectTreeNode)x))
+            ProjectWindow.RootNode.UnsavedChanges = false;
+            foreach (var node in ProjectWindow.RootNode.Nodes.Select(x => (ProjectTreeNode)x))
                 node.UnsavedChanges = false;
         }
 
@@ -250,7 +251,7 @@ namespace tileEngine
             curDoc.Node.UpdateFromDocument();
 
             //Save the project to file.
-            ProjectManager.CurrentProject.ProjectRoot = projectWindow.RootNode;
+            ProjectManager.CurrentProject.ProjectRoot = ProjectWindow.RootNode;
             currentlySaving = true;
             Task.Run(() =>
             {
@@ -390,7 +391,7 @@ namespace tileEngine
             {
                 //(S)ave Document
                 case Keys.S:
-                    if (projectWindow.ContainsFocus)
+                    if (ProjectWindow.ContainsFocus)
                     {
                         saveAll(null, null);
                         break;
@@ -549,7 +550,7 @@ namespace tileEngine
         private void closeWindowBtn_Click(object sender, EventArgs e)
         {
             //If there are unsaved changes, make sure the user wants to leave.
-            if (projectWindow.HasUnsavedChanges() && DarkMessageBox.ShowWarning("There are unsaved changes. Are you sure you want to close?", "tileEngine - Unsaved Changes", DarkDialogButton.YesNo) != DialogResult.Yes)
+            if (ProjectWindow.HasUnsavedChanges() && DarkMessageBox.ShowWarning("There are unsaved changes. Are you sure you want to close?", "tileEngine - Unsaved Changes", DarkDialogButton.YesNo) != DialogResult.Yes)
                 return;
 
             //Cancel if we're currently saving.

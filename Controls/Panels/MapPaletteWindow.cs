@@ -17,11 +17,12 @@ namespace tileEngine.Controls
     /// </summary>
     public partial class MapPaletteWindow : DarkToolWindow
     {
-        public MapPaletteWindow()
+        public MapPaletteWindow(ProjectTreeWindow projectTree)
         {
             InitializeComponent();
-            ProjectCompiler.OnCompile += projectCompiled;
+            projectTree.OnAssetImported += ReloadOptions;
             Palette.OnSizesUpdated += paletteSizesUpdated;
+            spriteSelector.SelectedItemChanged += selectionChanged;
 
             //Set the theme from current DarkUI theme.
             Palette.SetThemeFromDarkUI();
@@ -32,6 +33,16 @@ namespace tileEngine.Controls
         /// </summary>
         public void ReloadOptions()
         {
+            //Temporarily de-hook selection event.
+            spriteSelector.SelectedItemChanged -= selectionChanged;
+
+            //Save the currently selected item's asset ID for re-selection later.
+            int curSelectedID = -1;
+            if (spriteSelector.SelectedItem != null)
+            {
+                curSelectedID = ((TaggedDropdownItem<ProjectSpriteNode>)spriteSelector.SelectedItem).Tag.ID;
+            }
+
             //Reload the available options on the sprite picker.
             spriteSelector.Items.Clear();
             var sprites = ProjectManager.CurrentProject.ProjectRoot.GetNodesOfType<ProjectSpriteNode>();
@@ -44,6 +55,17 @@ namespace tileEngine.Controls
                     Icon = Resources.Icons.Sprite
                 });
             }
+
+            //Attempt to re-select the previously selected item.
+            var item = spriteSelector.Items.FirstOrDefault(x => ((TaggedDropdownItem<ProjectSpriteNode>)x).Tag.ID == curSelectedID);
+            if (item != null && curSelectedID != -1)
+            {
+                spriteSelector.SelectedItem = item;
+            }
+            else { selectionChanged(null, null); }
+
+            //Re-hook event.
+            spriteSelector.SelectedItemChanged += selectionChanged;
         }
 
         /// <summary>
@@ -69,9 +91,9 @@ namespace tileEngine.Controls
         }
 
         /// <summary>
-        /// Triggered every time the project is compiled.
+        /// Triggered every time a new asset is imported.
         /// </summary>
-        private void projectCompiled(string assetPath)
+        private void assetImported()
         {
             ReloadOptions();
         }

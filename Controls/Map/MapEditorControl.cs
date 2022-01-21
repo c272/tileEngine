@@ -43,34 +43,6 @@ namespace tileEngine.Controls
         private TileLayer _selectedLayer = null;
 
         /// <summary>
-        /// The colour of the selection box that is used when a user selects tiles.
-        /// </summary>
-        public Color SelectionColour
-        {
-            get { return _selectionColour; }
-            set
-            {
-                _selectionColour = value;
-                Invalidate();
-            }
-        }
-        private Color _selectionColour = Color.White;
-
-        /// <summary>
-        /// The colour of the selection box that is used when a user selects tiles.
-        /// </summary>
-        public int SelectionWidth
-        {
-            get { return _selectionWidth; }
-            set
-            {
-                _selectionWidth = value;
-                Invalidate();
-            }
-        }
-        private int _selectionWidth = 2;
-
-        /// <summary>
         /// The currently selected tiles on the current layer, if any.
         /// </summary>
         public Rectangle? SelectedTiles
@@ -221,15 +193,7 @@ namespace tileEngine.Controls
             {
                 //Calculate selection in grid space.
                 Rectangle selected = (Rectangle)SelectedTiles;
-                Vector2f selectTopLeft = TileToGridCoordinate(selected.Location);
-                Vector2f selectBottomRight = TileToGridCoordinate(new Point(selected.Right, selected.Bottom));
-
-                //Draw in pixel space.
-                PointF topLeft = ToPixelPointF(selectTopLeft);
-                PointF bottomRight = ToPixelPointF(selectBottomRight);
-                Pen selectionPen = new Pen(new SolidBrush(SelectionColour), SelectionWidth);
-                selectionPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
-                e.Graphics.DrawRectangles(selectionPen, new RectangleF[] { new RectangleF(topLeft, new SizeF(bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y)) }); 
+                DrawSelectionBox(e, selected);
             }
         }
 
@@ -324,7 +288,7 @@ namespace tileEngine.Controls
         private void OnMouseDown(object sender, MouseEventArgs e)
         {
             //Deselect any child elements.
-            this.Select();
+            Select();
 
             //If the current tool is the grab and pan hand, all mouse actions result in pan.
             if (EditTool == MapEditTool.GrabAndPan)
@@ -640,9 +604,6 @@ namespace tileEngine.Controls
             //Add an event to the given location.
             SelectedLayer.Events.Add(tileLocation, new TileEvent());
 
-            //Open the edit menu for that event.
-            //...
-
             //Done!
             OnSelectedLayerEdited?.Invoke();
             Invalidate();
@@ -655,17 +616,28 @@ namespace tileEngine.Controls
         private bool DoPencilTile(Microsoft.Xna.Framework.Point tileLocation)
         {
             //If no palette configured, or no selected tile, ignore.
-            if (Palette == null || Palette.SelectedTile == null)
+            if (Palette == null || Palette.SelectedTiles == null)
                 return false;
 
-            //Draw the tile at the current mouse position.
-            if (SelectedLayer.Tiles.ContainsKey(tileLocation))
+            //Draw the tiles selected at the currently selected location.
+            int rowIndex = 0;
+            for (int y = tileLocation.Y; y < tileLocation.Y + Palette.SelectedTiles.Count; y++)
             {
-                SelectedLayer.Tiles[tileLocation] = (TileData)Palette.SelectedTile;
-            }
-            else
-            {
-                SelectedLayer.Tiles.Add(tileLocation, (TileData)Palette.SelectedTile);
+                List<TileData> thisRow = Palette.SelectedTiles[rowIndex];
+                int colIndex = 0;
+                for (int x = tileLocation.X; x < tileLocation.X + thisRow.Count; x++)
+                {
+                    //Replace if key already there, otherwise add.
+                    Microsoft.Xna.Framework.Point curPoint = new Microsoft.Xna.Framework.Point(x, y);
+                    if (SelectedLayer.Tiles.ContainsKey(curPoint))
+                        SelectedLayer.Tiles.Remove(curPoint);
+
+                    SelectedLayer.Tiles.Add(curPoint, thisRow[colIndex]);
+                    colIndex++;
+                }
+
+                //Bump to next selected tile row.
+                rowIndex++;
             }
 
             //Done!
