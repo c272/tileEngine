@@ -340,20 +340,33 @@ namespace tileEngine
             //Delete contents of the compile directory, if there is one.
             if (ProjectCompiler.CompilePath == null)
                 return;
+
+            int filesDeleted = 0;
+            int dirsDeleted = 0;
             try
             {
                 //Delete all child files and folders.
                 var dirInfo = new DirectoryInfo(ProjectCompiler.CompilePath);
                 foreach (var file in dirInfo.GetFiles())
+                {
                     File.Delete(file.FullName);
+                    filesDeleted++;
+                }
                 foreach (DirectoryInfo subDir in dirInfo.GetDirectories())
+                {
                     subDir.Delete(true);
-        
+                    dirsDeleted++;
+                }
             }
             catch (Exception ex)
             {
                 DarkMessageBox.ShowError($"An error occured while cleaning the project: {ex.Message}", "tileEngine - Clean Error");
+                return;
             }
+
+            //Show a successful clean message.
+            DarkMessageBox.ShowInformation("Successfully cleaned the project output directory, deleting " +
+                                           $"{filesDeleted} files and {dirsDeleted} directories.", "tileEngine - Clean Complete");
         }
 
         ////////////////////////////

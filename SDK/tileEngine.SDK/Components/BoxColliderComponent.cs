@@ -50,7 +50,7 @@ namespace tileEngine.SDK.Components
             List<Point> colliding = new List<Point>();
             for (int y = startTile.Y; y <= bottomRightTile.Y; y++)
             {
-                for (int x = startTile.X; x < bottomRightTile.X; x++)
+                for (int x = startTile.X; x <= bottomRightTile.X; x++)
                 {
                     var tile = new Point(x, y);
                     if (CollidingWith(gameObject, layer, tile, true))
