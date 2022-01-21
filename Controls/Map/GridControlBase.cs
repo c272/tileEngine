@@ -684,13 +684,9 @@ namespace tileEngine.Controls
         /// </summary>
         public Point ToTileLocation(Point mousePoint)
         {
-            //needs fixing.
             Vector2f clickPosition = ToGridCoordinate(mousePoint.X, mousePoint.Y);
-            System.Diagnostics.Debug.WriteLine($"Clicked at grid location ({clickPosition.X}, {clickPosition.Y}).");
-
-            int tileX = (int)((clickPosition.X - Math.Abs(Math.Abs(clickPosition.X) % GridStep)) / GridStep);
-            int tileY = (int)((clickPosition.Y - Math.Abs(Math.Abs(clickPosition.Y) % GridStep)) / GridStep);
-            System.Diagnostics.Debug.WriteLine($"Calculated tile position ({tileX}, {tileY}).");
+            int tileX = (int)Math.Floor(clickPosition.X / GridStep);
+            int tileY = (int)Math.Floor(clickPosition.Y / GridStep);
             return new Point(tileX, tileY);
         }
 
