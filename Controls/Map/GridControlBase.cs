@@ -503,6 +503,8 @@ namespace tileEngine.Controls
             {
                 //Cache miss, attempt to load from file.
                 var assetNode = ProjectManager.CurrentProject.ProjectRoot.FindChild<ProjectSpriteNode>(tile.TextureID);
+                if (assetNode == null)
+                    return;
                 string assetPath = Path.Combine(ProjectManager.CurrentProjectDirectory, assetNode.RelativeLocation);
 
                 //On failure, just load the "invalid" texture.
