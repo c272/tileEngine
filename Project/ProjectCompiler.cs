@@ -189,20 +189,14 @@ namespace tileEngine
 
             //Copy all the assets into the working directory.
             var fileNames = new List<string>();
-            foreach (var node in ProjectManager.CurrentProject.ProjectRoot.Nodes.Select(x => (ProjectTreeNode)x))
+            foreach (var assetNode in ProjectManager.CurrentProject.ProjectRoot.GetNodesOfType<ProjectAssetNode>())
             {
-                //Ignore non-asset nodes.
-                if (!(node is ProjectAssetNode))
-                    continue;
-
-                //Get the asset node out.
-                var assetNode = (ProjectAssetNode)node;
                 var fileInfo = new FileInfo(Path.Combine(ProjectManager.CurrentProjectDirectory, assetNode.RelativeLocation));
 
                 //If the node is meant to be compiled by XNB, then set that up now.
                 if (assetNode.CompileXNB)
                 {
-                    string outFile = Path.Combine(tempDir, node.ID + fileInfo.Extension);
+                    string outFile = Path.Combine(tempDir, assetNode.ID + fileInfo.Extension);
                     File.Copy(fileInfo.FullName, outFile, true);
 
                     //Add to file list.
@@ -211,7 +205,7 @@ namespace tileEngine
                 else
                 {
                     //Not compiling by XNB, so just copy to output directory.
-                    string outFile = Path.Combine(outputDir, node.ID + fileInfo.Extension);
+                    string outFile = Path.Combine(outputDir, assetNode.ID + fileInfo.Extension);
                     if (!File.Exists(outFile))
                         File.Copy(fileInfo.FullName, outFile);
                 }
@@ -229,7 +223,7 @@ namespace tileEngine
 
             //Destroy temporary directory.
             Directory.Delete(tempDir, true);
-            Logger?.LogMessage("Finished building assets.");
+            Logger?.LogMessage("Runtime builder has finished building assets.");
         }
 
         /// <summary>

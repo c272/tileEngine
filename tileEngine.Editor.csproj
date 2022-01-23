@@ -190,6 +190,7 @@
     <Compile Include="Controls\Map\MapPaletteControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\Map\MapPaletteState.cs" />
     <Compile Include="Controls\Panels\PropertiesWindow.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -219,6 +220,9 @@
     </Compile>
     <Compile Include="Controls\Panels\OutputWindow.Designer.cs">
       <DependentUpon>OutputWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ProjectTree.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\Properties\EventPropertiesControl.cs">
       <SubType>UserControl</SubType>

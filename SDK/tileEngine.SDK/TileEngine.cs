@@ -39,6 +39,12 @@ namespace tileEngine.SDK
         KeyboardInputHandler KeyboardInput { get; set; }
 
         /// <summary>
+        /// Returns the scene that is currently active.
+        /// Null if no scene is active.
+        /// </summary>
+        Scene GetScene();
+
+        /// <summary>
         /// Changes the scene to the given scene type.
         /// </summary>
         void SetScene(Type scene);

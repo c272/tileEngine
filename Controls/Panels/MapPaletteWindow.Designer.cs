@@ -43,7 +43,6 @@
             this.spriteSelector.Size = new System.Drawing.Size(273, 23);
             this.spriteSelector.TabIndex = 2;
             this.spriteSelector.Text = "darkDropdownList1";
-            this.spriteSelector.SelectedItemChanged += new System.EventHandler(this.selectionChanged);
             // 
             // Palette
             // 
@@ -52,6 +51,17 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Palette.BackgroundColour = System.Drawing.Color.White;
             this.Palette.BackgroundLineColour = System.Drawing.Color.LightGray;
+            this.Palette.CollisionBackgroundColour = System.Drawing.Color.Red;
+            this.Palette.CollisionDrawLayer = null;
+            this.Palette.CollisionForegroundColour = System.Drawing.Color.White;
+            this.Palette.CollisionOpacity = 0.75F;
+            this.Palette.CollisionPipSize = 2;
+            this.Palette.DoCollisionDraw = true;
+            this.Palette.DoEventDraw = true;
+            this.Palette.DoGridDraw = true;
+            this.Palette.EventColour = System.Drawing.Color.Orange;
+            this.Palette.EventDrawLayer = null;
+            this.Palette.EventOpacity = 0.75F;
             this.Palette.GridLineWidth = 2;
             this.Palette.GridStep = 30F;
             this.Palette.Location = new System.Drawing.Point(0, 49);
@@ -61,7 +71,6 @@
             this.Palette.TabIndex = 0;
             this.Palette.Text = "mapPaletteControl1";
             this.Palette.TileTextureSize = 64;
-            this.Palette.ViewScroll = new Utility.Vector2f();
             this.Palette.Zoom = 1F;
             // 
             // horizontalScroll
@@ -89,7 +98,7 @@
             // 
             // MapPaletteWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.verticalScroll);
             this.Controls.Add(this.horizontalScroll);

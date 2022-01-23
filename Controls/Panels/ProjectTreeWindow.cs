@@ -33,6 +33,10 @@ namespace tileEngine.Controls
         /// </summary>
         public ProjectRootNode RootNode { get; private set; }
 
+        //Event for when a new asset is imported into the project tree.
+        public delegate void OnAssetImportedHandler();
+        public event OnAssetImportedHandler OnAssetImported;
+
         public ProjectTreeWindow()
         {
             InitializeComponent();
@@ -246,6 +250,7 @@ namespace tileEngine.Controls
             }
             newNode.Name = newName;
             CurrentSelectedParent.Nodes.Add(newNode);
+            OnAssetImported?.Invoke();
 
             //Rename the element.
             this.Focus();

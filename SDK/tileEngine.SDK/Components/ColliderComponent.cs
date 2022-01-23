@@ -21,6 +21,11 @@ namespace tileEngine.SDK.Components
         public static bool DrawColliders { get; set; } = false;
 
         /// <summary>
+        /// The colour to draw debug collider boxes in.
+        /// </summary>
+        public static Color ColliderDrawColour { get; set; } = Color.Red * 0.7f;
+
+        /// <summary>
         /// Returns a list of points at which the GameObject is colliding with collision hull
         /// squares on the provided tile layer.
         /// </summary>

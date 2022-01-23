@@ -47,7 +47,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="api\index.md" />
-    <None Include="articles\intro.md" />
+    <None Include="articles\assets.md" />
+    <None Include="articles\building.md" />
+    <None Include="articles\camera.md" />
+    <None Include="articles\collision.md" />
+    <None Include="articles\creating-game.md" />
+    <None Include="articles\debugging.md" />
+    <None Include="articles\events.md" />
+    <None Include="articles\gameobjects.md" />
+    <None Include="articles\input.md" />
+    <None Include="articles\scenes.md" />
     <None Include="articles\toc.md" />
     <None Include="docfx.json" />
     <None Include="index.md" />

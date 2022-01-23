@@ -106,29 +106,16 @@ namespace tileEngine.SDK
                     {
                         //Ignore if there is nothing at this tile.
                         Point curTile = new Point(x, y);
-                        if (!layer.Tiles.ContainsKey(curTile))
-                            continue;
+                        DrawTile(layer, curTile, spriteBatch);
 
-                        //If this tile's texture isn't in cache yet, pull it to cache.
-                        TileData tileData = layer.Tiles[curTile];
-                        if (!tileTextureCache.ContainsKey(tileData.TextureID))
+                        //If "DrawColliders" is enabled, draw a collider box here (if there is one).
+                        if (ColliderComponent.DrawColliders && layer.CollisionHull.ContainsKey(curTile))
                         {
-                            var tex = AssetManager.AttemptLoad<Texture2D>(tileData.TextureID);
-                            if (tex == null)
-                                DiagnosticsHook.LogMessage(21011, $"Failed to load texture ID {tileData.TextureID} for map draw.", DiagnosticsSeverity.Warning);
-                            tileTextureCache.Add(tileData.TextureID, tex);
+                            Vector2 gridPos = TileToGridLocation(curTile);
+                            Vector2 screenPos = ToScreenPointF(gridPos);
+                            spriteBatch.Draw(PointTexture, screenPos, null, ColliderComponent.ColliderDrawColour, 0f, Vector2.Zero,
+                                             new Vector2(Map.TileTextureSize * Zoom, Map.TileTextureSize * Zoom), SpriteEffects.None, 0);
                         }
-
-                        //Get the texture from cache, draw to screen.
-                        Texture2D tileTex = tileTextureCache[tileData.TextureID];
-                        Vector2 gridPos = TileToGridLocation(curTile);
-                        Vector2 screenPos = ToScreenPointF(gridPos);
-                        Rectangle sourceRect = new Rectangle(tileData.Position.X * Map.TileTextureSize,
-                                                             tileData.Position.Y * Map.TileTextureSize,
-                                                             Map.TileTextureSize, Map.TileTextureSize);
-
-                        spriteBatch.Draw(tileTex, screenPos, sourceRect, Color.White * layer.Opacity, 0f, new Vector2(0, 0),
-                                         new Vector2(Zoom, Zoom), SpriteEffects.None, 0);
                     }
                 }
 
@@ -141,6 +128,37 @@ namespace tileEngine.SDK
             }
 
             spriteBatch.End();
+        }
+
+        /// <summary>
+        /// Draws a given tile on a given layer onto the sprite batch's back buffer.
+        /// </summary>
+        private void DrawTile(TileLayer layer, Point curTile, SpriteBatch spriteBatch)
+        {
+            //Ignore if no tile here.
+            if (!layer.Tiles.ContainsKey(curTile))
+                return;
+
+            //If this tile's texture isn't in cache yet, pull it to cache.
+            TileData tileData = layer.Tiles[curTile];
+            if (!tileTextureCache.ContainsKey(tileData.TextureID))
+            {
+                var tex = AssetManager.AttemptLoad<Texture2D>(tileData.TextureID);
+                if (tex == null)
+                    DiagnosticsHook.LogMessage(21011, $"Failed to load texture ID {tileData.TextureID} for map draw.", DiagnosticsSeverity.Warning);
+                tileTextureCache.Add(tileData.TextureID, tex);
+            }
+
+            //Get the texture from cache, draw to screen.
+            Texture2D tileTex = tileTextureCache[tileData.TextureID];
+            Vector2 gridPos = TileToGridLocation(curTile);
+            Vector2 screenPos = ToScreenPointF(gridPos);
+            Rectangle sourceRect = new Rectangle(tileData.Position.X * Map.TileTextureSize,
+                                                 tileData.Position.Y * Map.TileTextureSize,
+                                                 Map.TileTextureSize, Map.TileTextureSize);
+
+            spriteBatch.Draw(tileTex, screenPos, sourceRect, Color.White * layer.Opacity, 0f, new Vector2(0, 0),
+                             new Vector2(Zoom, Zoom), SpriteEffects.None, 0);
         }
 
         /// <summary>

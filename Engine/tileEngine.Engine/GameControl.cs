@@ -40,6 +40,9 @@ namespace tileEngine.Engine
                 scene = value;
                 oldScene?.Dispose();
                 scene.Initialize();
+
+                //Fire event for new scene.
+                OnSceneChanged?.Invoke(scene);
             }
         }
         private Scene scene = null;
@@ -86,11 +89,25 @@ namespace tileEngine.Engine
         public event OnInitializedHandler OnInitialized;
         public delegate void OnInitializedHandler();
 
+        /// <summary>
+        /// Event triggered when this game control has initialized fully.
+        /// </summary>
+        public event OnSceneChangedHandler OnSceneChanged;
+        public delegate void OnSceneChangedHandler(Scene newScene);
+
         //Singleton constructor.
         public GameControl()
         {
             Instance = this;
             TileEngine.SetInstance(this);
+        }
+
+        /// <summary>
+        /// Returns the currently active scene of the game.
+        /// </summary>
+        public Scene GetScene()
+        {
+            return Scene;
         }
 
         /// <summary>

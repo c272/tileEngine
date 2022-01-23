@@ -267,6 +267,34 @@ namespace tileEngine.Controls
         private int collisionPipSize = 2;
 
         /// <summary>
+        /// The colour of the selection box that is used for selected tiles.
+        /// </summary>
+        public Color SelectionColour
+        {
+            get { return _selectionColour; }
+            set
+            {
+                _selectionColour = value;
+                Invalidate();
+            }
+        }
+        private Color _selectionColour = Color.White;
+
+        /// <summary>
+        /// The colour of the selection box that is used when a user selects tiles.
+        /// </summary>
+        public int SelectionWidth
+        {
+            get { return _selectionWidth; }
+            set
+            {
+                _selectionWidth = value;
+                Invalidate();
+            }
+        }
+        private int _selectionWidth = 2;
+
+        /// <summary>
         /// The tile map to be drawn.
         /// </summary>
         public TileMap Map { get; set; } = null;
@@ -398,6 +426,22 @@ namespace tileEngine.Controls
         }
 
         /// <summary>
+        /// Draws a selection box at the given tile locations.
+        /// </summary>
+        protected void DrawSelectionBox(PaintEventArgs e, Rectangle selectedTiles)
+        {
+            Vector2f selectTopLeft = TileToGridCoordinate(selectedTiles.Location);
+            Vector2f selectBottomRight = TileToGridCoordinate(new Point(selectedTiles.Right, selectedTiles.Bottom));
+
+            //Draw in pixel space.
+            PointF topLeft = ToPixelPointF(selectTopLeft);
+            PointF bottomRight = ToPixelPointF(selectBottomRight);
+            Pen selectionPen = new Pen(new SolidBrush(SelectionColour), SelectionWidth);
+            selectionPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+            e.Graphics.DrawRectangles(selectionPen, new RectangleF[] { new RectangleF(topLeft, new SizeF(bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y)) });
+        }
+
+        /// <summary>
         /// Draws a single collision box at a provided tile location on a given layer.
         /// Utilises the provided brushes for drawing the collision box.
         /// If there is no valid collision box at the specified location, the call is ignored.
@@ -459,6 +503,8 @@ namespace tileEngine.Controls
             {
                 //Cache miss, attempt to load from file.
                 var assetNode = ProjectManager.CurrentProject.ProjectRoot.FindChild<ProjectSpriteNode>(tile.TextureID);
+                if (assetNode == null)
+                    return;
                 string assetPath = Path.Combine(ProjectManager.CurrentProjectDirectory, assetNode.RelativeLocation);
 
                 //On failure, just load the "invalid" texture.
@@ -640,13 +686,9 @@ namespace tileEngine.Controls
         /// </summary>
         public Point ToTileLocation(Point mousePoint)
         {
-            //needs fixing.
             Vector2f clickPosition = ToGridCoordinate(mousePoint.X, mousePoint.Y);
-            System.Diagnostics.Debug.WriteLine($"Clicked at grid location ({clickPosition.X}, {clickPosition.Y}).");
-
-            int tileX = (int)((clickPosition.X - Math.Abs(Math.Abs(clickPosition.X) % GridStep)) / GridStep);
-            int tileY = (int)((clickPosition.Y - Math.Abs(Math.Abs(clickPosition.Y) % GridStep)) / GridStep);
-            System.Diagnostics.Debug.WriteLine($"Calculated tile position ({tileX}, {tileY}).");
+            int tileX = (int)Math.Floor(clickPosition.X / GridStep);
+            int tileY = (int)Math.Floor(clickPosition.Y / GridStep);
             return new Point(tileX, tileY);
         }
 

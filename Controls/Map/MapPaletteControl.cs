@@ -36,9 +36,9 @@ namespace tileEngine.Controls
         }
 
         /// <summary>
-        /// The currently selected tile on the palette.
+        /// The currently selected tiles on the palette.
         /// </summary>
-        public TileData? SelectedTile { get; private set; } = null;
+        public List<List<TileData>> SelectedTiles { get; private set; } = null;
 
         /// <summary>
         /// The size of the view (control) of the palette, in grid units.
@@ -49,6 +49,11 @@ namespace tileEngine.Controls
         /// The total size of the available palette area, in grid units.
         /// </summary>
         public Vector2f TotalSize { get; private set; } = new Vector2f();
+
+        /// <summary>
+        /// The total size of the palette, in tiles.
+        /// </summary>
+        public Point TileSize { get; private set; } = new Point();
 
         /// <summary>
         /// Represents the amount that the view is currently scrolled (X, Y).
@@ -68,6 +73,9 @@ namespace tileEngine.Controls
         public delegate void SizesUpdatedHandler();
         public event SizesUpdatedHandler OnSizesUpdated;
 
+        //Current state of the map palette control.
+        MapPaletteState state = MapPaletteState.Default;
+
         //The tilemap used for displaying the palette.
         private TileMap map = new TileMap();
 
@@ -76,6 +84,9 @@ namespace tileEngine.Controls
 
         //The ID of the texture currently being used.
         private int textureID = -1;
+
+        //Currently selected tiles, represented as a rectangle of tile locations.
+        Rectangle selectedTiles;
 
         //////////////////////////
         /// PUBLIC API METHODS ///
@@ -107,6 +118,23 @@ namespace tileEngine.Controls
             adjustCameraPosition();
         }
 
+        ///////////////////////
+        /// PAINT OVERRIDES ///
+        ///////////////////////
+
+        /// <summary>
+        /// Triggered when the palette needs to redraw.
+        /// </summary>
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            //Draw the base palette.
+            base.OnPaint(e);
+
+            //Draw the selection on top.
+            if (SelectedTiles != null)
+                DrawSelectionBox(e, selectedTiles);
+        }
+
         //////////////////////
         /// EVENT HANDLERS ///
         //////////////////////
@@ -114,7 +142,7 @@ namespace tileEngine.Controls
         /// <summary>
         /// Triggered when the user clicks the mouse on the palette.
         /// </summary>
-        protected override void OnMouseClick(MouseEventArgs e)
+        protected override void OnMouseDown(MouseEventArgs e)
         {
             //Get the tile location that's been clicked.
             Point clickTile = ToTileLocation(e.Location);
@@ -125,7 +153,71 @@ namespace tileEngine.Controls
                 return;
 
             //Set this tile as selected data.
-            SelectedTile = map.Layers[0].Tiles[tilePosition];
+            SelectedTiles = new List<List<TileData>>();
+            SelectedTiles.Add(new List<TileData>() { map.Layers[0].Tiles[tilePosition] });
+
+            //Begin a tile drag.
+            selectedTiles = new Rectangle(clickTile, new Size(1, 1));
+            state = MapPaletteState.DragSelect;
+            Invalidate();
+        }
+
+        /// <summary>
+        /// Triggered when the user drags the mouse on the palette control.
+        /// </summary>
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            //If in drag select mode, constantly recalculate the bottom right tile.
+            if (state == MapPaletteState.DragSelect)
+            {
+                //Create rectangle.
+                Point bottomRightTile = ToTileLocation(e.Location);
+                Size newSize = new Size(bottomRightTile.X - selectedTiles.Location.X, bottomRightTile.Y - selectedTiles.Location.Y);
+
+                //Bound the size to be at least a selection of 1.
+                newSize.Width = Math.Max(newSize.Width, 1);
+                newSize.Height = Math.Max(newSize.Height, 1);
+
+                //Don't allow the user to select outside the palette.
+                newSize.Width = Math.Min(newSize.Width, TileSize.X - selectedTiles.X);
+                newSize.Width = Math.Min(newSize.Height, TileSize.Y - selectedTiles.Y);
+                var oldSize = selectedTiles.Size;
+                selectedTiles.Size = newSize;
+
+                //Invalidate if necessary.
+                if (oldSize.Width != newSize.Width || oldSize.Height != newSize.Height)
+                    Invalidate();
+            }
+        }
+
+        /// <summary>
+        /// Triggered when the user releases their mouse from the palette control.
+        /// </summary>
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            //If we're ending a drag select, then set the appropriate tile data in SelectedTiles.
+            if (state == MapPaletteState.DragSelect)
+            {
+                SelectedTiles = new List<List<TileData>>();
+                for (int y = selectedTiles.Y; y < selectedTiles.Y + selectedTiles.Height; y++)
+                {
+                    var thisRow = new List<TileData>();
+                    for (int x = selectedTiles.X; x < selectedTiles.X + selectedTiles.Width; x++)
+                    {
+                        Microsoft.Xna.Framework.Point curPoint = new Microsoft.Xna.Framework.Point(x, y);
+                        if (map.Layers[0].Tiles.ContainsKey(curPoint))
+                        {
+                            thisRow.Add(map.Layers[0].Tiles[curPoint]);
+                        }
+                        else { break; }
+                    }
+
+                    SelectedTiles.Add(thisRow);
+                }
+            }
+
+            //Reset state back to default.
+            state = MapPaletteState.Default;
         }
 
         /// <summary>
@@ -180,6 +272,8 @@ namespace tileEngine.Controls
                 curPos.X = 0;
                 curPos.Y += TileTextureSize;
             }
+            TileSize = curPos;
+
 
             //Add layer to map, invalidate.
             map.Layers.Add(layer);
