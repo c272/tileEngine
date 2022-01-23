@@ -63,7 +63,6 @@
             this.ClientSize = new System.Drawing.Size(460, 375);
             this.Controls.Add(this.drawCollidersCb);
             this.Controls.Add(this.debugOutput);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "DebugWindow";
             this.Text = "tileEngine Player - Debug Window";
