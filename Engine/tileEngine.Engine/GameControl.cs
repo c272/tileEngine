@@ -154,6 +154,9 @@ namespace tileEngine.Engine
                 return;
             }
             GameData = container;
+
+            //Configure asset mappings.
+            AssetManager.Mappings = GameData.AssetMapping;
         }
 
         /// <summary>

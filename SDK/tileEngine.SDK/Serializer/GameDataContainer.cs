@@ -40,5 +40,12 @@ namespace tileEngine.SDK
         /// </summary>
         [ProtoMember(1)]
         public Dictionary<string, TileMap> Maps { get; set; } = new Dictionary<string, TileMap>();
+
+        /// <summary>
+        /// Mappings of asset tree string paths into asset ID values.
+        /// Necessary for the asset manager to translate project tree paths into asset IDs.
+        /// </summary>
+        [ProtoMember(6)]
+        public Dictionary<string, int> AssetMapping { get; set; } = new Dictionary<string, int>();
     }
 }
