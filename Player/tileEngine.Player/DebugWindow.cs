@@ -13,10 +13,6 @@ using tileEngine.SDK.Diagnostics;
 
 namespace tileEngine.Player
 {
-    /// <summary>
-    /// Represents a debugging window within the tileEngine player, used for
-    /// development debugging purposes.
-    /// </summary>
     public partial class DebugWindow : DarkForm
     {
         public DebugWindow()
