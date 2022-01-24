@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using tileEngine.SDK.Audio;
 using tileEngine.SDK.Input;
 
 namespace tileEngine.SDK
@@ -34,9 +35,19 @@ namespace tileEngine.SDK
     public interface ITileEngine
     {
         /// <summary>
+        /// The game data container being run on this tile engine.
+        /// </summary>
+        GameDataContainer GameData { get; }
+
+        /// <summary>
+        /// The sound API for this tile engine.
+        /// </summary>
+        Sound Sound { get; }
+
+        /// <summary>
         /// The keyboard input handler for this tileEngine instance.
         /// </summary>
-        KeyboardInputHandler KeyboardInput { get; set; }
+        KeyboardInputHandler KeyboardInput { get; }
 
         /// <summary>
         /// Returns the scene that is currently active.

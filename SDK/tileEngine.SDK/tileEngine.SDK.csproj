@@ -80,6 +80,7 @@
     <Compile Include="Map\TileMap.cs" />
     <Compile Include="Map\TileData.cs" />
     <Compile Include="Serializer\ProtobufSerializer.cs" />
+    <Compile Include="Audio\Sound.cs" />
     <Compile Include="TileEngine.cs" />
     <Compile Include="TileEngineGame.cs" />
     <Compile Include="Utility\MathsUtility.cs" />

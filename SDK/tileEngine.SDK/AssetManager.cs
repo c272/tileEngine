@@ -19,24 +19,18 @@ namespace tileEngine.SDK
         public static ContentManager ContentManager { get; set; }
 
         /// <summary>
-        /// Mappings for this asset manager from a given set of string keys into asset IDs.
-        /// Used for readable programming mappings for ID values.
-        /// </summary>
-        public static Dictionary<string, int> Mappings { get; set; } = new Dictionary<string, int>();
-
-        /// <summary>
         /// Attempts to load the provided asset, given an asset binding, from asset storage.
         /// On failure, returns null.
         /// </summary>
         public static T AttemptLoad<T>(string mapping) where T : class
         {
-            if (!Mappings.ContainsKey(mapping))
+            if (TileEngine.Instance == null || TileEngine.Instance.GameData?.AssetMapping.ContainsKey(mapping) != true)
             {
                 DiagnosticsHook.LogMessage(1007, $"Could not find asset mapping for asset '{mapping}' to attempt load.");
                 return null;
             }
 
-            return AttemptLoad<T>(Mappings[mapping]);
+            return AttemptLoad<T>(TileEngine.Instance.GameData.AssetMapping[mapping]);
         }
 
         /// <summary>
