@@ -188,6 +188,10 @@ namespace tileEngine.Controls
             //Paint base.
             base.OnPaint(e);
 
+            //Draw point displaying the origin.
+            PointF originPoint = ToPixelPointF(new Vector2f(0, 0));
+            drawCross(e.Graphics, SelectionColour, originPoint, 1 * Zoom, 10 * Zoom);
+
             //Draw selection rectangle on selected square(s).
             if (SelectedTiles != null) 
             {
@@ -195,6 +199,24 @@ namespace tileEngine.Controls
                 Rectangle selected = (Rectangle)SelectedTiles;
                 DrawSelectionBox(e, selected);
             }
+        }
+
+        /// <summary>
+        /// Draws a cross centered at the given location, with a provided colour, length & width.
+        /// </summary>
+        private void drawCross(Graphics graphics, Color colour, PointF origin, float lineWidth, float lineLength)
+        {
+            Brush crossBrush = new SolidBrush(colour);
+            graphics.FillRectangle(crossBrush, new RectangleF()
+            {
+                Location = new PointF(origin.X - lineWidth / 2f, origin.Y - lineLength / 2f),
+                Size = new SizeF(lineWidth, lineLength)
+            });
+            graphics.FillRectangle(crossBrush, new RectangleF()
+            {
+                Location = new PointF(origin.X - lineLength / 2f, origin.Y - lineWidth / 2f),
+                Size = new SizeF(lineLength, lineWidth)
+            });
         }
 
         ///////////////////////
