@@ -39,7 +39,7 @@ namespace tileEngine.SDK.Components
         /// <summary>
         /// Checks if this box collider is colliding with any collision hull elements.
         /// </summary>
-        public override List<Point> Colliding(GameObject gameObject, TileLayer layer)
+        public override CollisionData Colliding(GameObject gameObject, TileLayer layer)
         {
             //Get the starting location of the collider.
             Vector2 startLocation = gameObject.Position + Location;
@@ -48,6 +48,7 @@ namespace tileEngine.SDK.Components
 
             //Check all points within the box.
             List<Point> colliding = new List<Point>();
+            List<Point> eventsTriggered = new List<Point>();
             for (int y = startTile.Y; y <= bottomRightTile.Y; y++)
             {
                 for (int x = startTile.X; x <= bottomRightTile.X; x++)
@@ -55,10 +56,23 @@ namespace tileEngine.SDK.Components
                     var tile = new Point(x, y);
                     if (CollidingWith(gameObject, layer, tile, true))
                         colliding.Add(tile);
+
+                    //If we're overlapping an event tile from collide, add it.
+                    if (layer.Events.ContainsKey(tile) 
+                        && layer.Events[tile].Trigger == EventTriggerType.GameObjectCollide
+                        && gameObject.TriggersEvents)
+                    {
+                        eventsTriggered.Add(tile);
+                    }
                 }
             }
 
-            return colliding;
+            //Form and return collision data.
+            return new CollisionData()
+            {
+                CollidingTiles = colliding,
+                TriggeringEvents = eventsTriggered
+            };
         }
 
         /// <summary>

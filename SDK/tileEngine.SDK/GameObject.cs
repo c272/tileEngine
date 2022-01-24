@@ -31,6 +31,11 @@ namespace tileEngine.SDK
         public List<Component> Components = new List<Component>();
 
         /// <summary>
+        /// Whether this game object is allowed to trigger events.
+        /// </summary>
+        public bool TriggersEvents { get; set; } = false;
+
+        /// <summary>
         /// The scene this GameObject is currently in.
         /// </summary>
         public Scene Scene

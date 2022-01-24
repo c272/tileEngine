@@ -11,6 +11,8 @@ using ProtoBuf;
 using tileEngine.SDK.Map;
 using tileEngine.SDK.Diagnostics;
 using tileEngine.SDK.Components;
+using tileEngine.SDK.Attributes;
+using System.Reflection;
 
 namespace tileEngine.SDK
 {
@@ -51,6 +53,12 @@ namespace tileEngine.SDK
         //Cache of textures used for drawing map tiles.
         private Dictionary<int, Texture2D> tileTextureCache = new Dictionary<int, Texture2D>();
 
+        //Dictionary of event functions registered for this scene class.
+        private Dictionary<string, MethodInfo> eventFunctions = new Dictionary<string, MethodInfo>();
+
+        //Cache of gameObjects currently colliding with event tiles.
+        private Dictionary<int, List<Point>> eventCollisionCache = new Dictionary<int, List<Point>>();
+
         //////////////////
         /// PUBLIC API ///
         //////////////////
@@ -75,6 +83,30 @@ namespace tileEngine.SDK
         {
             GameObjects.RemoveAll(x => x.ID == obj.ID);
             obj._scene = null;
+        }
+
+        /// <summary>
+        /// Called when the scene is first entered.
+        /// </summary>
+        public virtual void Initialize()
+        {
+            //Pull the attributes on this class, filter for event functions.
+            MethodInfo[] methods = this.GetType().GetMethods();
+            foreach (var method in methods)
+            {
+                //Get the event function attribute for this (if there is one).
+                var eventFuncAttrib = method.GetCustomAttribute<EventFunctionAttribute>();
+                if (eventFuncAttrib == null)
+                    continue;
+
+                //Attempt to add to dictionary.
+                if (eventFunctions.ContainsKey(eventFuncAttrib.Name))
+                {
+                    DiagnosticsHook.LogMessage(1008, $"Event function with duplicate name '{eventFuncAttrib.Name}' found in scene class {this.GetType()}.");
+                    return;
+                }
+                eventFunctions.Add(eventFuncAttrib.Name, method);
+            }
         }
 
         /// <summary>
@@ -162,11 +194,6 @@ namespace tileEngine.SDK
         }
 
         /// <summary>
-        /// Called when the scene is first entered.
-        /// </summary>
-        public virtual void Initialize() { }
-
-        /// <summary>
         /// Updates the scene object based on the time from the previous update.
         /// </summary>
         public virtual void Update(GameTime delta) 
@@ -211,15 +238,16 @@ namespace tileEngine.SDK
                     //Limit to 5 iterations per update loop.
                     int limit = 5;
                     int iteration = 0;
+                    CollisionData collideData;
                     do
                     {
                         //If no colliding tiles, break.
-                        var collidingTiles = collider.Colliding(GameObjects[i], layer);
-                        if (collidingTiles.Count == 0)
+                        collideData = collider.Colliding(GameObjects[i], layer);
+                        if (collideData.CollidingTiles.Count == 0)
                             break;
 
                         //Step GameObject away from first colliding tile.
-                        Vector2 tileGridLoc = TileToGridLocation(collidingTiles[0]);
+                        Vector2 tileGridLoc = TileToGridLocation(collideData.CollidingTiles[0]);
                         Vector2 vectorToTile = new Vector2(tileGridLoc.X + (Map.TileTextureSize / 2f) - GameObjects[i].Position.X,
                                                            tileGridLoc.Y + (Map.TileTextureSize / 2f) - GameObjects[i].Position.Y);
                         vectorToTile.Normalize();
@@ -227,12 +255,64 @@ namespace tileEngine.SDK
                         {
                             GameObjects[i].Position -= vectorToTile * 0.01f;
                         }
-                        while (collider.CollidingWith(GameObjects[i], layer, collidingTiles[0]));
+                        while (collider.CollidingWith(GameObjects[i], layer, collideData.CollidingTiles[0]));
                         iteration++;
                     }
                     while (iteration < limit);
+
+                    //Process triggered events from the collisions.
+                    ProcessEvents(GameObjects[i], layer, collideData);
                 }
             }
+        }
+
+        /// <summary>
+        /// Processes triggered events for a single GameObject, given the collision data for that object.
+        /// </summary>
+        private void ProcessEvents(GameObject gameObject, TileLayer layer, CollisionData collideData)
+        {
+            //Trigger any new events we have entered.
+            foreach (var triggering in collideData.TriggeringEvents)
+            {
+                //If we're already triggering this event, ignore.
+                if (eventCollisionCache.ContainsKey(gameObject.ID) &&
+                    eventCollisionCache[gameObject.ID].Contains(triggering))
+                {
+                    continue;
+                }
+
+                //Craft event data for this event.
+                var eventData = new TileEventData()
+                {
+                    Location = TileToGridLocation(triggering),
+                    TriggeringObject = gameObject,
+                    TriggerType = EventTriggerType.GameObjectCollide
+                };
+
+                //Check the linked function actually exists.
+                var thisEvent = layer.Events[triggering];
+                if (!eventFunctions.ContainsKey(thisEvent.LinkedFunction))
+                {
+                    DiagnosticsHook.LogMessage(1009, $"Event function '{thisEvent.LinkedFunction}' called from map, but not found in assembly.", DiagnosticsSeverity.Warning);
+                    continue;
+                }
+
+                //Trigger this event!
+                try
+                {
+                    eventFunctions[thisEvent.LinkedFunction].Invoke(this, new object[] { eventData });
+                }
+                catch (Exception ex)
+                {
+                    DiagnosticsHook.LogMessage(1010, $"Failed to call event function '{thisEvent.LinkedFunction}': {ex.Message}");
+                    return;
+                }
+            }
+
+            //Refresh event cache for this object.
+            eventCollisionCache.Remove(gameObject.ID);
+            if (collideData.TriggeringEvents.Count > 0)
+                eventCollisionCache.Add(gameObject.ID, collideData.TriggeringEvents);
         }
 
         /// <summary>
