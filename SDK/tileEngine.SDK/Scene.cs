@@ -78,6 +78,17 @@ namespace tileEngine.SDK
         }
 
         /// <summary>
+        /// Changes the camera position so that the given point is centered.
+        /// </summary>
+        public void LookAt(Vector2 point)
+        {
+            Vector2 adjustedPoint = point;
+            adjustedPoint.X -= TileEngine.Instance.GraphicsDevice.Viewport.Width / 2f;
+            adjustedPoint.Y -= TileEngine.Instance.GraphicsDevice.Viewport.Height / 2f;
+            CameraPosition = adjustedPoint;
+        }
+
+        /// <summary>
         /// Draws the scene.
         /// </summary>
         public void Draw(SpriteBatch spriteBatch)
