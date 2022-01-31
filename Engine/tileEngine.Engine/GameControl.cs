@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using tileEngine.SDK.Diagnostics;
 using Microsoft.Xna.Framework.Input;
 using tileEngine.SDK.Input;
+using tileEngine.SDK.Audio;
 
 namespace tileEngine.Engine
 {
@@ -76,7 +77,12 @@ namespace tileEngine.Engine
         /// <summary>
         /// The keyboard input handler for this game control.
         /// </summary>
-        public KeyboardInputHandler KeyboardInput { get; set; } = new KeyboardInputHandler();
+        public KeyboardInputHandler KeyboardInput { get; private set; } = new KeyboardInputHandler();
+
+        /// <summary>
+        /// The platform specific sound API for this game control.
+        /// </summary>
+        public Sound Sound { get; private set; }
 
         /// <summary>
         /// Whether this game control is fully initialized yet.
@@ -174,6 +180,9 @@ namespace tileEngine.Engine
                 //Directory set before we've initialized the content manager, let's copy it in.
                 Editor.Content.RootDirectory = ContentDirectory;
             }
+
+            //Create the sound API for 44.1KHz stereo audio.
+            Sound = new GameSound(44100, 2);
 
             //Load fonts stored in the content directory into the FontManager.
             if (Directory.Exists(Editor.Content.RootDirectory))

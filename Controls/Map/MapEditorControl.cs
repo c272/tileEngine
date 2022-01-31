@@ -188,6 +188,10 @@ namespace tileEngine.Controls
             //Paint base.
             base.OnPaint(e);
 
+            //Draw point displaying the origin.
+            PointF originPoint = ToPixelPointF(new Vector2f(0, 0));
+            drawCross(e.Graphics, SelectionColour, originPoint, 1 * Zoom, 10 * Zoom);
+
             //Draw selection rectangle on selected square(s).
             if (SelectedTiles != null) 
             {
@@ -195,6 +199,24 @@ namespace tileEngine.Controls
                 Rectangle selected = (Rectangle)SelectedTiles;
                 DrawSelectionBox(e, selected);
             }
+        }
+
+        /// <summary>
+        /// Draws a cross centered at the given location, with a provided colour, length & width.
+        /// </summary>
+        private void drawCross(Graphics graphics, Color colour, PointF origin, float lineWidth, float lineLength)
+        {
+            Brush crossBrush = new SolidBrush(colour);
+            graphics.FillRectangle(crossBrush, new RectangleF()
+            {
+                Location = new PointF(origin.X - lineWidth / 2f, origin.Y - lineLength / 2f),
+                Size = new SizeF(lineWidth, lineLength)
+            });
+            graphics.FillRectangle(crossBrush, new RectangleF()
+            {
+                Location = new PointF(origin.X - lineLength / 2f, origin.Y - lineWidth / 2f),
+                Size = new SizeF(lineLength, lineWidth)
+            });
         }
 
         ///////////////////////
@@ -249,6 +271,7 @@ namespace tileEngine.Controls
                         break;
 
                     //Delete selected tiles.
+                    case Keys.Back:
                     case Keys.Delete:
                         DeleteSelectedTiles();
                         break;
@@ -492,7 +515,63 @@ namespace tileEngine.Controls
                 return;
             }
 
-            //...
+            //Paste in the data from the top left selected tile, continue repeating until done.
+            var selected = (Rectangle)SelectedTiles;
+            Point curPos = new Point(0, 0);
+            for (int y = selected.Y; y < selected.Y + selected.Height; y++)
+            {
+                for (int x = selected.X; x < selected.X + selected.Width; x++)
+                {
+                    Microsoft.Xna.Framework.Point curTile = new Microsoft.Xna.Framework.Point(x, y);
+                    var data = copiedTiles[curPos.Y][curPos.X];
+
+                    //Remove the data at this tile.
+                    switch (EditMode)
+                    {
+                        case MapEditMode.Events:
+                            if (SelectedLayer.Events.ContainsKey(curTile))
+                                SelectedLayer.Events.Remove(curTile);
+                            break;
+                        case MapEditMode.Tiles:
+                            if (SelectedLayer.Tiles.ContainsKey(curTile))
+                                SelectedLayer.Tiles.Remove(curTile);
+                            break;
+                        case MapEditMode.Collision:
+                            if (SelectedLayer.CollisionHull.ContainsKey(curTile))
+                                SelectedLayer.CollisionHull.Remove(curTile);
+                            break;
+                    }
+
+                    //If data is non-null, copy new data into this tile.
+                    if (data != null)
+                    {
+                        switch (EditMode)
+                        {
+                            case MapEditMode.Events:
+                                SelectedLayer.Events.Add(curTile, (TileEvent)data);
+                                break;
+                            case MapEditMode.Tiles:
+                                SelectedLayer.Tiles.Add(curTile, (TileData)data);
+                                break;
+                            case MapEditMode.Collision:
+                                SelectedLayer.CollisionHull.Add(curTile, (EntryDirection)data);
+                                break;
+                        }
+                    }
+
+                    //Increase current position, bound to valid copy region.
+                    curPos.X++;
+                    if (curPos.X >= copiedTiles[curPos.Y].Count)
+                        curPos.X = 0;
+                }
+
+                //Step to next row, if over the limit loop back round.
+                curPos.X = 0;
+                curPos.Y++;
+                if (curPos.Y >= copiedTiles.Count)
+                    curPos.Y = 0;
+            }
+
             OnSelectedLayerEdited?.Invoke();
             Invalidate();
         }
@@ -512,10 +591,10 @@ namespace tileEngine.Controls
             //Create an array of tiles to copy from the rectangle.
             var selected = (Rectangle)SelectedTiles;
             copiedTiles = new List<List<object>>();
-            for (int y=selected.Top; y<=selected.Bottom; y++)
+            for (int y=selected.Top; y<selected.Bottom; y++)
             {
                 copiedTiles.Add(new List<object>());
-                for (int x=selected.Left; x<=selected.Right; x++)
+                for (int x=selected.Left; x<selected.Right; x++)
                 {
                     Point tile = new Point(x, y);
 

@@ -22,7 +22,7 @@ This will then allow Visual Studio <=2019 (a 32 bit process) to load and use thi
 
 # Error Codes
 Error codes start from TE-1001, and go upwards.
-The current highest used error code is TE-1006.
+The current highest used error code is TE-1010.
 
 Internal error codes start from TE-21000.
 The current highest used error code is TE-21012.

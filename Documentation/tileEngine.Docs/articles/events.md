@@ -23,3 +23,11 @@ to events on the map.
 
 Don't forget that after creating an event function within the C# external project code, you must first compile the C# assembly and then reload it
 within the tileEngine editor before it will appear within the event properties menu.
+
+### Triggering Events
+Events can be triggered in various ways, either by direct input interaction by the user, or by a collision with a GameObject. In the latter case,
+the GameObject must meet certain conditions before it will trigger an event directly:
+- It must be on the same layer as the event that is being triggered.
+- It must have the "`TriggersEvents`" property set to `true`.
+
+Once these conditions are met, the GameObject will trigger the collision event on that square.

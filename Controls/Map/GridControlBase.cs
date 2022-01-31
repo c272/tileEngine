@@ -367,10 +367,9 @@ namespace tileEngine.Controls
         private void DrawMap(PaintEventArgs e)
         {
             //Get the top left and bottom right of the grid.
-            Vector2f screenTL = ToGridCoordinate(ClientRectangle.X, ClientRectangle.Y);
-            Vector2f screenBR = ToGridCoordinate(ClientRectangle.X + ClientRectangle.Width, ClientRectangle.Y + ClientRectangle.Height);
-            Vector2f topLeft = new Vector2f(screenTL.X - (screenTL.X % GridStep), screenTL.Y - (screenTL.Y % GridStep));
-            Vector2f bottomRight = new Vector2f(screenBR.X + (GridStep - (screenBR.X % GridStep)), screenBR.Y + (GridStep - (screenBR.Y % GridStep)));
+            Point screenBR = new Point(ClientRectangle.X + ClientRectangle.Width, ClientRectangle.Y + ClientRectangle.Height);
+            Vector2f topLeft = TileToGridCoordinate(ToTileLocation(new Point(0, 0)));
+            Vector2f bottomRight = TileToGridCoordinate(ToTileLocation(screenBR, true));
 
             //Enable nearest neighbour draw.
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
@@ -401,7 +400,7 @@ namespace tileEngine.Controls
                     while (curPos.X < bottomRight.X)
                     {
                         //Calculate the tile point for this location.
-                        Microsoft.Xna.Framework.Point tilePoint = new Microsoft.Xna.Framework.Point((int)(curPos.X / GridStep), (int)(curPos.Y / GridStep));
+                        Microsoft.Xna.Framework.Point tilePoint = new Microsoft.Xna.Framework.Point((int)Math.Floor(curPos.X / GridStep), (int)Math.Floor(curPos.Y / GridStep));
 
                         //Get the current tile, draw it (if it exists).
                         DrawTile(layer, curPos, tilePoint, tileImageAttribs, e);
@@ -684,11 +683,16 @@ namespace tileEngine.Controls
         /// <summary>
         /// Converts the given mouse point location into the equivalent tile location on the map.
         /// </summary>
-        public Point ToTileLocation(Point mousePoint)
+        public Point ToTileLocation(Point mousePoint, bool snapBottomRight = false)
         {
             Vector2f clickPosition = ToGridCoordinate(mousePoint.X, mousePoint.Y);
             int tileX = (int)Math.Floor(clickPosition.X / GridStep);
             int tileY = (int)Math.Floor(clickPosition.Y / GridStep);
+            if (snapBottomRight)
+            {
+                tileX++;
+                tileY++;
+            }
             return new Point(tileX, tileY);
         }
 

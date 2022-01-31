@@ -29,7 +29,7 @@ namespace tileEngine.SDK.Components
         /// Returns a list of points at which the GameObject is colliding with collision hull
         /// squares on the provided tile layer.
         /// </summary>
-        public abstract List<Point> Colliding(GameObject gameObject, TileLayer layer);
+        public abstract CollisionData Colliding(GameObject gameObject, TileLayer layer);
 
         /// <summary>
         /// Returns whether this collider is colliding with a specific tile location.

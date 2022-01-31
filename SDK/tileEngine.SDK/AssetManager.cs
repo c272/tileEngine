@@ -19,6 +19,21 @@ namespace tileEngine.SDK
         public static ContentManager ContentManager { get; set; }
 
         /// <summary>
+        /// Attempts to load the provided asset, given an asset binding, from asset storage.
+        /// On failure, returns null.
+        /// </summary>
+        public static T AttemptLoad<T>(string mapping) where T : class
+        {
+            if (TileEngine.Instance == null || TileEngine.Instance.GameData?.AssetMapping.ContainsKey(mapping) != true)
+            {
+                DiagnosticsHook.LogMessage(1007, $"Could not find asset mapping for asset '{mapping}' to attempt load.");
+                return null;
+            }
+
+            return AttemptLoad<T>(TileEngine.Instance.GameData.AssetMapping[mapping]);
+        }
+
+        /// <summary>
         /// Attempts to load the provided asset ID from asset storage.
         /// On failure, returns null.
         /// </summary>

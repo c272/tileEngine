@@ -85,13 +85,28 @@ namespace tileEngine
             catch (Exception e) { return e.Message; }
 
             //Serialize the various project properties into the game data container blob.
-            Logger?.LogMessage("Packing project properties & map data into container.");
+            Logger?.LogMessage("Packing project properties, asset translations & map data into container.");
             var container = new GameDataContainer()
             {
                 AssemblyName = ProjectManager.CurrentProject.AssemblyName,
                 Title = ProjectManager.CurrentProject.Title,
                 WindowSize = ProjectManager.CurrentProject.WindowSize
             };
+
+            //Add asset mappings to the game data container.
+            foreach (var asset in ProjectManager.CurrentProject.ProjectRoot.GetNodesOfType<ProjectAssetNode>())
+            {
+                //Build the path for this asset.
+                string assetPath = asset.Name;
+                var assetParent = (ProjectTreeNode)asset.ParentNode;
+                while (assetParent.ID != ProjectManager.CurrentProject.ProjectRoot.ID)
+                {
+                    assetPath = assetParent.Name + "/" + assetPath;
+                    assetParent = (ProjectTreeNode)assetParent.ParentNode;
+                }
+
+                container.AssetMapping.Add(assetPath, asset.ID);
+            }
 
             //Add all scene maps to game data container blob.
             foreach (var scene in ProjectManager.CurrentProject.ProjectRoot.GetNodesOfType<ProjectSceneNode>())
