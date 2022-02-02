@@ -86,6 +86,7 @@
     <Compile Include="Utility\MathsUtility.cs" />
     <Compile Include="Utility\RectF.cs" />
     <Compile Include="Utility\Snowflake.cs" />
+    <Compile Include="Utility\Timer.cs" />
     <Compile Include="Utility\Vector2f.cs" />
   </ItemGroup>
   <ItemGroup>
