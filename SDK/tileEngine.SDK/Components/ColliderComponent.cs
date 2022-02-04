@@ -16,9 +16,9 @@ namespace tileEngine.SDK.Components
     public abstract class ColliderComponent : Component
     {
         /// <summary>
-        /// Represents the central point of the collider.
+        /// Represents the central point of the collider, in world units.
         /// </summary>
-        public abstract Vector2 Center { get; }
+        public abstract Vector2 WorldCenter { get; }
 
         /// <summary>
         /// Whether to draw colliders visually as semi-transparent boxes.

@@ -28,7 +28,7 @@ namespace tileEngine.SDK.Components
         /// <summary>
         /// Represents the center of this box collider.
         /// </summary>
-        public override Vector2 Center => Location + (Size / 2f);
+        public override Vector2 WorldCenter => GameObject.Position + Location + (Size / 2f);
 
         /// <summary>
         /// Draws this collider as a debugging tool, if enabled.
@@ -53,7 +53,7 @@ namespace tileEngine.SDK.Components
             Point bottomRightTile = GameObject.Scene.GridToTileLocation(startLocation + Size);
 
             //Check all points within the box.
-            List<Point> colliding = new List<Point>();
+            List<Point> collidingTiles = new List<Point>();
             List<Point> eventsTriggered = new List<Point>();
             for (int y = startTile.Y; y <= bottomRightTile.Y; y++)
             {
@@ -61,10 +61,10 @@ namespace tileEngine.SDK.Components
                 {
                     var tile = new Point(x, y);
                     if (CollidingWith(layer, tile, true))
-                        colliding.Add(tile);
+                        collidingTiles.Add(tile);
 
                     //If we're overlapping an event tile from collide, add it.
-                    if (layer.Events.ContainsKey(tile) 
+                    if (layer.Events.ContainsKey(tile)
                         && layer.Events[tile].Trigger == EventTriggerType.GameObjectCollide
                         && GameObject.TriggersEvents)
                     {
@@ -78,6 +78,11 @@ namespace tileEngine.SDK.Components
             var collidingColliders = new List<ColliderComponent>();
             foreach (var collider in layerColliders)
             {
+                //Ignore self.
+                if (collider.ID == ID)
+                    continue;
+
+                //Intersecting? Add to the list.
                 if (collider.Intersects(thisArea))
                     collidingColliders.Add(collider);
             }
@@ -85,7 +90,8 @@ namespace tileEngine.SDK.Components
             //Form and return collision data.
             return new CollisionData()
             {
-                CollidingTiles = colliding,
+                CollidingTiles = collidingTiles,
+                CollidingColliders = collidingColliders,
                 TriggeringEvents = eventsTriggered
             };
         }

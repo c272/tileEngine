@@ -207,8 +207,8 @@ namespace tileEngine.SDK
         /// <summary>
         /// Updates the scene object based on the time from the previous update.
         /// </summary>
-        public virtual void Update(GameTime delta) 
-        { 
+        public virtual void Update(GameTime delta)
+        {
             //Update all GameObjects.
             for (int i = 0; i < GameObjects.Count; i++)
             {
@@ -259,7 +259,7 @@ namespace tileEngine.SDK
                         break;
 
                     //Step GameObject away from first colliding tile.
-                    if (collideData.CollidingTiles.Count > 0) 
+                    if (collideData.CollidingTiles.Count > 0)
                     {
                         Vector2 tileGridLoc = TileToGridLocation(collideData.CollidingTiles[0]);
                         Vector2 vectorToTile = new Vector2(tileGridLoc.X + (Map.TileTextureSize / 2f) - gameObject.Position.X,
@@ -275,7 +275,7 @@ namespace tileEngine.SDK
                     //Step GameObject away from first colliding other object.
                     if (collideData.CollidingColliders.Count > 0)
                     {
-                        Vector2 vectorToOther = collideData.CollidingColliders[0].Center - gameObject.Position;
+                        Vector2 vectorToOther = collideData.CollidingColliders[0].WorldCenter - gameObject.Position;
                         vectorToOther.Normalize();
                         do
                         {
