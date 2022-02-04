@@ -8,6 +8,7 @@ git submodule update
 ```
 - NuGet packages for all projects in the solution have been restored. You can do this by right clicking the solution in the Visual Studio
 project browser, and then clicking "Restore NuGet Packages".
+- "[Visual C++ Redistributable Packages for Visual Studio 2013](https://www.microsoft.com/en-us/download/details.aspx?id=40784)" is installed. 
 
 Once these prerequisites are met, you can build the tileEngine solution through visual studio with "Build Solution" (`CTRL+SHIFT+B`), or simply by running
 `msbuild` from the root project directory. If builds are taking a long time, consider unloading the documentation project, tileEngine.Docs. The documentation
