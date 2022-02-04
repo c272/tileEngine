@@ -43,6 +43,15 @@ namespace tileEngine.SDK.Utility
         }
 
         /// <summary>
+        /// Returns whether this rectangle intersects another rectangle.
+        /// </summary>
+        public bool Intersects(RectF other)
+        {
+            return (other.Location.X + other.Size.X >= Location.X && other.Location.X <= Location.X + Size.X)
+                && (other.Location.Y + other.Size.Y >= Location.Y && other.Location.Y <= Location.Y + Size.Y);
+        }
+
+        /// <summary>
         /// Multiplies the size of this rectangle by the given constant.
         /// </summary>
         public static RectF operator *(RectF rect, float value)

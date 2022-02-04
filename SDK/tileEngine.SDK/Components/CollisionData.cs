@@ -9,6 +9,7 @@ namespace tileEngine.SDK.Components
     public struct CollisionData
     {
         public List<Point> CollidingTiles;
+        public List<ColliderComponent> CollidingColliders;
         public List<Point> TriggeringEvents;
     }
 }
