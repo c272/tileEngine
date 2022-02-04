@@ -45,12 +45,12 @@ namespace tileEngine.Controls
             // 
             this.projectTree.AllowMoveNodes = true;
             this.projectTree.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.projectTree.Location = new System.Drawing.Point(0, 31);
+            this.projectTree.Location = new System.Drawing.Point(0, 25);
             this.projectTree.Margin = new System.Windows.Forms.Padding(2);
             this.projectTree.MaxDragChange = 20;
             this.projectTree.Name = "projectTree";
             this.projectTree.ShowIcons = true;
-            this.projectTree.Size = new System.Drawing.Size(196, 339);
+            this.projectTree.Size = new System.Drawing.Size(196, 345);
             this.projectTree.TabIndex = 0;
             this.projectTree.Text = "Project Tree";
             this.projectTree.SelectedNodesChanged += new System.EventHandler(this.selectedNodesChanged);
@@ -148,8 +148,8 @@ namespace tileEngine.Controls
             // 
             // ProjectTreeWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.projectTree);
             this.DefaultDockArea = DarkUI.Docking.DarkDockArea.Left;

@@ -70,7 +70,7 @@ namespace tileEngine
             Instance = this;
 
             //Make the font ignore DPI scaling.
-            Font = new Font(Font.Name, 8.25f * 96f / CreateGraphics().DpiX, Font.Style, Font.Unit, Font.GdiCharSet, Font.GdiVerticalFont);
+            //Font = new Font(Font.Name, 8.25f * 96f / CreateGraphics().DpiX, Font.Style, Font.Unit, Font.GdiCharSet, Font.GdiVerticalFont);
 
             //Scale with DPI for nice font drawing.
             InitializeComponent();
