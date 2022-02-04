@@ -86,6 +86,17 @@ namespace tileEngine.SDK
         }
 
         /// <summary>
+        /// Changes the camera position so that the given point is centered.
+        /// </summary>
+        public void LookAt(Vector2 point)
+        {
+            Vector2 adjustedPoint = point;
+            adjustedPoint.X -= TileEngine.Instance.GraphicsDevice.Viewport.Width / 2f;
+            adjustedPoint.Y -= TileEngine.Instance.GraphicsDevice.Viewport.Height / 2f;
+            CameraPosition = adjustedPoint;
+        }
+
+        /// <summary>
         /// Called when the scene is first entered.
         /// </summary>
         public virtual void Initialize()
@@ -155,7 +166,7 @@ namespace tileEngine.SDK
                 var layerObjects = GameObjects.Where(x => x.Layer == layer.ID).ToList();
                 for (int i = 0; i < layerObjects.Count; i++)
                 {
-                    layerObjects[i].Components.ForEach(x => x.Draw(layerObjects[i], spriteBatch));
+                    layerObjects[i].GetComponents().ForEach(x => x.Draw(layerObjects[i], spriteBatch));
                 }
             }
 
@@ -196,73 +207,89 @@ namespace tileEngine.SDK
         /// <summary>
         /// Updates the scene object based on the time from the previous update.
         /// </summary>
-        public virtual void Update(GameTime delta) 
-        { 
+        public virtual void Update(GameTime delta)
+        {
             //Update all GameObjects.
             for (int i = 0; i < GameObjects.Count; i++)
             {
                 GameObjects[i].Update(delta);
 
                 //Update all this GameObject's components.
-                GameObjects[i].Components.ForEach(x => x.Update(GameObjects[i], delta));
-            }
+                GameObjects[i].GetComponents().ForEach(x => x.Update(GameObjects[i], delta));
 
-            //Collision check.
-            CheckCollisions();
+                //Collision check for this object.
+                CheckCollisions(GameObjects[i]);
+            }
         }
 
         /// <summary>
         /// Checks collisions between game objects and the collision hull.
         /// </summary>
-        private void CheckCollisions()
+        private void CheckCollisions(GameObject gameObject)
         {
-            //Loop over game objects, check any attached colliders.
-            for (int i=0; i<GameObjects.Count; i++)
+            //No collisions if layer is invalid.
+            if (!Map.Layers.Any(x => x.ID == gameObject.Layer))
+                return;
+            var layer = Map.Layers.Find(x => x.ID == gameObject.Layer);
+
+            //Get colliders for this object.
+            var colliders = gameObject.GetComponents().Where(x => x is ColliderComponent)
+                                                        .Select(x => (ColliderComponent)x)
+                                                        .ToList();
+            if (colliders.Count == 0)
+                return;
+
+            //Get all other colliders for this layer.
+            var layerColliders = GameObjects.Where(x => x.Layer == gameObject.Layer)
+                                            .SelectMany(x => x.GetComponents().OfType<ColliderComponent>()).ToList();
+
+            //Process whether there are colliding tiles.
+            foreach (var collider in colliders)
             {
-                //No collisions if layer is invalid.
-                if (!Map.Layers.Any(x => x.ID == GameObjects[i].Layer))
-                    continue;
-                var layer = Map.Layers.Find(x => x.ID == GameObjects[i].Layer);
-
-                //Get colliders for this object.
-                var colliders = GameObjects[i].Components.Where(x => x is ColliderComponent)
-                                                         .Select(x => (ColliderComponent)x)
-                                                         .ToList();
-                if (colliders.Count == 0)
-                    continue;
-
-                //Process whether there are colliding tiles.
-                foreach (var collider in colliders)
+                //Attempt to move the GameObject away from any colliding tiles.
+                //Limit to 5 iterations per update loop.
+                int limit = 5;
+                int iteration = 0;
+                CollisionData collideData;
+                do
                 {
-                    //Attempt to move the GameObject away from any colliding tiles.
-                    //Limit to 5 iterations per update loop.
-                    int limit = 5;
-                    int iteration = 0;
-                    CollisionData collideData;
-                    do
-                    {
-                        //If no colliding tiles, break.
-                        collideData = collider.Colliding(GameObjects[i], layer);
-                        if (collideData.CollidingTiles.Count == 0)
-                            break;
+                    //If no colliding tiles, & no colliding objects, break.
+                    collideData = collider.Colliding(layer, layerColliders);
+                    if (collideData.CollidingTiles.Count == 0 && collideData.CollidingColliders.Count == 0)
+                        break;
 
-                        //Step GameObject away from first colliding tile.
+                    //Step GameObject away from first colliding tile.
+                    if (collideData.CollidingTiles.Count > 0)
+                    {
                         Vector2 tileGridLoc = TileToGridLocation(collideData.CollidingTiles[0]);
-                        Vector2 vectorToTile = new Vector2(tileGridLoc.X + (Map.TileTextureSize / 2f) - GameObjects[i].Position.X,
-                                                           tileGridLoc.Y + (Map.TileTextureSize / 2f) - GameObjects[i].Position.Y);
+                        Vector2 vectorToTile = new Vector2(tileGridLoc.X + (Map.TileTextureSize / 2f) - gameObject.Position.X,
+                                                            tileGridLoc.Y + (Map.TileTextureSize / 2f) - gameObject.Position.Y);
                         vectorToTile.Normalize();
                         do
                         {
-                            GameObjects[i].Position -= vectorToTile * 0.01f;
+                            gameObject.Position -= vectorToTile * 0.01f;
                         }
-                        while (collider.CollidingWith(GameObjects[i], layer, collideData.CollidingTiles[0]));
-                        iteration++;
+                        while (collider.CollidingWith(layer, collideData.CollidingTiles[0]));
                     }
-                    while (iteration < limit);
 
-                    //Process triggered events from the collisions.
-                    ProcessEvents(GameObjects[i], layer, collideData);
+                    //Step GameObject away from first colliding other object.
+                    if (collideData.CollidingColliders.Count > 0)
+                    {
+                        Vector2 vectorToOther = collideData.CollidingColliders[0].WorldCenter - gameObject.Position;
+                        vectorToOther.Normalize();
+                        do
+                        {
+                            gameObject.Position -= vectorToOther * 0.01f;
+                        }
+                        while (collider.CollidingWith(collideData.CollidingColliders[0]));
+                    }
+
+                    iteration++;
                 }
+                while (iteration < limit);
+
+                //Process triggered events from the collisions.
+                ProcessEvents(gameObject, layer, collideData);
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,6 +44,11 @@ namespace tileEngine.SDK
         /// The sound API for this tile engine.
         /// </summary>
         Sound Sound { get; }
+
+        /// <summary>
+        /// The graphics device this tile engine is using for rendering.
+        /// </summary>
+        GraphicsDevice GraphicsDevice { get; }
 
         /// <summary>
         /// The keyboard input handler for this tileEngine instance.

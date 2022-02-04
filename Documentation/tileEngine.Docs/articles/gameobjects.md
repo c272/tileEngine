@@ -51,7 +51,7 @@ a simple box collider with a given size and location.
 ```
 public Player()
 {
-    Components.Add(new BoxColliderComponent()
+    AddComponent(new BoxColliderComponent()
     {
         Size = new Vector2(30, 30)
     });

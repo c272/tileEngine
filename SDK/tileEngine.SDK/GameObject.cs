@@ -26,11 +26,6 @@ namespace tileEngine.SDK
         public int Layer { get; private set; } = 0;
 
         /// <summary>
-        /// The components currently attached to this GameObject.
-        /// </summary>
-        public List<Component> Components = new List<Component>();
-
-        /// <summary>
         /// Whether this game object is allowed to trigger events.
         /// </summary>
         public bool TriggersEvents { get; set; } = false;
@@ -50,7 +45,34 @@ namespace tileEngine.SDK
         }
         internal Scene _scene = null;
 
-        
+        //The components currently attached to this GameObject.
+        private List<Component> components = new List<Component>();
+
+        /// <summary>
+        /// Returns a list of components currently on this GameObject.
+        /// </summary>
+        public List<Component> GetComponents() => components;
+
+        /// <summary>
+        /// Adds the given component to this game object, if it is not already added.
+        /// </summary>
+        public void AddComponent(Component component)
+        {
+            if (components.Any(x => x.ID == component.ID))
+                return;
+            component.GameObject = this;
+            components.Add(component);
+        }
+
+        /// <summary>
+        /// Removes the given component from this game object, if it is present.
+        /// </summary>
+        public void RemoveComponent(Component component)
+        {
+            if (components.RemoveAll(x => x.ID == component.ID) > 0)
+                component.GameObject = null;
+        }
+
         /// <summary>
         /// Sets the layer based on a search for the given layer name.
         /// Not guaranteed to find a single layer, as layers are not bound to have unique names.

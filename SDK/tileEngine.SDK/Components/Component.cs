@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using tileEngine.Utility;
 
 namespace tileEngine.SDK.Components
 {
@@ -13,8 +14,13 @@ namespace tileEngine.SDK.Components
     /// Components are addons to a GameObject that can perform their own independent Draw, Update
     /// and other code dependent on engine support.
     /// </summary>
-    public abstract class Component
+    public abstract class Component : Snowflake
     {
+        /// <summary>
+        /// The game object this component is attached to.
+        /// </summary>
+        public GameObject GameObject { get; internal set; }
+
         /// <summary>
         /// Called when this component should be drawn to the screen.
         /// Allows the component to draw its own information at runtime on the linked GameObject.
