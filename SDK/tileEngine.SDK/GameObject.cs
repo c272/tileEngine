@@ -48,6 +48,9 @@ namespace tileEngine.SDK
         //The components currently attached to this GameObject.
         private List<Component> components = new List<Component>();
 
+        //Whether this object has been initialized.
+        internal bool _initialized = false;
+
         /// <summary>
         /// Returns a list of components currently on this GameObject.
         /// </summary>
@@ -99,6 +102,11 @@ namespace tileEngine.SDK
         /// Sets the current layer to the given layer ID.
         /// </summary>
         public void SetLayer(int layerID) => Layer = layerID;
+
+        /// <summary>
+        /// Initializes this game object.
+        /// </summary>
+        public virtual void Initialize() { }
 
         /// <summary>
         /// Called every update tick.

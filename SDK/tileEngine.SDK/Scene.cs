@@ -74,6 +74,11 @@ namespace tileEngine.SDK
                 return;
             GameObjects.Add(obj);
             obj._scene = this;
+            if (!obj._initialized)
+            {
+                obj.Initialize();
+                obj._initialized = true;
+            }
         }
 
         /// <summary>
