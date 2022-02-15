@@ -182,7 +182,7 @@ namespace tileEngine.Engine
             }
 
             //Create the sound API for 44.1KHz stereo audio.
-            Sound = new GameSound(44100, 2);
+            Sound = new NAudioSound(44100, 2);
 
             //Load fonts stored in the content directory into the FontManager.
             if (Directory.Exists(Editor.Content.RootDirectory))

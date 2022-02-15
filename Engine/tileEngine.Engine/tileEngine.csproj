@@ -104,13 +104,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audio\NAudioMemoryProvider.cs" />
     <Compile Include="FontManager.cs" />
     <Compile Include="GameControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="GameSound.cs" />
+    <Compile Include="Audio\NAudioSound.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RuntimeSound.cs" />
+    <Compile Include="Audio\LoadedNAudioSound.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

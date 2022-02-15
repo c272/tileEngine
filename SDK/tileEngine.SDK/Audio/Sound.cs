@@ -15,13 +15,13 @@ namespace tileEngine.SDK.Audio
         /// <summary>
         /// The current master volume of the sound API.
         /// </summary>
-        public abstract int Volume { get; set; }
+        public abstract float Volume { get; set; }
 
         /// <summary>
         /// Loads a provided sound asset into the sound cache, for use later.
         /// Can be used to prevent sounds from loading at first play, for optimisation purposes.
         /// </summary>
-        public abstract void LoadSound(string assetName);
+        public abstract SoundReference LoadSound(string assetName);
 
         /// <summary>
         /// Clears the current sound cache for this API.
@@ -29,13 +29,18 @@ namespace tileEngine.SDK.Audio
         public abstract void ClearSoundCache();
 
         /// <summary>
-        /// Plays a given sound asset, returning an ID that can be used to reference the sound later.
+        /// Plays a given sound asset, returning an instance of the sound for later reference.
         /// </summary>
-        public abstract int PlaySound(string assetName, bool repeating = false);
+        public abstract SoundInstance PlaySound(string assetName, bool repeating = false);
+
+        /// <summary>
+        /// Plays a given sound reference, returning an instance of the sound for later reference.
+        /// </summary>
+        public abstract SoundInstance PlaySound(SoundReference sound, bool repeating = false);
 
         /// <summary>
         /// Stops a sound playing, given a sound ID returned from PlaySound().
         /// </summary>
-        public abstract void StopSound(int soundID);
+        public abstract void StopSound(SoundInstance toStop);
     }
 }
