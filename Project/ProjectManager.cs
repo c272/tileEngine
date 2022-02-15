@@ -277,6 +277,11 @@ namespace tileEngine
             //Prepare base classes, then configure scene nodes.
             ProtobufSerializer.PrepareSerializer();
             ProtobufSerializer.RegisterSubTypes(typeof(ProjectTreeNode));
+
+            //All new additional proejct node classes go here for save compatibility.
+            //Make sure all of these classes are marked with the ProtoRecursiveIgnore attribute.
+            RuntimeTypeModel.Default[typeof(ProjectAssetNode)].AddSubType(5100, typeof(ProjectAudioNode));
+
         }
     }
 }

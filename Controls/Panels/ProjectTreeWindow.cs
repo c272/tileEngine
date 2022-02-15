@@ -208,7 +208,8 @@ namespace tileEngine.Controls
             var dialog = new OpenFileDialog()
             {
                 Title = "Select an asset to import from file.",
-                Filter = ".PNG Files|*.png|.JPG Files|*.jpg|.JPEG Files|*.jpeg|.TTF Files|*.ttf",
+                Filter = ".PNG Files|*.png|.JPG Files|*.jpg|.JPEG Files|*.jpeg|.TTF Files|*.ttf" +
+                         "|.MP3 Files|*.mp3|.OGG Files|*.ogg|.WAV Files|*.wav",
                 Multiselect = false
             };
             if (dialog.ShowDialog() != DialogResult.OK)
@@ -231,11 +232,20 @@ namespace tileEngine.Controls
             ProjectTreeNode newNode = null;
             switch (fileInfo.Extension.ToLower())
             {
+                //Sprites.
                 case ".png":
                 case ".jpg":
                 case ".jpeg":
                     newNode = new ProjectSpriteNode(relPath);
                     break;
+
+                //Audio.
+                case ".mp3":
+                case ".ogg":
+                case ".wav":
+                    newNode = new ProjectAudioNode(relPath);
+                    break;
+
                 default:
                     DiagnosticsHook.LogMessage(21002, "Failed to parse asset type from file extension '" + fileInfo.Extension + "'.");
                     return;

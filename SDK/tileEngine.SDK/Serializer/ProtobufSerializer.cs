@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using tileEngine.SDK.Attributes;
 using tileEngine.Utility;
 
 namespace tileEngine.SDK.Serializer
@@ -52,7 +53,8 @@ namespace tileEngine.SDK.Serializer
         {
             //Get all sub-types of the given type.
             var assembly = baseType.Assembly;
-            var subTypes = assembly.GetTypes().Where(t => t.IsSubclassOf(baseType) && t.BaseType == baseType);
+            var subTypes = assembly.GetTypes().Where(t => t.IsSubclassOf(baseType) && t.BaseType == baseType)
+                                              .Where(t => t.GetCustomAttributes(typeof(ProtoRecursiveIgnoreAttribute), false).Length == 0);
 
             //Register them with the runtime model, starting at ID "startID".
             for (int i = 0; i < subTypes.Count(); i++)

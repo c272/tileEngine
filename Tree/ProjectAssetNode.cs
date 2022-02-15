@@ -22,7 +22,7 @@ namespace tileEngine
         /// <summary>
         /// Whether to compile this asset as XNB, or to simply copy the file.
         /// </summary>
-        public bool CompileXNB { get; private set; } = true;
+        public bool CompileXNB { get; protected set; } = true;
 
         //Serialization constructor.
         protected ProjectAssetNode() { }
