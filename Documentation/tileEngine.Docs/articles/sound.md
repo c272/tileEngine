@@ -91,3 +91,31 @@ do not loop, and will only play once before finishing.
 ```cs
 SoundInstance loopingSound = Sound.PlaySound("my/asset/path", true); //this loops!
 ```
+
+## Sound Cache
+By default, all sounds upon load are cached until they are manually cleared within each platform's sound cache. This means that when you load a sound
+`mysound.mp3` in one scene, and then load that sound again in another scene, it does not hit the filesystem again, and simply fetches the existing
+sound reference from cache. However, there may be situations in which it is undesirable to continue caching sounds, especially when a large amount
+of sounds have been loaded for a particular scene, and are not needed later on.
+
+In this instance, you can manually clear the sound cache, and this is exposed through the `ClearSoundCache()` method of the [`Sound`](../api/tileEngine.SDK.Audio.Sound.html)
+API. This can be called at any time, including when sounds in the cache are playing, and the entire cache will be flushed after calling.
+```cs
+//After this, the cache is immediately flushed.
+Sound.ClearSoundCache();
+```
+
+There are some caveats with flushing the sound cache, however, namely that **all `SoundReference`s previously loaded will become invalid**. Take the
+following instance for example, where a sound effect is loaded, the cache is flushed, and then the sound is attempted to be played:
+```cs
+var boomEffect = Sound.LoadSound("sounds/boom.wav");
+Sound.ClearSoundCache();
+Sound.PlaySound(boomEffect);
+```
+
+This will throw an exception, as when sounds are loaded and a reference is returned, that `SoundReference` is simply a reference to an item in the
+platform's sound cache, and does not hold any data in itself.
+```
+[TE-1012] Error - Failed to play loaded sound from reference (ID 523237), this likely means you have cleared sound cache, but have attempted to use a stale sound reference.
+```
+In other words, when clearing sound cache, make sure to also invalidate any remaining sound references, as they will become stale and unplayable.
