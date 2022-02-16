@@ -47,6 +47,7 @@ namespace tileEngine.Engine.Audio
         public int Read(float[] buffer, int offset, int count)
         {
             //If we're not looping or not on the end, do it the normal way.
+            int amtCopied = 0;
             if (!Looping || count < Sound.Data.Length - position)
             {
                 //Don't try and read more samples than we have left.
@@ -54,16 +55,29 @@ namespace tileEngine.Engine.Audio
 
                 //Copy into buffer, bump position.
                 Array.Copy(Sound.Data, position, buffer, offset, samplesToCopy);
+                
                 position += samplesToCopy;
-                return (int)samplesToCopy;
+                amtCopied = (int)samplesToCopy;
+            }
+            else
+            {
+                //We're looping back to the start, copy samples up till end.
+                long amtTillEnd = Sound.Data.Length - position;
+                Array.Copy(Sound.Data, position, buffer, offset, amtTillEnd);
+                position = 0;
+                Array.Copy(Sound.Data, position, buffer, offset + amtTillEnd, count - amtTillEnd);
+                amtCopied = count;
             }
 
-            //We're looping back to the start, copy samples up till end.
-            long amtTillEnd = Sound.Data.Length - position;
-            Array.Copy(Sound.Data, position, buffer, offset, amtTillEnd);
-            position = 0;
-            Array.Copy(Sound.Data, position, buffer, offset + amtTillEnd, count - amtTillEnd);
-            return count;
+            //Adjust for volume if necessary.
+            if (Volume != 1.0f)
+            {
+                for (int i=offset; i<amtCopied; i++)
+                {
+                    buffer[offset + i] *= Volume;
+                }
+            }
+            return amtCopied;
         }
     }
 }
