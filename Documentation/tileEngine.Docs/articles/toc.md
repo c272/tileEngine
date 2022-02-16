@@ -10,6 +10,7 @@
 ##[Collision](collision.md)
 ##[Map Events](events.md)
 ##[Asset Management](assets.md)
+##[Sound](sound.md)
 ##[Debugging](debugging.md)
 
 # Editor Tutorials

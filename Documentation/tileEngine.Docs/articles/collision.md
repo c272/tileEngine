@@ -8,7 +8,7 @@ There are several types of basic collision built into tileEngine, including a ba
 changes shape dynamically), you can create a component inheriting from `ColliderComponent` and override the required methods. Here's a barebones
 example of a collider class, without implementation:
 
-```
+```cs
 /// <summary>
 /// Represents a simple box collider within tileEngine.
 /// </summary>

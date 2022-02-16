@@ -8,7 +8,7 @@ the same class as the scene containing the event.
 
 ### Creating Event Functions
 To create a function that you can link to an event in the map editor, you must create a method that has the following method signature:
-```
+```cs
 [EventFunction("SomeName")]
 private void MyEventFunction(TileEventData e)
 {

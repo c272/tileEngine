@@ -15,7 +15,7 @@ namespace tileEngine.Utility
     public abstract class Snowflake : IEquatable<Snowflake>
     {
         /// <summary>
-        /// The unique identifying ID of this node instance.
+        /// The unique identifying ID of this snowflake instance.
         /// </summary>
         [ProtoMember(1)]
         public int ID = Guid.NewGuid().GetHashCode();

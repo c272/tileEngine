@@ -4,7 +4,7 @@ GameObjects are non-tile based programmable objects within your game that you ca
 character, enemy, or simply a projectile. These are created by inheriting from the `GameObject` class, found within `tileEngine.SDK`. A barebones
 GameObject will look something like the following:
 
-```
+```cs
 public class Player : GameObject
 {
     public Player()
@@ -33,7 +33,7 @@ either call the `Scene.AddObject()` method, or set the GameObject's "Scene" prop
 scene by manipulating the GameObjects list within your scene code.** These methods perform additional important operations such as setting the 
 GameObject's "Scene" property appropriately, and bypassing them will cause undefined behaviour.
 
-```
+```cs
 myScene.AddObject(new Player()); //This is fine.
 
 var player = new Player(); //This is also fine.
@@ -48,7 +48,7 @@ collision, and more. To add components to your GameObject, you simply add an ins
 list property. All components built into the engine can be found in the `tileEngine.SDK.Components` namespace, but in this example we'll just add
 a simple box collider with a given size and location.
 
-```
+```cs
 public Player()
 {
     AddComponent(new BoxColliderComponent()
@@ -65,7 +65,7 @@ components for use within your own GameObjects. To do this, simply create a new 
 `tileEngine.SDK.Components`. Once this is done, there are several overrides you can perform to create a component. As an example, an abbreviated
 version of the SpriteComponent source code is attached below:
 
-```
+```cs
 /// <summary>
 /// Represents a component that draws a sprite relative to the attached GameObject.
 /// </summary>

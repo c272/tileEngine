@@ -17,21 +17,21 @@ as well as the different types of bindings that exist.
 ### Keyboard Input Bindings
 To create keyboard input bindings, you can utilise the `KeyboardInputHandler` class through the current `TileEngine` instance. To add a simple
 single-key binding to a generic input, you can do something like the following:
-```
+```cs
 TileEngine.Instance.KeyboardInput.AddBinding(Keys.Space, "Jump");
 ```
 
 This would create a binding that causes the generic input event "Jump" to be fired upon the space key being pressed. You can also specify in
 these bindings which modifier keys have to be pressed for the input to fire, if you wanted to create a shortcut, for example. To create a binding
 that mapped to "CTRL+Shift+Space", you could do the following:
-```
+```cs
 //The last two parameters are "requiresCtrl" and "requiresShift" respectively.
 TileEngine.Instance.KeyboardInput.AddBinding(Keys.Space, "SomeShortcut", true, true);
 ```
 
 In addition to this, for these key bindings you can also specify a method to be called when the input is first fired. So, if you wanted an action
 to happen immediately after the binding is pressed, and it's not well suited for placing in an update loop, you could do something like the following:
-```
+```cs
 TileEngine.Instance.KeyboardInput.AddBinding(Keys.Space, "SomeShortcut", true, true, doSomeShortcut);
 
 //...
@@ -51,14 +51,14 @@ player movement, or the moving of a cursor.
 
 For this purpose, there is an alternate form of binding known as an "axis binding" within tileEngine that will allow you to treat a set of keys
 as a two dimensional input field, represented by a 2D vector within the generic input. Creating these bindings is quite simple, as shown below.
-```
+```cs
 //Arguments are: Axis X positive, Axis X negative, Axis Y positive, Axis Y negative.
 TileEngine.Instance.KeyboardInput.AddAxisBinding(Keys.D, Keys.A, Keys.W, Keys.S, "Movement");
 ```
 
 Axis bindings, unlike their single key binding cousins, are always active within the input handler once added, and when no inputs are fired have a
 vector value of zero. This is also why axis bindings cannot have callbacks attached to them. The following code demonstrates this concept:
-```
+```cs
 //This will always be true for axis bindings, as they are always "active", but may have a value of zero.
 if (InputHandler.HasEvent("Movement"))
 	//...
@@ -68,7 +68,7 @@ if (InputHandler.HasEvent("Movement"))
 Now that you've created several key and axis bindings, you will want to utilise within your code somewhere, such as in a GameObject update loop or
 within the scene update loop. To do this, you can access the generic input API through the static "InputHandler" class, found within
 `tileEngine.SDK.Input`. An example of how you'd process a single key event and an axis input event are shown below:
-```
+```cs
 //If the jump input is down, jump.
 if (InputHandler.HasEvent("Jump"))
 	doJump();

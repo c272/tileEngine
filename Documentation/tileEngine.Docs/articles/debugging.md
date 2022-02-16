@@ -10,7 +10,7 @@ hook will always be set to "Standalone" mode, so this is not a concern for exter
 To send an error, warning, or notice to the user at runtime, the `LogMessage()` method can be used. This method takes in an error code, message,
 and severity, and will then send this to all event listeners to be handled. If you encounter a fatal error within the game, and wish to exit the
 application with an error message, this is the method to call.
-```
+```cs
 DiagnosticsHook.LogMessage(1001, "This is a fatal error message that will exit the player.", DiagnosticsSeverity.Error);
 ```
 *Note: The last parameter here is optional, and will default to "Error".*
@@ -19,7 +19,7 @@ DiagnosticsHook.LogMessage(1001, "This is a fatal error message that will exit t
 To log a debug message for use during development, there is a separate function that should be used for this purpose. This function will only
 have an effect when the player is running in Debug mode, and the end user in Release mode will not be able to see this output. To log a debug
 message with the diagnostics hook, you can do something like the following.
-```
+```cs
 DiagnosticsHook.DebugMessage("This is a debug message!");
 ```
 

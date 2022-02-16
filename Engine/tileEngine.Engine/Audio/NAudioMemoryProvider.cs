@@ -26,12 +26,27 @@ namespace tileEngine.Engine.Audio
         /// <summary>
         /// The volume of this sample provider.
         /// </summary>
-        public override float Volume { get; set; } = 1.0f;
+        public override float Volume
+        {
+            get => _volume;
+            set
+            {
+                //Clamp volume to above zero.
+                _volume = Math.Max(value, 0);
+            }
+        }
+        private float _volume = 1.0f;
 
         /// <summary>
         /// Whether this sample provider loops or not.
         /// </summary>
         public override bool Looping { get; set; } = false;
+
+        /// <summary>
+        /// Event triggered when this sample provider finishes playing.
+        /// </summary>
+        public event OnPlayFinishedHandler OnPlayFinished;
+        public delegate void OnPlayFinishedHandler();
 
         //The current position of the head in the sample.
         private long position = 0;
@@ -77,6 +92,10 @@ namespace tileEngine.Engine.Audio
                     buffer[offset + i] *= Volume;
                 }
             }
+
+            //Trigger end of sound if amount copied is nothing.
+            if (amtCopied == 0)
+                OnPlayFinished?.Invoke();
             return amtCopied;
         }
     }

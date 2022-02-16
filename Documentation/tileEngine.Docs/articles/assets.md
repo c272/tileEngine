@@ -13,7 +13,7 @@ a subfolder within your project folder, rather than outside your project folder.
 To load an asset at runtime to be used within your external game code, you can utilise the `AssetManager` class, found within `tileEngine.SDK`.
 This class allows you to attempt loading for any asset within the project tree that has been compiled to XNB format. To utilise it you can do
 something like the following:
-```
+```cs
 Texture2D myAsset = AssetManager.AttemptLoad<Texture2D>("SomeFolder/myAssetName.png");
 ```
 

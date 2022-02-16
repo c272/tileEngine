@@ -57,6 +57,7 @@
     <None Include="articles\gameobjects.md" />
     <None Include="articles\input.md" />
     <None Include="articles\scenes.md" />
+    <None Include="articles\sound.md" />
     <None Include="articles\toc.md" />
     <None Include="docfx.json" />
     <None Include="index.md" />

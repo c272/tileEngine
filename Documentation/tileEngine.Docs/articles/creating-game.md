@@ -25,7 +25,7 @@ tileEngine will call to perform game initialization and shutdown at runtime, so 
 a new class and make it inherit from `TileEngineGame`, found in the `tileEngine.SDK` namespace. Your class should look something like this after
 implementing the required methods:
 
-```
+```cs
 public class TutorialGame : TileEngineGame
 {
     public override void Initialize()
