@@ -166,6 +166,7 @@ namespace tileEngine.Engine
 
             //Create a memory sample provider for sound instance, add to mixer.
             var memorySampler = new NAudioMemoryProvider(loadedSound);
+            memorySampler.Looping = repeating;
             mixer.AddMixerInput(memorySampler);
             return memorySampler;
         }

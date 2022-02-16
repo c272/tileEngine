@@ -55,6 +55,12 @@ namespace tileEngine.Engine
 
             //Copy final data.
             Data = fileData.ToArray();
+            if (Data.Length == 0)
+            {
+                DiagnosticsHook.LogMessage(1013, $"The sound at '{fileLocation}' could not be read into a properly formatted byte stream." +
+                    $"\nThis is usually because of a formatting issue, try this sound in a different file format.");
+                return;
+            }
         }
     }
 }

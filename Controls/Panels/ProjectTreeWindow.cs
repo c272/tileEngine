@@ -209,7 +209,7 @@ namespace tileEngine.Controls
             {
                 Title = "Select an asset to import from file.",
                 Filter = ".PNG Files|*.png|.JPG Files|*.jpg|.JPEG Files|*.jpeg|.TTF Files|*.ttf" +
-                         "|.MP3 Files|*.mp3|.OGG Files|*.ogg|.WAV Files|*.wav",
+                         "|.MP3 Files|*.mp3|.AIFF Files|*.aiff|.WAV Files|*.wav",
                 Multiselect = false
             };
             if (dialog.ShowDialog() != DialogResult.OK)
@@ -240,9 +240,9 @@ namespace tileEngine.Controls
                     break;
 
                 //Audio.
-                case ".mp3":
-                case ".ogg":
+                case ".mp3":    
                 case ".wav":
+                case ".aiff":
                     newNode = new ProjectAudioNode(relPath);
                     break;
 
