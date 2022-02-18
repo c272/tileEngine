@@ -12,6 +12,7 @@ using tileEngine.SDK.Diagnostics;
 using Microsoft.Xna.Framework.Input;
 using tileEngine.SDK.Input;
 using tileEngine.SDK.Audio;
+using tileEngine.SDK.GUI;
 
 namespace tileEngine.Engine
 {
@@ -215,6 +216,9 @@ namespace tileEngine.Engine
         {
             base.Draw();
             Scene?.Draw(Editor.spriteBatch);
+
+            //Draw UI.
+            UI.Draw(Editor.spriteBatch);
         }
     }
 }

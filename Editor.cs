@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using tileEngine.SDK.Diagnostics;
 using System.IO;
+using tileEngine.Configuration;
 
 namespace tileEngine
 {
@@ -69,12 +70,15 @@ namespace tileEngine
             //Set instance, game control.
             Instance = this;
 
+            //Read the editor config from file.
+            TileEngineConfig.LoadFromFile("config.json");
+
             //Make the font ignore DPI scaling.
-            //Font = new Font(Font.Name, 8.25f * 96f / CreateGraphics().DpiX, Font.Style, Font.Unit, Font.GdiCharSet, Font.GdiVerticalFont);
+            //...
 
             //Scale with DPI for nice font drawing.
             InitializeComponent();
-            AutoScaleMode = AutoScaleMode.Dpi;
+            AutoScaleMode = AutoScaleMode.Font;
             KeyPreview = true;
 
             //Remove titlebar, make draggable.

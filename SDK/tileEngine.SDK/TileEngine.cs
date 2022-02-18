@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using tileEngine.SDK.Audio;
+using tileEngine.SDK.GUI;
 using tileEngine.SDK.Input;
 
 namespace tileEngine.SDK
@@ -41,14 +42,14 @@ namespace tileEngine.SDK
         GameDataContainer GameData { get; }
 
         /// <summary>
-        /// The sound API for this tile engine.
-        /// </summary>
-        Sound Sound { get; }
-
-        /// <summary>
         /// The graphics device this tile engine is using for rendering.
         /// </summary>
         GraphicsDevice GraphicsDevice { get; }
+
+        /// <summary>
+        /// The sound API for this tile engine.
+        /// </summary>
+        Sound Sound { get; }
 
         /// <summary>
         /// The keyboard input handler for this tileEngine instance.

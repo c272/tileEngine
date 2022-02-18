@@ -68,6 +68,9 @@
     <Compile Include="Components\SpriteComponent.cs" />
     <Compile Include="Diagnostics\DiagnosticsHook.cs" />
     <Compile Include="Diagnostics\DiagnosticsMessage.cs" />
+    <Compile Include="GUI\UI.cs" />
+    <Compile Include="GUI\UIAnchor.cs" />
+    <Compile Include="GUI\UIElement.cs" />
     <Compile Include="Input\AxisBindingData.cs" />
     <Compile Include="Input\GenericInput.cs" />
     <Compile Include="Input\InputHandler.cs" />
