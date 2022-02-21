@@ -84,19 +84,37 @@ namespace tileEngine.SDK.GUI
         }
 
         /// <summary>
+        /// Returns the closest previous element to this that matches one of the given anchors.
+        /// </summary>
+        public UIElement GetPreviousElement(params UIAnchor[] validAnchors)
+        {
+            //If no parent, we use UI element root list.
+            List<UIElement> siblings = Parent == null ? UI.RootElements : Parent.Children.ToList();
+
+            foreach (var other in siblings)
+            {
+                //If we've reached ourselves, then there are no previous matching.
+                if (other.ID == this.ID)
+                    return null;
+
+                //Is this a valid anchor? If so, return.
+                if (validAnchors.Contains(other.Anchor))
+                    return other;
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Forces this UI element (and it's children) to update their sizes.
         /// </summary>
         public abstract void ForceUpdateSize();
 
         /// <summary>
-        /// Draws this UI element to the screen.
+        /// Forces this UI element to update it's position.
         /// </summary>
-        public void Draw(SpriteBatch spriteBatch)
+        private void ForceUpdatePosition()
         {
-            //If we have a stale size, recalculate.
-            if (SizeDirty)
-                ForceUpdateSize();
-
             //Calculate the starting position based on anchor.
             Vector2 startPos = (Parent?.Position ?? Vector2.Zero) + ParentSize / 2f;
             if (Anchor.HasFlag(UIAnchor.Right))
@@ -108,15 +126,39 @@ namespace tileEngine.SDK.GUI
             if (Anchor.HasFlag(UIAnchor.Bottom))
                 startPos.Y += ParentSize.Y / 2f;
 
-            //Account for own size.
+            //Account for own size (non-center).
             if (Anchor.HasFlag(UIAnchor.Bottom) && !Anchor.HasFlag(UIAnchor.Top))
                 startPos.Y -= Size.Y;
             if (Anchor.HasFlag(UIAnchor.Right) && !Anchor.HasFlag(UIAnchor.Left))
                 startPos.X -= Size.X;
-            if (Anchor == UIAnchor.Center || Anchor == UIAnchor.All) 
-            {
+
+            //Account for own size (centered).
+            var leftAndRight = (Anchor & (UIAnchor.Left | UIAnchor.Right));
+            var topAndBottom = (Anchor & (UIAnchor.Top | UIAnchor.Bottom));
+            if (topAndBottom == 0 || topAndBottom == (UIAnchor.Top | UIAnchor.Bottom))
+                startPos.Y -= Size.Y / 2f;
+            if (leftAndRight == 0 || leftAndRight == (UIAnchor.Left | UIAnchor.Right))
                 startPos.X -= Size.X / 2f;
-                startPos.X -= Size.Y / 2f;
+
+            //If this is an auto anchoring element, get the sibling to anchor from.
+            var anchorSibling = GetPreviousElement(UIAnchor.Left, UIAnchor.Top | UIAnchor.Left, 
+                                                   UIAnchor.AutoLeft, UIAnchor.AutoInline, UIAnchor.AutoCenter);
+            if (anchorSibling != null)
+            {
+                switch (Anchor) 
+                {
+                    //Place directly under other element.
+                    case UIAnchor.AutoLeft:
+                    case UIAnchor.AutoCenter:
+                        startPos.Y = anchorSibling.Position.Y + anchorSibling.Size.Y;
+                        break;
+
+                    //Place directly to the right of other element.
+                    case UIAnchor.AutoInline:
+                        startPos.Y = anchorSibling.Position.Y;
+                        startPos.X = anchorSibling.Position.X + anchorSibling.Size.X;
+                        break;
+                }
             }
 
             //Add offset.
@@ -124,7 +166,24 @@ namespace tileEngine.SDK.GUI
 
             //Draw self at starting position, set calculated position.
             Position = startPos;
+        }
+
+        /// <summary>
+        /// Draws this UI element to the screen.
+        /// </summary>
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            //If we have a stale size, recalculate.
+            if (SizeDirty)
+                ForceUpdateSize();
+
+            //Update position and draw self.
+            ForceUpdatePosition();
             DrawSelf(spriteBatch);
+
+            //Draw all children.
+            foreach (var child in Children)
+                child.Draw(spriteBatch);
         }
 
         /// <summary>

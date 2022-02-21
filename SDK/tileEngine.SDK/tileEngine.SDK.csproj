@@ -80,6 +80,7 @@
     <Compile Include="Components\SpriteComponent.cs" />
     <Compile Include="Diagnostics\DiagnosticsHook.cs" />
     <Compile Include="Diagnostics\DiagnosticsMessage.cs" />
+    <Compile Include="GUI\Elements\Group.cs" />
     <Compile Include="GUI\Elements\Label.cs" />
     <Compile Include="GUI\FontManager.cs" />
     <Compile Include="GUI\UI.cs" />

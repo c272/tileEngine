@@ -16,6 +16,11 @@ namespace tileEngine.SDK.GUI
         Right = 0b10,
         Bottom = 0b100,
         Left = 0b1000,
-        All = 0b1111
+        All = 0b1111,
+
+        //Automatic positioning properties.
+        AutoLeft = 0b11001,
+        AutoInline = 0b101001,
+        AutoCenter = 0b1000001
     }
 }
