@@ -250,9 +250,9 @@ namespace tileEngine.Controls
             //Set up the tiles on the tilemap.
             Point curPos = new Point(0, 0);
             Microsoft.Xna.Framework.Point tilePos = new Microsoft.Xna.Framework.Point(0, 0);
-            while (curPos.Y < texture.Height - TileTextureSize)
+            while (curPos.Y <= texture.Height - TileTextureSize)
             {
-                while (curPos.X < texture.Width - TileTextureSize)
+                while (curPos.X <= texture.Width - TileTextureSize)
                 {
                     //Add the tile.
                     layer.Tiles.Add(tilePos, new TileData()
