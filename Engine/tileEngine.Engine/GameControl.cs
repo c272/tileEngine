@@ -81,6 +81,11 @@ namespace tileEngine.Engine
         public KeyboardInputHandler KeyboardInput { get; private set; } = new KeyboardInputHandler();
 
         /// <summary>
+        /// The mouse input handler for this game control.
+        /// </summary>
+        public MouseInputHandler MouseInput { get; private set; } = new MouseInputHandler();
+
+        /// <summary>
         /// The platform specific sound API for this game control.
         /// </summary>
         public Sound Sound { get; private set; }
@@ -203,6 +208,7 @@ namespace tileEngine.Engine
         {
             //Update input handlers.
             KeyboardInput?.Update(Keyboard.GetState());
+            MouseInput?.Update(Mouse.GetState());
 
             //Inputs are updated, now do scenes.
             base.Update(delta);

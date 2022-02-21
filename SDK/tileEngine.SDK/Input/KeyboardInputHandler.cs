@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace tileEngine.SDK.Input
 {
     /// <summary>
-    /// Represents a generic input handler for keyboard events.
+    /// Represents a generic input handler for keyboard & mouse events.
     /// </summary>
     public class KeyboardInputHandler : InputHandler
     {
@@ -85,6 +85,10 @@ namespace tileEngine.SDK.Input
         {
             if (!Bindings.ContainsKey(binding))
                 return;
+
+            //Remove from current state, then binding list.
+            if (CurrentState.ContainsKey(Bindings[binding]))
+                CurrentState.Remove(Bindings[binding]);
             Bindings.Remove(binding);
         }
 
@@ -95,6 +99,10 @@ namespace tileEngine.SDK.Input
         {
             if (!AxisBindings.ContainsKey(binding))
                 return;
+
+            //Remove from current state, then binding list.
+            if (CurrentState.ContainsKey(AxisBindings[binding]))
+                CurrentState.Remove(AxisBindings[binding]);
             AxisBindings.Remove(binding);
         }
 
@@ -199,6 +207,11 @@ namespace tileEngine.SDK.Input
         /// </summary>
         public override void Reset()
         {
+            foreach (var binding in Bindings)
+            {
+                if (CurrentState.ContainsKey(binding.Value))
+                    CurrentState.Remove(binding.Value);
+            }
             Bindings.Clear();
         }
 

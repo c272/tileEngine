@@ -40,7 +40,7 @@ namespace tileEngine.SDK
             {
                 _scene?.RemoveObject(this);
                 _scene = value;
-                _scene.AddObject(this);
+                _scene?.AddObject(this);
             }
         }
         internal Scene _scene = null;

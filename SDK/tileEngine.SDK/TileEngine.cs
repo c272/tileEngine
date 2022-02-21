@@ -57,6 +57,11 @@ namespace tileEngine.SDK
         KeyboardInputHandler KeyboardInput { get; }
 
         /// <summary>
+        /// The mouse input handler for this tileEngine instance.
+        /// </summary>
+        MouseInputHandler MouseInput { get; }
+
+        /// <summary>
         /// Returns the scene that is currently active.
         /// Null if no scene is active.
         /// </summary>
