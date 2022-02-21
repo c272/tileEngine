@@ -208,8 +208,8 @@ namespace tileEngine.Controls
             var dialog = new OpenFileDialog()
             {
                 Title = "Select an asset to import from file.",
-                Filter = ".PNG Files|*.png|.JPG Files|*.jpg|.JPEG Files|*.jpeg|.TTF Files|*.ttf" +
-                         "|.MP3 Files|*.mp3|.AIFF Files|*.aiff|.WAV Files|*.wav",
+                Filter = ".PNG Files|*.png|.JPG Files|*.jpg|.JPEG Files|*.jpeg|.TTF Files|*.ttf|" +
+                         ".OTF Files|*.otf|.MP3 Files|*.mp3|.AIFF Files|*.aiff|.WAV Files|*.wav",
                 Multiselect = false
             };
             if (dialog.ShowDialog() != DialogResult.OK)
@@ -244,6 +244,12 @@ namespace tileEngine.Controls
                 case ".wav":
                 case ".aiff":
                     newNode = new ProjectAudioNode(relPath);
+                    break;
+
+                //Fonts.
+                case ".ttf":
+                case ".otf":
+                    newNode = new ProjectFontNode(relPath);
                     break;
 
                 default:

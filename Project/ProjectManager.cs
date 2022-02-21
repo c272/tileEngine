@@ -281,7 +281,7 @@ namespace tileEngine
             //All new additional proejct node classes go here for save compatibility.
             //Make sure all of these classes are marked with the ProtoRecursiveIgnore attribute.
             RuntimeTypeModel.Default[typeof(ProjectAssetNode)].AddSubType(5100, typeof(ProjectAudioNode));
-
+            RuntimeTypeModel.Default[typeof(ProjectAssetNode)].AddSubType(5101, typeof(ProjectFontNode));
         }
     }
 }

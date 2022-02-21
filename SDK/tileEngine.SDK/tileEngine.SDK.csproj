@@ -33,6 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Cyotek.Drawing.BitmapFont, Version=1.0.0.0, Culture=neutral, PublicKeyToken=58daa28b0b2de221, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Cyotek.Drawing.BitmapFont.2.0.1\lib\net472\Cyotek.Drawing.BitmapFont.dll</HintPath>
+    </Reference>
+    <Reference Include="FontStashSharp.MonoGame, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FontStashSharp.MonoGame.1.0.4\lib\net45\FontStashSharp.MonoGame.dll</HintPath>
+    </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>..\..\packages\MonoGame.Forms.DX.2.4.0\lib\net451\MonoGame.Framework.dll</HintPath>
     </Reference>
@@ -41,6 +47,12 @@
     </Reference>
     <Reference Include="protobuf-net.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
       <HintPath>..\..\packages\protobuf-net.Core.3.0.101\lib\net461\protobuf-net.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="StbImageSharp, Version=2.22.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\StbImageSharp.2.22.6\lib\net45\StbImageSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="StbTrueTypeSharp, Version=1.24.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\StbTrueTypeSharp.1.24.8\lib\net45\StbTrueTypeSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -68,6 +80,8 @@
     <Compile Include="Components\SpriteComponent.cs" />
     <Compile Include="Diagnostics\DiagnosticsHook.cs" />
     <Compile Include="Diagnostics\DiagnosticsMessage.cs" />
+    <Compile Include="GUI\Elements\Label.cs" />
+    <Compile Include="GUI\FontManager.cs" />
     <Compile Include="GUI\UI.cs" />
     <Compile Include="GUI\UIAnchor.cs" />
     <Compile Include="GUI\UIElement.cs" />

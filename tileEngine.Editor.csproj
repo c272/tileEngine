@@ -263,6 +263,7 @@
     <Compile Include="Tree\ProjectAudioNode.cs" />
     <Compile Include="Tree\ProjectFolderNode.cs" />
     <Compile Include="Tree\ProjectAssetNode.cs" />
+    <Compile Include="Tree\ProjectFontNode.cs" />
     <Compile Include="Tree\ProjectRootNode.cs" />
     <Compile Include="Tree\ProjectSceneNode.cs" />
     <Compile Include="Tree\ProjectSpriteNode.cs" />
@@ -469,6 +470,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Icons\SoundFile_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Icons\Font_16x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\MonoGame.Forms.DX.2.4.0\Build\MonoGame.Forms.DX.targets" Condition="Exists('packages\MonoGame.Forms.DX.2.4.0\Build\MonoGame.Forms.DX.targets')" />

@@ -222,7 +222,7 @@ namespace tileEngine
         private void saveAll(object sender, EventArgs e) 
         {
             //Update all nodes from document.
-            foreach (var node in ProjectWindow.RootNode.Nodes.Select(x => (ProjectTreeNode)x))
+            foreach (var node in ProjectWindow.RootNode.GetNodesOfType<ProjectTreeNode>())
             {
                 node.UpdateFromDocument();
             }
@@ -240,7 +240,7 @@ namespace tileEngine
             //Register the changes as saved.
             currentlySaving = false;
             ProjectWindow.RootNode.UnsavedChanges = false;
-            foreach (var node in ProjectWindow.RootNode.Nodes.Select(x => (ProjectTreeNode)x))
+            foreach (var node in ProjectWindow.RootNode.GetNodesOfType<ProjectTreeNode>())
                 node.UnsavedChanges = false;
         }
 

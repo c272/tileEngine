@@ -207,6 +207,9 @@ namespace tileEngine.Engine
             //Inputs are updated, now do scenes.
             base.Update(delta);
             Scene?.Update(delta);
+
+            //Update UI.
+            UI.Update(delta);
         }
 
         /// <summary>

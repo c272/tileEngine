@@ -33,12 +33,31 @@ namespace tileEngine.SDK.GUI
         /// <summary>
         /// The offset from the anchor position this UI element is at.
         /// </summary>
-        public Point Offset { get; set; } = Point.Zero;
+        public Vector2 Offset { get; set; } = Vector2.Zero;
+
+        /// <summary>
+        /// The current calculated top left position of this UI element.
+        /// </summary>
+        public Vector2 Position { get; protected set; }
 
         /// <summary>
         /// The current size of this UI element.
         /// </summary>
-        public Point Size { get; private set; }
+        public Vector2 Size { get; protected set; } = Vector2.Zero;
+
+        /// <summary>
+        /// Whether the size of this UI element is stale, and should be updated next draw.
+        /// </summary>
+        public bool SizeDirty { get; protected set; } = true;
+
+        /// <summary>
+        /// The size of the parent of this UI element.
+        /// If there is no parent, then the parent container is just the viewport of the game.
+        /// </summary>
+        public Vector2 ParentSize
+        {
+            get { return Parent == null ? TileEngine.Instance.GraphicsDevice.Viewport.Bounds.Size.ToVector2() : Parent.Size; }
+        }
 
         /// <summary>
         /// Adds a child UI element to this element.
@@ -52,6 +71,7 @@ namespace tileEngine.SDK.GUI
             //Set parent/child.
             child.Parent = this;
             children.Add(child);
+            ForceUpdateSize();
         }
 
         /// <summary>
@@ -71,11 +91,50 @@ namespace tileEngine.SDK.GUI
         /// <summary>
         /// Draws this UI element to the screen.
         /// </summary>
-        public abstract void Draw(SpriteBatch spriteBatch);
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            //If we have a stale size, recalculate.
+            if (SizeDirty)
+                ForceUpdateSize();
+
+            //Calculate the starting position based on anchor.
+            Vector2 startPos = (Parent?.Position ?? Vector2.Zero) + ParentSize / 2f;
+            if (Anchor.HasFlag(UIAnchor.Right))
+                startPos.X += ParentSize.X / 2f;
+            if (Anchor.HasFlag(UIAnchor.Left))
+                startPos.X -= ParentSize.X / 2f;
+            if (Anchor.HasFlag(UIAnchor.Top))
+                startPos.Y -= ParentSize.Y / 2f;
+            if (Anchor.HasFlag(UIAnchor.Bottom))
+                startPos.Y += ParentSize.Y / 2f;
+
+            //Account for own size.
+            if (Anchor.HasFlag(UIAnchor.Bottom) && !Anchor.HasFlag(UIAnchor.Top))
+                startPos.Y -= Size.Y;
+            if (Anchor.HasFlag(UIAnchor.Right) && !Anchor.HasFlag(UIAnchor.Left))
+                startPos.X -= Size.X;
+            if (Anchor == UIAnchor.Center || Anchor == UIAnchor.All) 
+            {
+                startPos.X -= Size.X / 2f;
+                startPos.X -= Size.Y / 2f;
+            }
+
+            //Add offset.
+            startPos += Offset;
+
+            //Draw self at starting position, set calculated position.
+            Position = startPos;
+            DrawSelf(spriteBatch);
+        }
+
+        /// <summary>
+        /// Draw the UI element with the given top left point position.
+        /// </summary>
+        public abstract void DrawSelf(SpriteBatch spriteBatch);
 
         /// <summary>
         /// Updates this UI element each tick.
         /// </summary>
-        public abstract void Update(GameTime delta);
+        public virtual void Update(GameTime delta) { }
     }
 }
