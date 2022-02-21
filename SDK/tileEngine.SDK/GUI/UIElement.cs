@@ -48,7 +48,25 @@ namespace tileEngine.SDK.GUI
         /// <summary>
         /// Whether the size of this UI element is stale, and should be updated next draw.
         /// </summary>
-        public bool SizeDirty { get; protected set; } = true;
+        public bool SizeDirty
+        {
+            get => _sizeDirty;
+            set
+            {
+                _sizeDirty = value;
+                if (value)
+                {
+                    //Propagate up tree of parents.
+                    var curParent = Parent;
+                    while (curParent != null)
+                    {
+                        curParent._sizeDirty = true;
+                        curParent = curParent.Parent;
+                    }
+                }
+            }
+        }
+        private bool _sizeDirty = true;
 
         /// <summary>
         /// The size of the parent of this UI element.
@@ -161,10 +179,7 @@ namespace tileEngine.SDK.GUI
                 }
             }
 
-            //Add offset.
-            startPos += Offset;
-
-            //Draw self at starting position, set calculated position.
+            //Set calculated position.
             Position = startPos;
         }
 
@@ -179,7 +194,7 @@ namespace tileEngine.SDK.GUI
 
             //Update position and draw self.
             ForceUpdatePosition();
-            DrawSelf(spriteBatch);
+            DrawSelf(spriteBatch, Position + Offset);
 
             //Draw all children.
             foreach (var child in Children)
@@ -189,7 +204,7 @@ namespace tileEngine.SDK.GUI
         /// <summary>
         /// Draw the UI element with the given top left point position.
         /// </summary>
-        public abstract void DrawSelf(SpriteBatch spriteBatch);
+        public abstract void DrawSelf(SpriteBatch spriteBatch, Vector2 topLeft);
 
         /// <summary>
         /// Updates this UI element each tick.

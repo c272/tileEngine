@@ -47,12 +47,12 @@ namespace tileEngine.SDK.GUI.Elements
         public Color Colour { get; set; } = Color.White;
 
         /// <summary>
-        /// Draws this font to the screen.
+        /// Draws this label to the screen.
         /// </summary>
-        public override void DrawSelf(SpriteBatch spriteBatch)
+        public override void DrawSelf(SpriteBatch spriteBatch, Vector2 topLeft)
         {
             var font = FontManager.GetFont(UI.Font, FontSize);
-            font.DrawText(spriteBatch, Text, Position, Colour);
+            font.DrawText(spriteBatch, Text, topLeft, Colour);
         }
 
         /// <summary>
