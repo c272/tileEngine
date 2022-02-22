@@ -38,6 +38,8 @@ namespace tileEngine.Controls
             // 
             // navigationPanel
             // 
+            this.navigationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.navigationPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(33)))), ((int)(((byte)(35)))));
             this.navigationPanel.Controls.Add(this.gameSettingsLbl);
             this.navigationPanel.Controls.Add(this.generalLabel);
