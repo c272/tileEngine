@@ -66,14 +66,14 @@
             this.MapEditor.GridStep = 30F;
             this.MapEditor.Location = new System.Drawing.Point(0, 0);
             this.MapEditor.Map = null;
-            this.MapEditor.Margin = new System.Windows.Forms.Padding(2);
+            this.MapEditor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MapEditor.Name = "MapEditor";
             this.MapEditor.Palette = null;
             this.MapEditor.SelectedLayer = null;
             this.MapEditor.SelectedTiles = null;
             this.MapEditor.SelectionColour = System.Drawing.Color.White;
             this.MapEditor.SelectionWidth = 2;
-            this.MapEditor.Size = new System.Drawing.Size(423, 312);
+            this.MapEditor.Size = new System.Drawing.Size(564, 384);
             this.MapEditor.TabIndex = 0;
             this.MapEditor.Text = "mapEditorControl1";
             this.MapEditor.Zoom = 1F;
@@ -83,6 +83,7 @@
             this.darkToolStrip1.AutoSize = false;
             this.darkToolStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.darkToolStrip1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.darkToolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.darkToolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectToolButton,
             this.panToolButton,
@@ -95,8 +96,8 @@
             this.toolStripLabel1});
             this.darkToolStrip1.Location = new System.Drawing.Point(0, 0);
             this.darkToolStrip1.Name = "darkToolStrip1";
-            this.darkToolStrip1.Padding = new System.Windows.Forms.Padding(5, 0, 1, 0);
-            this.darkToolStrip1.Size = new System.Drawing.Size(423, 28);
+            this.darkToolStrip1.Padding = new System.Windows.Forms.Padding(7, 0, 1, 0);
+            this.darkToolStrip1.Size = new System.Drawing.Size(564, 34);
             this.darkToolStrip1.TabIndex = 1;
             this.darkToolStrip1.Text = "darkToolStrip1";
             // 
@@ -110,7 +111,7 @@
             this.selectToolButton.Image = ((System.Drawing.Image)(resources.GetObject("selectToolButton.Image")));
             this.selectToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.selectToolButton.Name = "selectToolButton";
-            this.selectToolButton.Size = new System.Drawing.Size(23, 25);
+            this.selectToolButton.Size = new System.Drawing.Size(29, 31);
             this.selectToolButton.Text = "Select (V)";
             this.selectToolButton.ToolTipText = "Select (V)";
             this.selectToolButton.Click += new System.EventHandler(this.selectToolButton_Click);
@@ -123,7 +124,7 @@
             this.panToolButton.Image = ((System.Drawing.Image)(resources.GetObject("panToolButton.Image")));
             this.panToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.panToolButton.Name = "panToolButton";
-            this.panToolButton.Size = new System.Drawing.Size(23, 25);
+            this.panToolButton.Size = new System.Drawing.Size(29, 31);
             this.panToolButton.Text = "Grab & Pan (G)";
             this.panToolButton.ToolTipText = "Grab/Pan (G)";
             this.panToolButton.Click += new System.EventHandler(this.panToolButton_Click);
@@ -136,7 +137,7 @@
             this.areaSelectToolButton.Image = ((System.Drawing.Image)(resources.GetObject("areaSelectToolButton.Image")));
             this.areaSelectToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.areaSelectToolButton.Name = "areaSelectToolButton";
-            this.areaSelectToolButton.Size = new System.Drawing.Size(23, 25);
+            this.areaSelectToolButton.Size = new System.Drawing.Size(29, 31);
             this.areaSelectToolButton.Text = "Area Select (A)";
             this.areaSelectToolButton.Click += new System.EventHandler(this.areaSelectToolButton_Click);
             // 
@@ -148,7 +149,7 @@
             this.pencilToolButton.Image = ((System.Drawing.Image)(resources.GetObject("pencilToolButton.Image")));
             this.pencilToolButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.pencilToolButton.Name = "pencilToolButton";
-            this.pencilToolButton.Size = new System.Drawing.Size(23, 25);
+            this.pencilToolButton.Size = new System.Drawing.Size(29, 31);
             this.pencilToolButton.Text = "Pencil (P)";
             this.pencilToolButton.Click += new System.EventHandler(this.pencilToolButton_Click);
             // 
@@ -158,7 +159,7 @@
             this.toolStripSeparator1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.toolStripSeparator1.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 28);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 34);
             // 
             // eventEditModeBtn
             // 
@@ -169,7 +170,7 @@
             this.eventEditModeBtn.Image = ((System.Drawing.Image)(resources.GetObject("eventEditModeBtn.Image")));
             this.eventEditModeBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.eventEditModeBtn.Name = "eventEditModeBtn";
-            this.eventEditModeBtn.Size = new System.Drawing.Size(23, 25);
+            this.eventEditModeBtn.Size = new System.Drawing.Size(29, 31);
             this.eventEditModeBtn.Text = "Event Edit Mode (3)";
             this.eventEditModeBtn.Click += new System.EventHandler(this.eventEditModeBtn_Click);
             // 
@@ -182,7 +183,7 @@
             this.collisionEditModeBtn.Image = ((System.Drawing.Image)(resources.GetObject("collisionEditModeBtn.Image")));
             this.collisionEditModeBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.collisionEditModeBtn.Name = "collisionEditModeBtn";
-            this.collisionEditModeBtn.Size = new System.Drawing.Size(23, 25);
+            this.collisionEditModeBtn.Size = new System.Drawing.Size(29, 31);
             this.collisionEditModeBtn.Text = "Collision Edit Mode (2)";
             this.collisionEditModeBtn.Click += new System.EventHandler(this.collisionEditModeBtn_Click);
             // 
@@ -197,7 +198,7 @@
             this.tileEditModeBtn.Image = ((System.Drawing.Image)(resources.GetObject("tileEditModeBtn.Image")));
             this.tileEditModeBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tileEditModeBtn.Name = "tileEditModeBtn";
-            this.tileEditModeBtn.Size = new System.Drawing.Size(23, 25);
+            this.tileEditModeBtn.Size = new System.Drawing.Size(29, 31);
             this.tileEditModeBtn.Text = "Tile Edit Mode (1)";
             this.tileEditModeBtn.Click += new System.EventHandler(this.tileEditModeBtn_Click);
             // 
@@ -207,19 +208,19 @@
             this.toolStripLabel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.toolStripLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(61, 25);
+            this.toolStripLabel1.Size = new System.Drawing.Size(78, 31);
             this.toolStripLabel1.Text = "Edit Mode";
             this.toolStripLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // MapEditorDocument
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.darkToolStrip1);
             this.Controls.Add(this.MapEditor);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MapEditorDocument";
-            this.Size = new System.Drawing.Size(423, 312);
+            this.Size = new System.Drawing.Size(564, 384);
             this.darkToolStrip1.ResumeLayout(false);
             this.darkToolStrip1.PerformLayout();
             this.ResumeLayout(false);

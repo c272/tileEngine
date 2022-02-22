@@ -320,6 +320,9 @@
     <EmbeddedResource Include="Controls\Documents\Properties\GeneralProperties.resx">
       <DependentUpon>GeneralProperties.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Documents\Properties\PropertiesTab.resx">
+      <DependentUpon>PropertiesTab.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\Panels\PropertiesWindow.resx">
       <DependentUpon>PropertiesWindow.cs</DependentUpon>
     </EmbeddedResource>

@@ -46,10 +46,9 @@ namespace tileEngine.Controls
             this.titleLabel.AutoSize = true;
             this.titleLabel.Font = new System.Drawing.Font("Roboto", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.titleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.titleLabel.Location = new System.Drawing.Point(2, 0);
-            this.titleLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.titleLabel.Location = new System.Drawing.Point(3, 0);
             this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(209, 37);
+            this.titleLabel.Size = new System.Drawing.Size(259, 44);
             this.titleLabel.TabIndex = 1;
             this.titleLabel.Text = "Create Project";
             // 
@@ -58,9 +57,10 @@ namespace tileEngine.Controls
             this.darkLabel1.AutoSize = true;
             this.darkLabel1.Font = new System.Drawing.Font("Roboto", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.darkLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.darkLabel1.Location = new System.Drawing.Point(6, 76);
+            this.darkLabel1.Location = new System.Drawing.Point(8, 94);
+            this.darkLabel1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.darkLabel1.Name = "darkLabel1";
-            this.darkLabel1.Size = new System.Drawing.Size(81, 14);
+            this.darkLabel1.Size = new System.Drawing.Size(100, 18);
             this.darkLabel1.TabIndex = 2;
             this.darkLabel1.Text = "Project Name";
             // 
@@ -69,18 +69,20 @@ namespace tileEngine.Controls
             this.darkLabel2.AutoSize = true;
             this.darkLabel2.Font = new System.Drawing.Font("Roboto", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.darkLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.darkLabel2.Location = new System.Drawing.Point(6, 128);
+            this.darkLabel2.Location = new System.Drawing.Point(8, 158);
+            this.darkLabel2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.darkLabel2.Name = "darkLabel2";
-            this.darkLabel2.Size = new System.Drawing.Size(76, 14);
+            this.darkLabel2.Size = new System.Drawing.Size(95, 18);
             this.darkLabel2.TabIndex = 4;
             this.darkLabel2.Text = "File Location";
             // 
             // chooseFileLocationBtn
             // 
-            this.chooseFileLocationBtn.Location = new System.Drawing.Point(385, 145);
+            this.chooseFileLocationBtn.Location = new System.Drawing.Point(513, 178);
+            this.chooseFileLocationBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.chooseFileLocationBtn.Name = "chooseFileLocationBtn";
-            this.chooseFileLocationBtn.Padding = new System.Windows.Forms.Padding(5);
-            this.chooseFileLocationBtn.Size = new System.Drawing.Size(29, 20);
+            this.chooseFileLocationBtn.Padding = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.chooseFileLocationBtn.Size = new System.Drawing.Size(39, 25);
             this.chooseFileLocationBtn.TabIndex = 6;
             this.chooseFileLocationBtn.Text = "...";
             this.chooseFileLocationBtn.Click += new System.EventHandler(this.chooseFileLocationBtn_Click);
@@ -88,10 +90,11 @@ namespace tileEngine.Controls
             // createBtn
             // 
             this.createBtn.Font = new System.Drawing.Font("Roboto", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.createBtn.Location = new System.Drawing.Point(504, 340);
+            this.createBtn.Location = new System.Drawing.Point(672, 418);
+            this.createBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.createBtn.Name = "createBtn";
-            this.createBtn.Padding = new System.Windows.Forms.Padding(5);
-            this.createBtn.Size = new System.Drawing.Size(97, 33);
+            this.createBtn.Padding = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.createBtn.Size = new System.Drawing.Size(129, 41);
             this.createBtn.TabIndex = 7;
             this.createBtn.Text = "Create";
             this.createBtn.Click += new System.EventHandler(this.createBtn_Click);
@@ -99,19 +102,21 @@ namespace tileEngine.Controls
             // createRepoCheck
             // 
             this.createRepoCheck.Font = new System.Drawing.Font("Roboto", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.createRepoCheck.Location = new System.Drawing.Point(9, 171);
+            this.createRepoCheck.Location = new System.Drawing.Point(12, 210);
+            this.createRepoCheck.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.createRepoCheck.Name = "createRepoCheck";
-            this.createRepoCheck.Size = new System.Drawing.Size(254, 24);
+            this.createRepoCheck.Size = new System.Drawing.Size(339, 30);
             this.createRepoCheck.TabIndex = 8;
             this.createRepoCheck.Text = "Create new repository for project (Git)";
             // 
             // backBtn
             // 
             this.backBtn.Font = new System.Drawing.Font("Roboto", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.backBtn.Location = new System.Drawing.Point(401, 340);
+            this.backBtn.Location = new System.Drawing.Point(535, 418);
+            this.backBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.backBtn.Name = "backBtn";
-            this.backBtn.Padding = new System.Windows.Forms.Padding(5);
-            this.backBtn.Size = new System.Drawing.Size(97, 33);
+            this.backBtn.Padding = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.backBtn.Size = new System.Drawing.Size(129, 41);
             this.backBtn.TabIndex = 9;
             this.backBtn.Text = "Back";
             this.backBtn.Click += new System.EventHandler(this.backBtn_Click);
@@ -121,9 +126,10 @@ namespace tileEngine.Controls
             this.subtitleLabel.AutoSize = true;
             this.subtitleLabel.Font = new System.Drawing.Font("Roboto", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.subtitleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.subtitleLabel.Location = new System.Drawing.Point(6, 37);
+            this.subtitleLabel.Location = new System.Drawing.Point(8, 46);
+            this.subtitleLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.subtitleLabel.Name = "subtitleLabel";
-            this.subtitleLabel.Size = new System.Drawing.Size(412, 14);
+            this.subtitleLabel.Size = new System.Drawing.Size(513, 18);
             this.subtitleLabel.TabIndex = 10;
             this.subtitleLabel.Text = "Give your project a name and a file location to save to, and we\'ll do the rest.";
             // 
@@ -133,9 +139,10 @@ namespace tileEngine.Controls
             this.fileLocationText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.fileLocationText.Enabled = false;
             this.fileLocationText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.fileLocationText.Location = new System.Drawing.Point(9, 145);
+            this.fileLocationText.Location = new System.Drawing.Point(12, 178);
+            this.fileLocationText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.fileLocationText.Name = "fileLocationText";
-            this.fileLocationText.Size = new System.Drawing.Size(370, 20);
+            this.fileLocationText.Size = new System.Drawing.Size(493, 22);
             this.fileLocationText.TabIndex = 12;
             this.fileLocationText.Valid = true;
             // 
@@ -144,16 +151,17 @@ namespace tileEngine.Controls
             this.projectNameText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
             this.projectNameText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.projectNameText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.projectNameText.Location = new System.Drawing.Point(9, 93);
+            this.projectNameText.Location = new System.Drawing.Point(12, 114);
+            this.projectNameText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.projectNameText.Name = "projectNameText";
-            this.projectNameText.Size = new System.Drawing.Size(405, 20);
+            this.projectNameText.Size = new System.Drawing.Size(539, 22);
             this.projectNameText.TabIndex = 11;
             this.projectNameText.Valid = true;
             // 
             // CreateProjectControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.Controls.Add(this.fileLocationText);
             this.Controls.Add(this.projectNameText);
@@ -165,8 +173,9 @@ namespace tileEngine.Controls
             this.Controls.Add(this.darkLabel2);
             this.Controls.Add(this.darkLabel1);
             this.Controls.Add(this.titleLabel);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "CreateProjectControl";
-            this.Size = new System.Drawing.Size(609, 376);
+            this.Size = new System.Drawing.Size(812, 463);
             this.ResumeLayout(false);
             this.PerformLayout();
 

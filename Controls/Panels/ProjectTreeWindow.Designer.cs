@@ -148,8 +148,8 @@ namespace tileEngine.Controls
             // 
             // ProjectTreeWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.projectTree);
             this.DefaultDockArea = DarkUI.Docking.DarkDockArea.Left;

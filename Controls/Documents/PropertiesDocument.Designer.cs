@@ -30,9 +30,9 @@ namespace tileEngine.Controls
         private void InitializeComponent()
         {
             this.navigationPanel = new System.Windows.Forms.Panel();
+            this.gameSettingsLbl = new DarkUI.Controls.DarkLabel();
             this.generalLabel = new DarkUI.Controls.DarkLabel();
             this.editPanel = new System.Windows.Forms.Panel();
-            this.gameSettingsLbl = new DarkUI.Controls.DarkLabel();
             this.navigationPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,6 +45,19 @@ namespace tileEngine.Controls
             this.navigationPanel.Name = "navigationPanel";
             this.navigationPanel.Size = new System.Drawing.Size(185, 569);
             this.navigationPanel.TabIndex = 0;
+            // 
+            // gameSettingsLbl
+            // 
+            this.gameSettingsLbl.Font = new System.Drawing.Font("Roboto", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gameSettingsLbl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.gameSettingsLbl.Location = new System.Drawing.Point(0, 40);
+            this.gameSettingsLbl.Name = "gameSettingsLbl";
+            this.gameSettingsLbl.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.gameSettingsLbl.Size = new System.Drawing.Size(185, 40);
+            this.gameSettingsLbl.TabIndex = 1;
+            this.gameSettingsLbl.Text = "Game";
+            this.gameSettingsLbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.gameSettingsLbl.Click += new System.EventHandler(this.gameSettings_Click);
             // 
             // generalLabel
             // 
@@ -69,23 +82,10 @@ namespace tileEngine.Controls
             this.editPanel.Size = new System.Drawing.Size(616, 563);
             this.editPanel.TabIndex = 1;
             // 
-            // gameSettingsLbl
-            // 
-            this.gameSettingsLbl.Font = new System.Drawing.Font("Roboto", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gameSettingsLbl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.gameSettingsLbl.Location = new System.Drawing.Point(0, 40);
-            this.gameSettingsLbl.Name = "gameSettingsLbl";
-            this.gameSettingsLbl.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.gameSettingsLbl.Size = new System.Drawing.Size(185, 40);
-            this.gameSettingsLbl.TabIndex = 1;
-            this.gameSettingsLbl.Text = "Game";
-            this.gameSettingsLbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.gameSettingsLbl.Click += new System.EventHandler(this.gameSettings_Click);
-            // 
             // PropertiesDocument
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.editPanel);
             this.Controls.Add(this.navigationPanel);
             this.Name = "PropertiesDocument";
