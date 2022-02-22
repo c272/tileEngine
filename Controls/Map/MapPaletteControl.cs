@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using tileEngine.SDK.Map;
+using tileEngine.SDK.Utility;
 using tileEngine.Utility;
 
 namespace tileEngine.Controls

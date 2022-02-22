@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,11 @@ namespace tileEngine.SDK.GUI
         public Vector2 Offset { get; set; } = Vector2.Zero;
 
         /// <summary>
+        /// The offset of this element, adjusted for the current scale.
+        /// </summary>
+        public Vector2 ScaledOffset => Offset * Scale;
+
+        /// <summary>
         /// The current calculated top left position of this UI element.
         /// </summary>
         public Vector2 Position { get; protected set; }
@@ -44,6 +50,39 @@ namespace tileEngine.SDK.GUI
         /// The current size of this UI element.
         /// </summary>
         public Vector2 Size { get; protected set; } = Vector2.Zero;
+
+        /// <summary>
+        /// The size of the parent of this UI element.
+        /// If there is no parent, then the parent container is just the viewport of the game.
+        /// </summary>
+        public Vector2 ParentSize
+        {
+            get { return Parent == null ? TileEngine.Instance.GraphicsDevice.Viewport.Bounds.Size.ToVector2() : Parent.Size; }
+        }
+
+        /// <summary>
+        /// The current bounds of this UI element.
+        /// </summary>
+        public System.Drawing.RectangleF Bounds => new System.Drawing.RectangleF(Position.X, Position.Y, Size.X, Size.Y);
+
+        /// <summary>
+        /// The scale of this UI element.
+        /// </summary>
+        public float Scale
+        {
+            get => _scale;
+            set
+            {
+                _scale = value;
+
+                //Propagate down.
+                foreach (var child in Children)
+                    child.Scale = value;
+
+                SizeDirty = true;
+            }
+        }
+        private float _scale = 1f;
 
         /// <summary>
         /// Whether the size of this UI element is stale, and should be updated next draw.
@@ -69,13 +108,40 @@ namespace tileEngine.SDK.GUI
         private bool _sizeDirty = true;
 
         /// <summary>
-        /// The size of the parent of this UI element.
-        /// If there is no parent, then the parent container is just the viewport of the game.
+        /// The opacity of the UI element. Ranges from 0.0f (transparent) to 1.0f (opaque).
         /// </summary>
-        public Vector2 ParentSize
+        public float Opacity
         {
-            get { return Parent == null ? TileEngine.Instance.GraphicsDevice.Viewport.Bounds.Size.ToVector2() : Parent.Size; }
+            get => _opacity;
+            set
+            {
+                //Bound between 0 and 1.
+                _opacity = Math.Max(0f, Math.Min(value, 1f));
+
+                //Propagate down.
+                foreach (var child in Children)
+                    child.Opacity = _opacity;
+            }
         }
+        private float _opacity = 1f;
+
+        /// <summary>
+        /// Event triggered when this UI element is clicked.
+        /// </summary>
+        public event OnClickedHandler OnClick;
+        public delegate void OnClickedHandler(Point location);
+
+        /// <summary>
+        /// Event triggered when the mouse first enters this UI element.
+        /// </summary>
+        public event OnEnteredHandler OnEnter;
+        public delegate void OnEnteredHandler();
+
+        /// <summary>
+        /// Event triggered when the mouse first enters this UI element.
+        /// </summary>
+        public event OnExitedHandler OnExit;
+        public delegate void OnExitedHandler();
 
         /// <summary>
         /// Adds a child UI element to this element.
@@ -194,7 +260,7 @@ namespace tileEngine.SDK.GUI
 
             //Update position and draw self.
             ForceUpdatePosition();
-            DrawSelf(spriteBatch, Position + Offset);
+            DrawSelf(spriteBatch, Position + ScaledOffset);
 
             //Draw all children.
             foreach (var child in Children)
@@ -209,6 +275,56 @@ namespace tileEngine.SDK.GUI
         /// <summary>
         /// Updates this UI element each tick.
         /// </summary>
-        public virtual void Update(GameTime delta) { }
+        public virtual void Update(GameTime delta) 
+        {
+            //Update children.
+            foreach (var child in Children)
+                child.Update(delta);
+        }
+
+        /// <summary>
+        /// Checks whether this element (or it's children) are clicked.
+        /// </summary>
+        internal bool CheckClicked(UIElement element, MouseState state)
+        {
+            //Check children first.
+            foreach (var child in element.Children)
+            {
+                if (CheckClicked(child, state))
+                    return true;
+            }
+
+            //Check self, is the mouse within the bounds?
+            if (element.Bounds.Contains(state.Position.X, state.Position.Y))
+            {
+                element.OnClick?.Invoke(state.Position);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Checks whether this element (or it's children) have just been entered.
+        /// </summary>
+        internal void CheckEnteredExited(UIElement element, MouseState prevState, MouseState state)
+        {
+            //Check children.
+            foreach (var child in element.Children)
+                CheckEnteredExited(child, prevState, state);
+
+            //Check entered for self.
+            if (element.Bounds.Contains(state.Position.X, state.Position.Y) &&
+                !element.Bounds.Contains(prevState.Position.X, prevState.Position.Y))
+            {
+                OnEnter?.Invoke();
+            }
+
+            //Check left for self.
+            if (!element.Bounds.Contains(state.Position.X, state.Position.Y) &&
+                element.Bounds.Contains(prevState.Position.X, prevState.Position.Y))
+            {
+                OnExit?.Invoke();
+            }
+        }
     }
 }

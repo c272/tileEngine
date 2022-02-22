@@ -52,7 +52,7 @@ namespace tileEngine.SDK.GUI.Elements
         public override void DrawSelf(SpriteBatch spriteBatch, Vector2 topLeft)
         {
             var font = FontManager.GetFont(UI.Font, FontSize);
-            font.DrawText(spriteBatch, Text, topLeft, Colour);
+            font.DrawText(spriteBatch, Text, topLeft, Colour * Opacity, new Vector2(Scale, Scale));
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace tileEngine.SDK.GUI.Elements
         public override void ForceUpdateSize()
         {
             var font = FontManager.GetFont(UI.Font, FontSize);
-            Size = font.MeasureString(Text);
+            Size = font.MeasureString(Text) * Scale;
         }
     }
 }

@@ -303,7 +303,6 @@
     </Compile>
     <Compile Include="Utility\ColourHelpers.cs" />
     <Compile Include="Utility\PathHelpers.cs" />
-    <Compile Include="Utility\PointHelpers.cs" />
     <Compile Include="Utility\RectangleFHelpers.cs" />
     <Compile Include="Utility\TaggedDropdownItem.cs" />
     <EmbeddedResource Include="Controls\Documents\MapEditorDocument.resx">
