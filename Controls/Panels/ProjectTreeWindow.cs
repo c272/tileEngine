@@ -272,5 +272,32 @@ namespace tileEngine.Controls
             this.Focus();
             newNode.Rename();
         }
+
+        /// <summary>
+        /// Triggered when the user clicks the "Relink Asset" button.
+        /// </summary>
+        private void relinkAssetButton_Click(object sender, EventArgs e)
+        {
+            //If the selected node isn't an asset, ignore this.
+            if (projectTree.SelectedNodes.Count == 0 || !(projectTree.SelectedNodes[0] is ProjectAssetNode))
+                return;
+            var assetNode = projectTree.SelectedNodes[0] as ProjectAssetNode;
+
+            //Open the relink file browser, only allow the correct file extension.
+            string ext = "." + assetNode.RelativeLocation.Split('.').Last();
+            var openFile = new OpenFileDialog()
+            {
+                Filter = $"Matching Asset Files|{ext}",
+                Title = "Select an asset to re-link this asset node to.",
+                Multiselect = false,
+                DefaultExt = ext
+            };
+            if (openFile.ShowDialog() != DialogResult.OK)
+                return;
+
+            //Re-link the file.
+            var newRelative = PathHelpers.GetRelativePath(ProjectManager.CurrentProjectDirectory, openFile.FileName);
+            assetNode.UpdateRelativeLocation(newRelative);
+        }
     }
 }

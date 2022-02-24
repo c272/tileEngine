@@ -36,5 +36,13 @@ namespace tileEngine
         /// No requirement to update from document.
         /// </summary>
         public override void UpdateFromDocument() { }
+
+        /// <summary>
+        /// Updates the relative location of this asset node.
+        /// </summary>
+        public void UpdateRelativeLocation(string newLocation)
+        {
+            RelativeLocation = newLocation;
+        }
     }
 }
