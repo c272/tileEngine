@@ -13,6 +13,7 @@ using tileEngine.SDK.Diagnostics;
 using tileEngine.SDK.Components;
 using tileEngine.SDK.Attributes;
 using System.Reflection;
+using tileEngine.Utility;
 
 namespace tileEngine.SDK
 {
@@ -27,6 +28,11 @@ namespace tileEngine.SDK
         /// Utility texture, single pixel texture used for drawing solid colours.
         /// </summary>
         public static Texture2D PointTexture { get; private set; } = null;
+
+        /// <summary>
+        /// The ID of this scene instance.
+        /// </summary>
+        public int ID { get; private set; } = new Guid().GetHashCode();
 
         /// <summary>
         /// The game objects that are currently a part of this scene.
@@ -217,13 +223,25 @@ namespace tileEngine.SDK
             //Update all GameObjects.
             for (int i = 0; i < GameObjects.Count; i++)
             {
-                GameObjects[i].Update(delta);
+                var gameObject = GameObjects[i];
+                gameObject.Update(delta);
+
+                //Exit if our scene has changed.
+                if (gameObject.Scene?.ID != this.ID)
+                    return;
 
                 //Update all this GameObject's components.
-                GameObjects[i].GetComponents().ForEach(x => x.Update(GameObjects[i], delta));
+                for (int j = 0; j < gameObject.GetComponents().Count; j++)
+                {
+                    gameObject.GetComponents()[j].Update(gameObject, delta);
+
+                    //Exit if the component changes the scene.
+                    if (gameObject.Scene?.ID != this.ID)
+                        return;
+                }
 
                 //Collision check for this object.
-                CheckCollisions(GameObjects[i]);
+                CheckCollisions(gameObject);
             }
         }
 
