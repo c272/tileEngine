@@ -141,6 +141,9 @@ namespace tileEngine.Controls
                 //Otherwise, set folder.
                 CurrentSelectedParent = projectTree.SelectedNodes[0];
             }
+
+            //Is the current selected node an asset node? If so, then enable relink button.
+            relinkAssetButton.Enabled = (projectTree.SelectedNodes.Count > 0 && projectTree.SelectedNodes[0] is ProjectAssetNode);
         }
 
         /// <summary>
@@ -287,10 +290,9 @@ namespace tileEngine.Controls
             string ext = "." + assetNode.RelativeLocation.Split('.').Last();
             var openFile = new OpenFileDialog()
             {
-                Filter = $"Matching Asset Files|{ext}",
+                Filter = $"Matching Asset Files|*{ext}",
                 Title = "Select an asset to re-link this asset node to.",
                 Multiselect = false,
-                DefaultExt = ext
             };
             if (openFile.ShowDialog() != DialogResult.OK)
                 return;
