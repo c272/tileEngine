@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using tileEngine.Controls.Properties;
 using tileEngine.SDK.Attributes;
 using tileEngine.SDK.Map;
+using tileEngine.SDK.Utility;
 using tileEngine.Utility;
 
 namespace tileEngine.Controls

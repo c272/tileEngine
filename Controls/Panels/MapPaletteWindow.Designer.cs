@@ -67,6 +67,8 @@
             this.Palette.Location = new System.Drawing.Point(0, 49);
             this.Palette.Map = null;
             this.Palette.Name = "Palette";
+            this.Palette.SelectionColour = System.Drawing.Color.White;
+            this.Palette.SelectionWidth = 2;
             this.Palette.Size = new System.Drawing.Size(256, 187);
             this.Palette.TabIndex = 0;
             this.Palette.Text = "mapPaletteControl1";
@@ -98,8 +100,8 @@
             // 
             // MapPaletteWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.verticalScroll);
             this.Controls.Add(this.horizontalScroll);
             this.Controls.Add(this.spriteSelector);

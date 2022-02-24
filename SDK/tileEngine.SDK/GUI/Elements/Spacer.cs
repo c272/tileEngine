@@ -57,7 +57,7 @@ namespace tileEngine.SDK.GUI.Elements
         /// </summary>
         public override void ForceUpdateSize()
         {
-            Size = new Vector2(Width, Height);
+            Size = new Vector2(Width, Height) * Scale;
         }
     }
 }

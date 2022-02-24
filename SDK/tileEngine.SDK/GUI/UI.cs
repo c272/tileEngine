@@ -1,8 +1,10 @@
 ﻿using FontStashSharp;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +26,9 @@ namespace tileEngine.SDK.GUI
         /// The root elements of the UI.
         /// </summary>
         public static List<UIElement> RootElements = new List<UIElement>();
+
+        //The state of the mouse from the previous update cycle.
+        static MouseState previousMouseState = default;
 
         /// <summary>
         /// Initializes the UI with the given required assets.
@@ -71,8 +76,31 @@ namespace tileEngine.SDK.GUI
         /// </summary>
         public static void Update(GameTime delta)
         {
+            //Update all root elements.
             for (int i = 0; i < RootElements.Count; i++)
                 RootElements[i].Update(delta);
+
+            //If the user is clicking, check if they're in bounds of any UI elements.
+            var mouseState = Mouse.GetState();
+            if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton != ButtonState.Pressed)
+            {
+                foreach (var element in RootElements) 
+                {
+                    if (element.CheckClicked(element, mouseState))
+                        break;
+                }
+            }
+
+            //Check if the mouse has freshly entered/left any UI elements.
+            foreach (var element in RootElements)
+                element.CheckEnteredExited(element, previousMouseState, mouseState);
+
+            //Update previous mouse state.
+            previousMouseState = mouseState;
         }
+
+        
+
+        
     }
 }

@@ -107,6 +107,7 @@
     <Compile Include="TileEngine.cs" />
     <Compile Include="TileEngineGame.cs" />
     <Compile Include="Utility\MathsUtility.cs" />
+    <Compile Include="Utility\PointHelpers.cs" />
     <Compile Include="Utility\RectF.cs" />
     <Compile Include="Utility\Snowflake.cs" />
     <Compile Include="Utility\Timer.cs" />

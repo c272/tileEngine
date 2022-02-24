@@ -51,7 +51,7 @@ namespace tileEngine
             this.welcomeLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.welcomeLabel.Location = new System.Drawing.Point(21, 37);
             this.welcomeLabel.Name = "welcomeLabel";
-            this.welcomeLabel.Size = new System.Drawing.Size(410, 46);
+            this.welcomeLabel.Size = new System.Drawing.Size(401, 44);
             this.welcomeLabel.TabIndex = 0;
             this.welcomeLabel.Text = "Welcome to tileEngine.";
             // 
@@ -101,7 +101,7 @@ namespace tileEngine
             this.closeWindowBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.closeWindowBtn.Image = ((System.Drawing.Image)(resources.GetObject("closeWindowBtn.Image")));
             this.closeWindowBtn.Location = new System.Drawing.Point(793, 0);
-            this.closeWindowBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.closeWindowBtn.Margin = new System.Windows.Forms.Padding(4);
             this.closeWindowBtn.Name = "closeWindowBtn";
             this.closeWindowBtn.Size = new System.Drawing.Size(61, 37);
             this.closeWindowBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -155,7 +155,7 @@ namespace tileEngine
             this.minimizeBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.minimizeBtn.Image = ((System.Drawing.Image)(resources.GetObject("minimizeBtn.Image")));
             this.minimizeBtn.Location = new System.Drawing.Point(733, 0);
-            this.minimizeBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.minimizeBtn.Margin = new System.Windows.Forms.Padding(4);
             this.minimizeBtn.Name = "minimizeBtn";
             this.minimizeBtn.Size = new System.Drawing.Size(61, 37);
             this.minimizeBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -167,8 +167,8 @@ namespace tileEngine
             // 
             // LandingPage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(853, 528);
             this.Controls.Add(this.minimizeBtn);
             this.Controls.Add(this.closeWindowBtn);

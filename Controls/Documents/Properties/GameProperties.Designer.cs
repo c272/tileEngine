@@ -99,7 +99,7 @@ namespace tileEngine.Controls
             this.darkLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.darkLabel2.Location = new System.Drawing.Point(119, 93);
             this.darkLabel2.Name = "darkLabel2";
-            this.darkLabel2.Size = new System.Drawing.Size(14, 17);
+            this.darkLabel2.Size = new System.Drawing.Size(13, 16);
             this.darkLabel2.TabIndex = 2;
             this.darkLabel2.Text = "x";
             // 
@@ -117,8 +117,8 @@ namespace tileEngine.Controls
             // 
             // GameProperties
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.dimensionsGb);
             this.Name = "GameProperties";
             this.Padding = new System.Windows.Forms.Padding(10);

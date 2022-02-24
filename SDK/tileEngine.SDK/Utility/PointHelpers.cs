@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace tileEngine.Utility
+namespace tileEngine.SDK.Utility
 {
     /// <summary>
     /// Utility class for converting to and from Microsoft.Xna.Framework.Point and System.Drawing.Point.
