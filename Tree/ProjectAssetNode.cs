@@ -43,6 +43,7 @@ namespace tileEngine
         public void UpdateRelativeLocation(string newLocation)
         {
             RelativeLocation = newLocation;
+            UnsavedChanges = true;
         }
     }
 }
