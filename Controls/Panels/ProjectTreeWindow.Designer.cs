@@ -32,12 +32,12 @@ namespace tileEngine.Controls
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectTreeWindow));
             this.projectTree = new tileEngine.Controls.ProjectTree();
             this.toolStrip = new DarkUI.Controls.DarkToolStrip();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.newProjectItemBtn = new System.Windows.Forms.ToolStripButton();
             this.importProjectItemBtn = new System.Windows.Forms.ToolStripButton();
             this.relinkAssetButton = new System.Windows.Forms.ToolStripButton();
             this.newFolderButton = new System.Windows.Forms.ToolStripButton();
             this.renameItemButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.removeItemButton = new System.Windows.Forms.ToolStripButton();
             this.toolStrip.SuspendLayout();
             this.SuspendLayout();
@@ -46,12 +46,12 @@ namespace tileEngine.Controls
             // 
             this.projectTree.AllowMoveNodes = true;
             this.projectTree.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.projectTree.Location = new System.Drawing.Point(0, 25);
+            this.projectTree.Location = new System.Drawing.Point(0, 20);
             this.projectTree.Margin = new System.Windows.Forms.Padding(2);
             this.projectTree.MaxDragChange = 20;
             this.projectTree.Name = "projectTree";
             this.projectTree.ShowIcons = true;
-            this.projectTree.Size = new System.Drawing.Size(196, 345);
+            this.projectTree.Size = new System.Drawing.Size(157, 276);
             this.projectTree.TabIndex = 0;
             this.projectTree.Text = "Project Tree";
             this.projectTree.SelectedNodesChanged += new System.EventHandler(this.selectedNodesChanged);
@@ -72,20 +72,12 @@ namespace tileEngine.Controls
             this.renameItemButton,
             this.toolStripSeparator1,
             this.removeItemButton});
-            this.toolStrip.Location = new System.Drawing.Point(0, 342);
+            this.toolStrip.Location = new System.Drawing.Point(0, 274);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Padding = new System.Windows.Forms.Padding(5, 0, 1, 0);
-            this.toolStrip.Size = new System.Drawing.Size(196, 28);
+            this.toolStrip.Padding = new System.Windows.Forms.Padding(4, 0, 1, 0);
+            this.toolStrip.Size = new System.Drawing.Size(157, 22);
             this.toolStrip.TabIndex = 1;
             this.toolStrip.Text = "Project Tree Tool Strip";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
-            this.toolStripSeparator1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.toolStripSeparator1.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 28);
             // 
             // newProjectItemBtn
             // 
@@ -96,7 +88,7 @@ namespace tileEngine.Controls
             this.newProjectItemBtn.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.newProjectItemBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newProjectItemBtn.Name = "newProjectItemBtn";
-            this.newProjectItemBtn.Size = new System.Drawing.Size(23, 25);
+            this.newProjectItemBtn.Size = new System.Drawing.Size(23, 19);
             this.newProjectItemBtn.Text = "New Project Item";
             this.newProjectItemBtn.Click += new System.EventHandler(this.newProjectItemBtn_Click);
             // 
@@ -109,7 +101,7 @@ namespace tileEngine.Controls
             this.importProjectItemBtn.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.importProjectItemBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.importProjectItemBtn.Name = "importProjectItemBtn";
-            this.importProjectItemBtn.Size = new System.Drawing.Size(23, 25);
+            this.importProjectItemBtn.Size = new System.Drawing.Size(23, 19);
             this.importProjectItemBtn.Text = "Import Assets";
             this.importProjectItemBtn.Click += new System.EventHandler(this.importProjectItemBtn_Click);
             // 
@@ -117,12 +109,13 @@ namespace tileEngine.Controls
             // 
             this.relinkAssetButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
             this.relinkAssetButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.relinkAssetButton.Enabled = false;
             this.relinkAssetButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.relinkAssetButton.Image = ((System.Drawing.Image)(resources.GetObject("relinkAssetButton.Image")));
             this.relinkAssetButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.relinkAssetButton.Name = "relinkAssetButton";
-            this.relinkAssetButton.Size = new System.Drawing.Size(24, 25);
-            this.relinkAssetButton.Text = "toolStripButton1";
+            this.relinkAssetButton.Size = new System.Drawing.Size(24, 19);
+            this.relinkAssetButton.Text = "Relink Asset";
             this.relinkAssetButton.Click += new System.EventHandler(this.relinkAssetButton_Click);
             // 
             // newFolderButton
@@ -133,7 +126,7 @@ namespace tileEngine.Controls
             this.newFolderButton.Image = ((System.Drawing.Image)(resources.GetObject("newFolderButton.Image")));
             this.newFolderButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newFolderButton.Name = "newFolderButton";
-            this.newFolderButton.Size = new System.Drawing.Size(24, 25);
+            this.newFolderButton.Size = new System.Drawing.Size(24, 19);
             this.newFolderButton.Text = "New Folder";
             this.newFolderButton.Click += new System.EventHandler(this.newFolderButton_Click);
             // 
@@ -145,9 +138,17 @@ namespace tileEngine.Controls
             this.renameItemButton.Image = ((System.Drawing.Image)(resources.GetObject("renameItemButton.Image")));
             this.renameItemButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.renameItemButton.Name = "renameItemButton";
-            this.renameItemButton.Size = new System.Drawing.Size(24, 25);
+            this.renameItemButton.Size = new System.Drawing.Size(24, 19);
             this.renameItemButton.Text = "Rename Item";
             this.renameItemButton.Click += new System.EventHandler(this.renameItemButton_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.toolStripSeparator1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.toolStripSeparator1.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 22);
             // 
             // removeItemButton
             // 
@@ -157,12 +158,12 @@ namespace tileEngine.Controls
             this.removeItemButton.Image = ((System.Drawing.Image)(resources.GetObject("removeItemButton.Image")));
             this.removeItemButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.removeItemButton.Name = "removeItemButton";
-            this.removeItemButton.Size = new System.Drawing.Size(24, 25);
+            this.removeItemButton.Size = new System.Drawing.Size(24, 24);
             this.removeItemButton.Text = "Delete Item";
             // 
             // ProjectTreeWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.projectTree);
@@ -171,7 +172,7 @@ namespace tileEngine.Controls
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ProjectTreeWindow";
-            this.Size = new System.Drawing.Size(196, 370);
+            this.Size = new System.Drawing.Size(157, 296);
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
             this.ResumeLayout(false);
