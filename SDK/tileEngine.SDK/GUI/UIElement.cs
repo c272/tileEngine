@@ -170,7 +170,7 @@ namespace tileEngine.SDK.GUI
         /// <summary>
         /// Returns the closest previous element to this that matches one of the given anchors.
         /// </summary>
-        public UIElement GetPreviousElement(params UIAnchor[] validAnchors)
+        public UIElement GetPreviousElement(Func<UIAnchor, bool> selector)
         {
             //If no parent, we use UI element root list.
             List<UIElement> siblings = Parent == null ? UI.RootElements : Parent.Children.ToList();
@@ -182,7 +182,7 @@ namespace tileEngine.SDK.GUI
                     return null;
 
                 //Is this a valid anchor? If so, return.
-                if (validAnchors.Contains(other.Anchor))
+                if (selector(other.Anchor))
                     return other;
             }
 
@@ -225,8 +225,7 @@ namespace tileEngine.SDK.GUI
                 startPos.X -= Size.X / 2f;
 
             //If this is an auto anchoring element, get the sibling to anchor from.
-            var anchorSibling = GetPreviousElement(UIAnchor.Left, UIAnchor.Top | UIAnchor.Left, 
-                                                   UIAnchor.AutoLeft, UIAnchor.AutoInline, UIAnchor.AutoCenter);
+            var anchorSibling = GetPreviousElement(x => x >= UIAnchor.AutoLeft || x == UIAnchor.Left || x == (UIAnchor.Top | UIAnchor.Left));
             if (anchorSibling != null)
             {
                 switch (Anchor) 
@@ -234,6 +233,7 @@ namespace tileEngine.SDK.GUI
                     //Place directly under other element.
                     case UIAnchor.AutoLeft:
                     case UIAnchor.AutoCenter:
+                    case UIAnchor.AutoRight:
                         startPos.Y = anchorSibling.Position.Y + anchorSibling.Size.Y;
                         break;
 

@@ -34,15 +34,10 @@ namespace tileEngine.SDK.GUI.Elements
                     child.ForceUpdateSize();
 
                 //Only auto aligned elements are allowed in groups (for now).
-                switch (child.Anchor)
+                if (child.Anchor < UIAnchor.AutoLeft) 
                 {
-                    case UIAnchor.AutoCenter:
-                    case UIAnchor.AutoInline:
-                    case UIAnchor.AutoLeft:
-                        break;
-                    default:
-                        DiagnosticsHook.LogMessage(1019, "Only auto-aligned elements are allowed to be added to UI groups.");
-                        return;
+                    DiagnosticsHook.LogMessage(1019, "Only auto-aligned elements are allowed to be added to UI groups.");
+                    return;
                 }
 
                 if (child.Size.X > maxWidth)
