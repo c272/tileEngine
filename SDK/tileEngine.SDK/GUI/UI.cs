@@ -23,9 +23,14 @@ namespace tileEngine.SDK.GUI
         public static string Font { get; set; }
 
         /// <summary>
+        /// The current root elements of this UI.
+        /// </summary>
+        public static IEnumerable<UIElement> RootElements => rootElements;
+
+        /// <summary>
         /// The root elements of the UI.
         /// </summary>
-        public static List<UIElement> RootElements = new List<UIElement>();
+        private static List<UIElement> rootElements = new List<UIElement>();
 
         //The state of the mouse from the previous update cycle.
         static MouseState previousMouseState = default;
@@ -61,13 +66,32 @@ namespace tileEngine.SDK.GUI
         }
 
         /// <summary>
+        /// Adds a single root element to the UI.
+        /// </summary>
+        public static void AddElement(UIElement element)
+        {
+            if (rootElements.Any(x => x.ID == element.ID))
+                return;
+            element.Unparent();
+            rootElements.Add(element);
+        }
+
+        /// <summary>
+        /// Removes a single root element from the UI.
+        /// </summary>
+        public static void RemoveElement(UIElement element)
+        {
+            rootElements.RemoveAll(x => x.ID == element.ID);
+        }
+
+        /// <summary>
         /// Draw function for the entire UI system.
         /// </summary>
         public static void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            for (int i = 0; i < RootElements.Count; i++)
-                RootElements[i].Draw(spriteBatch);
+            for (int i = 0; i < rootElements.Count; i++)
+                rootElements[i].Draw(spriteBatch);
             spriteBatch.End();
         }
 
@@ -77,14 +101,14 @@ namespace tileEngine.SDK.GUI
         public static void Update(GameTime delta)
         {
             //Update all root elements.
-            for (int i = 0; i < RootElements.Count; i++)
-                RootElements[i].Update(delta);
+            for (int i = 0; i < rootElements.Count; i++)
+                rootElements[i].Update(delta);
 
             //If the user is clicking, check if they're in bounds of any UI elements.
             var mouseState = Mouse.GetState();
             if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton != ButtonState.Pressed)
             {
-                foreach (var element in RootElements) 
+                foreach (var element in rootElements) 
                 {
                     if (element.CheckClicked(element, mouseState))
                         break;
@@ -92,7 +116,7 @@ namespace tileEngine.SDK.GUI
             }
 
             //Check if the mouse has freshly entered/left any UI elements.
-            foreach (var element in RootElements)
+            foreach (var element in rootElements)
                 element.CheckEnteredExited(element, previousMouseState, mouseState);
 
             //Update previous mouse state.

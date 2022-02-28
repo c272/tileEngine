@@ -55,6 +55,7 @@
     <None Include="articles\debugging.md" />
     <None Include="articles\events.md" />
     <None Include="articles\gameobjects.md" />
+    <None Include="articles\gui.md" />
     <None Include="articles\input.md" />
     <None Include="articles\scenes.md" />
     <None Include="articles\sound.md" />

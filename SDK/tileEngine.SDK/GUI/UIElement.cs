@@ -164,7 +164,20 @@ namespace tileEngine.SDK.GUI
         public void RemoveChild(UIElement child)
         {
             if (children.RemoveAll(x => x.ID == child.ID) > 0)
+            {
                 child.Parent = null;
+                return;
+            }
+        }
+
+        /// <summary>
+        /// Unparents this element from it's existing parent.
+        /// </summary>
+        public void Unparent()
+        {
+            if (Parent == null)
+                return;
+            Parent.RemoveChild(this);
         }
 
         /// <summary>
@@ -173,7 +186,7 @@ namespace tileEngine.SDK.GUI
         public UIElement GetPreviousElement(Func<UIAnchor, bool> selector)
         {
             //If no parent, we use UI element root list.
-            List<UIElement> siblings = Parent == null ? UI.RootElements : Parent.Children.ToList();
+            List<UIElement> siblings = Parent == null ? UI.RootElements.ToList() : Parent.Children.ToList();
 
             foreach (var other in siblings)
             {

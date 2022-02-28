@@ -12,5 +12,5 @@
 ##[Asset Management](assets.md)
 ##[Sound](sound.md)
 ##[Debugging](debugging.md)
-
+##[GUI System](gui.md)
 # Editor Tutorials
