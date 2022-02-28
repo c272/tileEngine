@@ -85,6 +85,14 @@ namespace tileEngine.SDK.GUI
         }
 
         /// <summary>
+        /// Clears the UI system of all elements.
+        /// </summary>
+        public static void Clear()
+        {
+            rootElements.Clear();
+        }
+
+        /// <summary>
         /// Draw function for the entire UI system.
         /// </summary>
         public static void Draw(SpriteBatch spriteBatch)

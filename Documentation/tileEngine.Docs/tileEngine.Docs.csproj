@@ -65,8 +65,9 @@
     <None Include="packages.config" />
     <None Include="toc.yml" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="images\" />
+    <Content Include="images\gui-anchor-diagram.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\docfx.console.2.59.0\build\docfx.console.targets" Condition="Exists('..\..\packages\docfx.console.2.59.0\build\docfx.console.targets')" />
