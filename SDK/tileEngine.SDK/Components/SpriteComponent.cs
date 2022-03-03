@@ -24,6 +24,11 @@ namespace tileEngine.SDK.Components
         public Vector2 Position { get; set; } = new Vector2(0, 0);
 
         /// <summary>
+        /// The rotation of the sprite, in radians.
+        /// </summary>
+        public float Rotation { get; set; } = 0;
+
+        /// <summary>
         /// The scale of this sprite, relative to texture size.
         /// </summary>
         public Vector2 Scale { get; set; } = new Vector2(1, 1);
@@ -49,8 +54,9 @@ namespace tileEngine.SDK.Components
 
             Vector2 drawPosition = gameObject.Scene.ToScreenPointF(gameObject.Position + Position);
             Vector2 drawScale = new Vector2(gameObject.Scene.Zoom * Scale.X, gameObject.Scene.Zoom * Scale.Y);
+            Vector2 realSize = new Vector2(Texture.Width, Texture.Height) * drawScale;
             Rectangle sourceRect = new Rectangle(0,0,Texture.Width,Texture.Height);
-            spriteBatch.Draw(Texture, drawPosition, sourceRect, Color.White * Opacity, 0f, new Vector2(0, 0), drawScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(Texture, drawPosition + realSize / 2f, sourceRect, Color.White * Opacity, Rotation, new Vector2(Texture.Width/2f, Texture.Height/2f), drawScale, SpriteEffects.None, 0);
         }
     }
 }
