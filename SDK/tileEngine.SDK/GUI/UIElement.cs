@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using tileEngine.SDK.Utility;
 using tileEngine.Utility;
 
 namespace tileEngine.SDK.GUI
@@ -63,7 +64,7 @@ namespace tileEngine.SDK.GUI
         /// <summary>
         /// The current bounds of this UI element.
         /// </summary>
-        public System.Drawing.RectangleF Bounds => new System.Drawing.RectangleF(Position.X, Position.Y, Size.X, Size.Y);
+        public RectF Bounds => new RectF(Position, Size);
 
         /// <summary>
         /// The scale of this UI element.
@@ -308,7 +309,7 @@ namespace tileEngine.SDK.GUI
             }
 
             //Check self, is the mouse within the bounds?
-            if (element.Bounds.Contains(state.Position.X, state.Position.Y))
+            if (element.Bounds.Contains(state.Position))
             {
                 element.OnClick?.Invoke(state.Position);
                 return true;
@@ -326,15 +327,15 @@ namespace tileEngine.SDK.GUI
                 CheckEnteredExited(child, prevState, state);
 
             //Check entered for self.
-            if (element.Bounds.Contains(state.Position.X, state.Position.Y) &&
-                !element.Bounds.Contains(prevState.Position.X, prevState.Position.Y))
+            if (element.Bounds.Contains(state.Position) &&
+                !element.Bounds.Contains(prevState.Position))
             {
                 OnEnter?.Invoke();
             }
 
             //Check left for self.
-            if (!element.Bounds.Contains(state.Position.X, state.Position.Y) &&
-                element.Bounds.Contains(prevState.Position.X, prevState.Position.Y))
+            if (!element.Bounds.Contains(state.Position) &&
+                element.Bounds.Contains(prevState.Position))
             {
                 OnExit?.Invoke();
             }
