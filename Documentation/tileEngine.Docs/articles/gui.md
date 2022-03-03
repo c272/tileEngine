@@ -16,7 +16,7 @@ The following anchor types are currently available to use:
 - `AutoRight`
 
 The below diagram illustrates how these are laid out within the game window.
-![GUI Anchor Diagram](/images/gui-anchor-diagram.png)
+![GUI Anchor Diagram](../images/gui-anchor-diagram.png)
 
 The anchors that are "non-auto" (the four directions and center) do not perform any automatic inlining or spacing relative to other elements.
 In other words, they are **absolutely positioned**, meaning that elements that are added after/before them in the same parent GUI element can
