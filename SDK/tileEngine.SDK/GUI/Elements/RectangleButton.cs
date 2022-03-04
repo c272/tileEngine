@@ -1,0 +1,106 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace tileEngine.SDK.GUI.Elements
+{
+    /// <summary>
+    /// Represents a single rectangular panel button with an optional border.
+    /// </summary>
+    public class RectangleButton : UIElement
+    {
+        /// <summary>
+        /// Whether this button should automatically size.
+        /// </summary>
+        public bool AutoSize
+        {
+            get => FixedSize == null;
+            set
+            {
+                if (value)
+                {
+                    FixedSize = null;
+                    return;
+                }
+                if (!value && FixedSize == null)
+                    FixedSize = new Vector2(0, 0);
+            }
+        }
+
+        /// <summary>
+        /// The background colour of this rectangular button.
+        /// </summary>
+        public Color BackgroundColour { get; set; } = Color.White;
+
+        /// <summary>
+        /// The border colour of this rectangular button.
+        /// </summary>
+        public Color BorderColour { get; set; } = Color.Black;
+
+        /// <summary>
+        /// The thickness of the border on this button.
+        /// </summary>
+        public int BorderThickness { get; set; } = 0;
+
+        /// <summary>
+        /// The fixed size of this button, if AutoSize is off this is used.
+        /// </summary>
+        public Vector2? FixedSize { get; set; } = null;
+
+        /// <summary>
+        /// The label that is used for drawing text on the button.
+        /// </summary>
+        public Label Label { get; set; } = new Label()
+        {
+            Colour = Color.Black
+        };
+
+        /// <summary>
+        /// The padding between the text and the button.
+        /// </summary>
+        public Vector2 TextPadding { get; set; } = new Vector2(10, 5);
+
+        /// <summary>
+        /// Draws the rectangular button to the screen.
+        /// </summary>
+        public override void DrawSelf(SpriteBatch spriteBatch, Vector2 topLeft)
+        {
+            //Draw background rectangle.
+            spriteBatch.Draw(Scene.PointTexture, topLeft, null, BackgroundColour, 0f, Vector2.Zero, Size, SpriteEffects.None, 0);
+
+            //Draw border rectangles.
+            if (BorderThickness > 0)
+            {
+                Vector2 borderVec = new Vector2(BorderThickness, BorderThickness);
+                spriteBatch.Draw(Scene.PointTexture, topLeft - borderVec, null, BorderColour, 0f, Vector2.Zero, new Vector2(Size.X + BorderThickness * 2, BorderThickness), SpriteEffects.None, 0);
+                spriteBatch.Draw(Scene.PointTexture, topLeft - new Vector2(BorderThickness, 0), null, BorderColour, 0f, Vector2.Zero, new Vector2(BorderThickness, Size.Y), SpriteEffects.None, 0);
+                spriteBatch.Draw(Scene.PointTexture, topLeft + new Vector2(-BorderThickness, Size.Y), null, BorderColour, 0f, Vector2.Zero, new Vector2(Size.X + BorderThickness, BorderThickness), SpriteEffects.None, 0);
+                spriteBatch.Draw(Scene.PointTexture, topLeft + new Vector2(Size.X, 0), null, BorderColour, 0f, Vector2.Zero, new Vector2(BorderThickness, Size.Y + BorderThickness), SpriteEffects.None, 0);
+            }
+
+            //Draw the label.
+            Label.DrawSelf(spriteBatch, topLeft + TextPadding);
+        }
+
+        /// <summary>
+        /// Updates the size of this button, if AutoSize is on.
+        /// </summary>
+        public override void ForceUpdateSize()
+        {
+            if (!AutoSize)
+            {
+                Size = (Vector2)FixedSize;
+                return;
+            }
+
+            //Size based on label.
+            if (Label.SizeDirty)
+                Label.ForceUpdateSize();
+            Size = Label.Size + TextPadding * 2;
+        }
+    }
+}
