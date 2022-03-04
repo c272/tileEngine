@@ -18,18 +18,14 @@ namespace tileEngine.SDK.GUI.Elements
         /// </summary>
         public bool AutoSize
         {
-            get => FixedSize == null;
+            get => _autoSize;
             set
             {
-                if (value)
-                {
-                    FixedSize = null;
-                    return;
-                }
-                if (!value && FixedSize == null)
-                    FixedSize = new Vector2(0, 0);
+                _autoSize = value;
+                SizeDirty = true;
             }
         }
+        private bool _autoSize = true;
 
         /// <summary>
         /// The background colour of this rectangular button.
@@ -47,9 +43,17 @@ namespace tileEngine.SDK.GUI.Elements
         public int BorderThickness { get; set; } = 0;
 
         /// <summary>
-        /// The fixed size of this button, if AutoSize is off this is used.
+        /// The total size of the rectangular button, without AutoSize.
         /// </summary>
-        public Vector2? FixedSize { get; set; } = null;
+        public new Vector2 Size
+        {
+            get => base.Size;
+            set
+            {
+                if (!AutoSize)
+                    base.Size = value;
+            }
+        }
 
         /// <summary>
         /// The label that is used for drawing text on the button.
@@ -69,6 +73,10 @@ namespace tileEngine.SDK.GUI.Elements
         /// </summary>
         public override void DrawSelf(SpriteBatch spriteBatch, Vector2 topLeft)
         {
+            //Check if we need to resize because the text changed.
+            if (Label.SizeDirty)
+                ForceUpdateSize();
+
             //Draw background rectangle.
             spriteBatch.Draw(Scene.PointTexture, topLeft, null, BackgroundColour, 0f, Vector2.Zero, Size, SpriteEffects.None, 0);
 
@@ -76,10 +84,10 @@ namespace tileEngine.SDK.GUI.Elements
             if (BorderThickness > 0)
             {
                 Vector2 borderVec = new Vector2(BorderThickness, BorderThickness);
-                spriteBatch.Draw(Scene.PointTexture, topLeft - borderVec, null, BorderColour, 0f, Vector2.Zero, new Vector2(Size.X + BorderThickness * 2, BorderThickness), SpriteEffects.None, 0);
-                spriteBatch.Draw(Scene.PointTexture, topLeft - new Vector2(BorderThickness, 0), null, BorderColour, 0f, Vector2.Zero, new Vector2(BorderThickness, Size.Y), SpriteEffects.None, 0);
-                spriteBatch.Draw(Scene.PointTexture, topLeft + new Vector2(-BorderThickness, Size.Y), null, BorderColour, 0f, Vector2.Zero, new Vector2(Size.X + BorderThickness, BorderThickness), SpriteEffects.None, 0);
-                spriteBatch.Draw(Scene.PointTexture, topLeft + new Vector2(Size.X, 0), null, BorderColour, 0f, Vector2.Zero, new Vector2(BorderThickness, Size.Y + BorderThickness), SpriteEffects.None, 0);
+                spriteBatch.Draw(Scene.PointTexture, topLeft, null, BorderColour, 0f, Vector2.Zero, new Vector2(Size.X, BorderThickness), SpriteEffects.None, 0);
+                spriteBatch.Draw(Scene.PointTexture, topLeft, null, BorderColour, 0f, Vector2.Zero, new Vector2(BorderThickness, Size.Y), SpriteEffects.None, 0);
+                spriteBatch.Draw(Scene.PointTexture, topLeft + new Vector2(Size.X - BorderThickness, 0), null, BorderColour, 0f, Vector2.Zero, new Vector2(BorderThickness, Size.Y), SpriteEffects.None, 0);
+                spriteBatch.Draw(Scene.PointTexture, topLeft + new Vector2(0, Size.Y - BorderThickness), null, BorderColour, 0f, Vector2.Zero, new Vector2(Size.X, BorderThickness), SpriteEffects.None, 0);
             }
 
             //Draw the label.
@@ -91,16 +99,14 @@ namespace tileEngine.SDK.GUI.Elements
         /// </summary>
         public override void ForceUpdateSize()
         {
+            //Ignore if no autosize.
             if (!AutoSize)
-            {
-                Size = (Vector2)FixedSize;
                 return;
-            }
 
             //Size based on label.
             if (Label.SizeDirty)
                 Label.ForceUpdateSize();
-            Size = Label.Size + TextPadding * 2;
+            base.Size = Label.Size + TextPadding * 2;
         }
     }
 }

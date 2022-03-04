@@ -53,6 +53,11 @@ namespace tileEngine.SDK.GUI
         public Vector2 Size { get; protected set; } = Vector2.Zero;
 
         /// <summary>
+        /// Whether this UI element sizes based on it's parent.
+        /// </summary>
+        internal bool SizesFromParent { get; set; } = false;
+
+        /// <summary>
         /// The size of the parent of this UI element.
         /// If there is no parent, then the parent container is just the viewport of the game.
         /// </summary>

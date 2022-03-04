@@ -40,6 +40,10 @@ namespace tileEngine.SDK.GUI.Elements
                     return;
                 }
 
+                //Ignore element if sizes from parent.
+                if (child.SizesFromParent)
+                    continue;
+
                 if (child.Size.X > maxWidth)
                     maxWidth = child.Size.X;
                 totalHeight += child.Size.Y;
