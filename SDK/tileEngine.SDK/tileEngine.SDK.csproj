@@ -82,6 +82,7 @@
     <Compile Include="Diagnostics\DiagnosticsMessage.cs" />
     <Compile Include="GUI\Elements\Group.cs" />
     <Compile Include="GUI\Elements\Panel.cs" />
+    <Compile Include="GUI\Elements\Picture.cs" />
     <Compile Include="GUI\Elements\ProgressBar.cs" />
     <Compile Include="GUI\Elements\RectangleButton.cs" />
     <Compile Include="GUI\Elements\Spacer.cs" />

@@ -78,19 +78,20 @@ namespace tileEngine.SDK.GUI.Elements
                 ForceUpdateSize();
 
             //Draw background rectangle.
-            spriteBatch.Draw(Scene.PointTexture, topLeft, null, BackgroundColour, 0f, Vector2.Zero, Size, SpriteEffects.None, 0);
+            spriteBatch.Draw(Scene.PointTexture, topLeft, null, BackgroundColour * Opacity, 0f, Vector2.Zero, Size, SpriteEffects.None, 0);
 
             //Draw border rectangles.
             if (BorderThickness > 0)
             {
                 Vector2 borderVec = new Vector2(BorderThickness, BorderThickness);
-                spriteBatch.Draw(Scene.PointTexture, topLeft, null, BorderColour, 0f, Vector2.Zero, new Vector2(Size.X, BorderThickness), SpriteEffects.None, 0);
-                spriteBatch.Draw(Scene.PointTexture, topLeft, null, BorderColour, 0f, Vector2.Zero, new Vector2(BorderThickness, Size.Y), SpriteEffects.None, 0);
-                spriteBatch.Draw(Scene.PointTexture, topLeft + new Vector2(Size.X - BorderThickness, 0), null, BorderColour, 0f, Vector2.Zero, new Vector2(BorderThickness, Size.Y), SpriteEffects.None, 0);
-                spriteBatch.Draw(Scene.PointTexture, topLeft + new Vector2(0, Size.Y - BorderThickness), null, BorderColour, 0f, Vector2.Zero, new Vector2(Size.X, BorderThickness), SpriteEffects.None, 0);
+                spriteBatch.Draw(Scene.PointTexture, topLeft, null, BorderColour * Opacity, 0f, Vector2.Zero, new Vector2(Size.X, BorderThickness), SpriteEffects.None, 0);
+                spriteBatch.Draw(Scene.PointTexture, topLeft, null, BorderColour * Opacity, 0f, Vector2.Zero, new Vector2(BorderThickness, Size.Y), SpriteEffects.None, 0);
+                spriteBatch.Draw(Scene.PointTexture, topLeft + new Vector2(Size.X - BorderThickness, 0), null, BorderColour * Opacity, 0f, Vector2.Zero, new Vector2(BorderThickness, Size.Y), SpriteEffects.None, 0);
+                spriteBatch.Draw(Scene.PointTexture, topLeft + new Vector2(0, Size.Y - BorderThickness), null, BorderColour * Opacity, 0f, Vector2.Zero, new Vector2(Size.X, BorderThickness), SpriteEffects.None, 0);
             }
 
             //Draw the label.
+            Label.Opacity = Opacity;
             Label.DrawSelf(spriteBatch, topLeft + TextPadding);
         }
 
