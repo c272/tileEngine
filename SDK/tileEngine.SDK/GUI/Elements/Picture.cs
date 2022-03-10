@@ -37,7 +37,7 @@ namespace tileEngine.SDK.GUI.Elements
         /// </summary>
         public override void DrawSelf(SpriteBatch spriteBatch, Vector2 topLeft)
         {
-            spriteBatch.Draw(Texture, topLeft, null, Colour * Opacity, 0f, Vector2.Zero, Size, SpriteEffects.None, 0);
+            spriteBatch.Draw(Texture, topLeft, null, Colour * Opacity, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0);
         }
 
         /// <summary>
