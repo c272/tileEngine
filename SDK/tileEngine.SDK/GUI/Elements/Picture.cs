@@ -28,6 +28,11 @@ namespace tileEngine.SDK.GUI.Elements
         private Texture2D _texture = null;
 
         /// <summary>
+        /// The scale of the picture (this is irrelevant to UIElement-level scaling).
+        /// </summary>
+        public new float Scale { get; set; }
+
+        /// <summary>
         /// The colour modifier for this picture.
         /// </summary>
         public Color Colour { get; set; } = Color.White;
@@ -37,7 +42,7 @@ namespace tileEngine.SDK.GUI.Elements
         /// </summary>
         public override void DrawSelf(SpriteBatch spriteBatch, Vector2 topLeft)
         {
-            spriteBatch.Draw(Texture, topLeft, null, Colour * Opacity, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0);
+            spriteBatch.Draw(Texture, topLeft, null, Colour * Opacity, 0f, Vector2.Zero, Scale, SpriteEffects.None, 0);
         }
 
         /// <summary>
@@ -45,7 +50,7 @@ namespace tileEngine.SDK.GUI.Elements
         /// </summary>
         public override void ForceUpdateSize()
         {
-            Size = new Vector2(Texture.Width, Texture.Height);
+            Size = new Vector2(Texture.Width, Texture.Height) * Scale;
         }
     }
 }
