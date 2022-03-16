@@ -99,8 +99,9 @@ namespace tileEngine.SDK.Input
         {
             switch (bindingData)
             {
-                //Special case for mouse position.
+                //Special case for mouse position & scroll wheel.
                 case MouseInputType.Position:
+                case MouseInputType.ScrollWheel:
                     return true;
 
                 //Standard buttons.
@@ -110,10 +111,6 @@ namespace tileEngine.SDK.Input
                     return state.RightButton == ButtonState.Pressed;
                 case MouseInputType.MiddleMouse:
                     return state.MiddleButton == ButtonState.Pressed;
-
-                //Scroll wheel.
-                case MouseInputType.ScrollWheel:
-                    return state.ScrollWheelValue != 0;
 
                 default:
                     throw new Exception($"Mouse input type '{bindingData}' has binding checking unimplemented.");
