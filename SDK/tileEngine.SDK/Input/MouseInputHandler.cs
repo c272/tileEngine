@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,6 +62,12 @@ namespace tileEngine.SDK.Input
                     binding.Value.Value = state.Position.ToVector2();
                 }
 
+                //If this is the scroll wheel, update binding.
+                if ((MouseInputType)binding.Value.BindingData == MouseInputType.ScrollWheel)
+                {
+                    binding.Value.Value = new Vector2(0, state.ScrollWheelValue);
+                }
+
                 //Is the binding not still active? Remove it.
                 if (!BindingActive((MouseInputType)binding.Value.BindingData, state))
                     CurrentState.Remove(binding.Key);
@@ -104,6 +111,10 @@ namespace tileEngine.SDK.Input
                 case MouseInputType.MiddleMouse:
                     return state.MiddleButton == ButtonState.Pressed;
 
+                //Scroll wheel.
+                case MouseInputType.ScrollWheel:
+                    return state.ScrollWheelValue != 0;
+
                 default:
                     throw new Exception($"Mouse input type '{bindingData}' has binding checking unimplemented.");
             }
@@ -131,6 +142,7 @@ namespace tileEngine.SDK.Input
         Position,
         LeftMouse,
         RightMouse,
-        MiddleMouse
+        MiddleMouse,
+        ScrollWheel
     }
 }

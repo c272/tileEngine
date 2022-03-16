@@ -64,6 +64,14 @@ if (InputHandler.HasEvent("Movement"))
 	//...
 ```
 
+## Mouse Input Bindings
+To add input bindings for mouse events, you can use the `TileEngine.Instance.MouseInput` input handler. The following types of events are available:
+- Position: An always-active event that stores the current screen position of the mouse in the `Value` field of the input.
+- ScrollWheel: An event that is fired every time the scroll wheel value is changed. Stores the cumulative scroll wheel value since game start in the `Value` field's "Y".
+- LeftMouse: An event that is fired on left click.
+- RightMouse: An event that is fired on right click.
+- MiddleMouse: An event that is fired on middle click.
+
 ### Checking & Handling Input Events
 Now that you've created several key and axis bindings, you will want to utilise within your code somewhere, such as in a GameObject update loop or
 within the scene update loop. To do this, you can access the generic input API through the static "InputHandler" class, found within
