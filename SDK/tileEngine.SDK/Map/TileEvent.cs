@@ -24,6 +24,12 @@ namespace tileEngine.SDK.Map
         /// </summary>
         [ProtoMember(2)]
         public EventTriggerType Trigger { get; set; } = EventTriggerType.Interaction;
+
+        /// <summary>
+        /// Some arbitrary data that can be assigned to individual tile events.
+        /// </summary>
+        [ProtoMember(3)]
+        public string Data { get; set; } = string.Empty;
     }
 
     /// <summary>
@@ -32,6 +38,7 @@ namespace tileEngine.SDK.Map
     public enum EventTriggerType
     {
         Interaction,
-        GameObjectCollide
+        GameObjectCollide,
+        LevelStart
     }
 }

@@ -32,6 +32,9 @@ namespace tileEngine.Controls.Properties
             Event = tileEvent;
             document = doc;
 
+            //Pass in event data to data text box.
+            dataText.Text = Event.Data;
+
             //Configure function name dropdown.
             foreach (var func in doc.EventFunctions)
             {
@@ -83,6 +86,15 @@ namespace tileEngine.Controls.Properties
             if (triggerDropdown.SelectedItem == null)
                 return;
             Event.Trigger = (EventTriggerType)((TaggedDropdownItem<object>)triggerDropdown.SelectedItem).Tag;
+            document.Node.UnsavedChanges = true;
+        }
+
+        /// <summary>
+        /// Triggered when the user changes the event data in the properties menu.
+        /// </summary>
+        private void dataTextChanged(object sender, EventArgs e)
+        {
+            Event.Data = dataText.Text;
             document.Node.UnsavedChanges = true;
         }
     }

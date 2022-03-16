@@ -172,7 +172,7 @@ namespace tileEngine.Controls
             if (state == MapPaletteState.DragSelect)
             {
                 //Create rectangle.
-                Point bottomRightTile = ToTileLocation(e.Location);
+                Point bottomRightTile = ToTileLocation(e.Location, true);
                 Size newSize = new Size(bottomRightTile.X - selectedTiles.Location.X, bottomRightTile.Y - selectedTiles.Location.Y);
 
                 //Bound the size to be at least a selection of 1.
@@ -181,7 +181,7 @@ namespace tileEngine.Controls
 
                 //Don't allow the user to select outside the palette.
                 newSize.Width = Math.Min(newSize.Width, TileSize.X - selectedTiles.X);
-                newSize.Width = Math.Min(newSize.Height, TileSize.Y - selectedTiles.Y);
+                newSize.Height = Math.Min(newSize.Height, TileSize.Y - selectedTiles.Y);
                 var oldSize = selectedTiles.Size;
                 selectedTiles.Size = newSize;
 
@@ -273,7 +273,7 @@ namespace tileEngine.Controls
                 curPos.X = 0;
                 curPos.Y += TileTextureSize;
             }
-            TileSize = curPos;
+            TileSize = new Point(texture.Width / TileTextureSize, texture.Height / TileTextureSize);
 
 
             //Add layer to map, invalidate.

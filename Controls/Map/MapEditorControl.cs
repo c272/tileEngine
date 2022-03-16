@@ -506,7 +506,7 @@ namespace tileEngine.Controls
         private void PasteTiles()
         {
             //If there is no selection, ignore.
-            if (SelectedTiles == null)
+            if (SelectedTiles == null || copiedTiles == null || copiedTiles.Count == 0)
                 return;
 
             //If the current mode differs from the originating mode, ignore.

@@ -129,6 +129,27 @@ namespace tileEngine.SDK
                 }
                 eventFunctions.Add(eventFuncAttrib.Name, method);
             }
+
+            //Loop over map events, if any of them need calling at scene startup, call them.
+            foreach (var layer in Map.Layers)
+            {
+                foreach (var layerEvent in layer.Events)
+                {
+                    if (layerEvent.Value.Trigger == EventTriggerType.LevelStart)
+                    {
+                        //Trigger now. Craft some event data!
+                        TileEventData eventData = new TileEventData()
+                        {
+                            Location = ToGridLocation(layerEvent.Key),
+                            TriggeringObject = null,
+                            TriggerType = EventTriggerType.LevelStart
+                        };
+
+                        //Run the linked function.
+                        TriggerEventFunction(layerEvent.Value.LinkedFunction, eventData);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -339,30 +360,39 @@ namespace tileEngine.SDK
                     TriggerType = EventTriggerType.GameObjectCollide
                 };
 
-                //Check the linked function actually exists.
+                //Trigger the event function!
                 var thisEvent = layer.Events[triggering];
-                if (!eventFunctions.ContainsKey(thisEvent.LinkedFunction))
-                {
-                    DiagnosticsHook.LogMessage(1009, $"Event function '{thisEvent.LinkedFunction}' called from map, but not found in assembly.", DiagnosticsSeverity.Warning);
-                    continue;
-                }
-
-                //Trigger this event!
-                try
-                {
-                    eventFunctions[thisEvent.LinkedFunction].Invoke(this, new object[] { eventData });
-                }
-                catch (Exception ex)
-                {
-                    DiagnosticsHook.LogMessage(1010, $"Failed to call event function '{thisEvent.LinkedFunction}': {ex.Message}");
-                    return;
-                }
+                TriggerEventFunction(thisEvent.LinkedFunction, eventData);
             }
 
             //Refresh event cache for this object.
             eventCollisionCache.Remove(gameObject.ID);
             if (collideData.TriggeringEvents.Count > 0)
                 eventCollisionCache.Add(gameObject.ID, collideData.TriggeringEvents);
+        }
+
+        /// <summary>
+        /// Triggers the provided event function.
+        /// </summary>
+        public void TriggerEventFunction(string name, TileEventData data)
+        {
+            //Check the event exists.
+            if (!eventFunctions.ContainsKey(name))
+            {
+                DiagnosticsHook.LogMessage(1009, $"Event function '{name}' called from map, but not found in assembly.", DiagnosticsSeverity.Warning);
+                return;
+            }
+
+            //Trigger this event!
+            try
+            {
+                eventFunctions[name].Invoke(this, new object[] { data });
+            }
+            catch (Exception ex)
+            {
+                DiagnosticsHook.LogMessage(1010, $"Failed to call event function '{name}': {ex.Message}");
+                return;
+            }
         }
 
         /// <summary>
