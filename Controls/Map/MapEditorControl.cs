@@ -549,7 +549,7 @@ namespace tileEngine.Controls
                         switch (EditMode)
                         {
                             case MapEditMode.Events:
-                                SelectedLayer.Events.Add(curTile, (TileEvent)data);
+                                SelectedLayer.Events.Add(curTile, ((TileEvent)data).Clone());
                                 break;
                             case MapEditMode.Tiles:
                                 SelectedLayer.Tiles.Add(curTile, (TileData)data);

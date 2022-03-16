@@ -30,6 +30,19 @@ namespace tileEngine.SDK.Map
         /// </summary>
         [ProtoMember(3)]
         public string Data { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Returns a clone of this tile event data.
+        /// </summary>
+        public TileEvent Clone()
+        {
+            return new TileEvent()
+            {
+                Data = Data,
+                Trigger = Trigger,
+                LinkedFunction = LinkedFunction,
+            };
+        }
     }
 
     /// <summary>

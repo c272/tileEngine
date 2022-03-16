@@ -16,9 +16,19 @@ namespace tileEngine.SDK.GUI.Elements
     public class Group : UIElement
     {
         /// <summary>
-        /// Group does not draw anything but its children.
+        /// The background colour of this group.
+        /// By default, no background is drawn (transparent).
         /// </summary>
-        public override void DrawSelf(SpriteBatch spriteBatch, Vector2 topLeft) { }
+        public Color BackgroundColour { get; set; } = Color.Transparent;
+
+        /// <summary>
+        /// Draws the background of the group (if non-transparent).
+        /// </summary>
+        public override void DrawSelf(SpriteBatch spriteBatch, Vector2 topLeft) 
+        {
+            //Just draw the background.
+            spriteBatch.Draw(Scene.PointTexture, topLeft, null, BackgroundColour, 0, Vector2.Zero, Size, SpriteEffects.None, 0);
+        }
 
         /// <summary>
         /// Updates the size of this group based on the children within it.
@@ -50,6 +60,7 @@ namespace tileEngine.SDK.GUI.Elements
             }
 
             //Set this as the total size of the group.
+            SizeDirty = false;
             Size = new Vector2(maxWidth, totalHeight);
         }
     }

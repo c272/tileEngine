@@ -62,19 +62,23 @@
             // 
             // functionDropdown
             // 
+            this.functionDropdown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.functionDropdown.Location = new System.Drawing.Point(7, 64);
-            this.functionDropdown.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.functionDropdown.Margin = new System.Windows.Forms.Padding(2);
             this.functionDropdown.Name = "functionDropdown";
-            this.functionDropdown.Size = new System.Drawing.Size(186, 21);
+            this.functionDropdown.Size = new System.Drawing.Size(311, 21);
             this.functionDropdown.TabIndex = 4;
             this.functionDropdown.Text = "darkDropdownList1";
             // 
             // triggerDropdown
             // 
+            this.triggerDropdown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.triggerDropdown.Location = new System.Drawing.Point(7, 22);
-            this.triggerDropdown.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.triggerDropdown.Margin = new System.Windows.Forms.Padding(2);
             this.triggerDropdown.Name = "triggerDropdown";
-            this.triggerDropdown.Size = new System.Drawing.Size(186, 21);
+            this.triggerDropdown.Size = new System.Drawing.Size(311, 21);
             this.triggerDropdown.TabIndex = 5;
             this.triggerDropdown.Text = "darkDropdownList1";
             // 
@@ -101,7 +105,7 @@
             this.dataText.Location = new System.Drawing.Point(8, 113);
             this.dataText.Multiline = true;
             this.dataText.Name = "dataText";
-            this.dataText.Size = new System.Drawing.Size(185, 125);
+            this.dataText.Size = new System.Drawing.Size(310, 125);
             this.dataText.TabIndex = 7;
             this.dataText.TextChanged += new System.EventHandler(this.dataTextChanged);
             // 
@@ -115,7 +119,7 @@
             this.Controls.Add(this.functionDropdown);
             this.Controls.Add(this.darkLabel2);
             this.Controls.Add(this.darkLabel1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "EventPropertiesControl";
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -68,7 +69,7 @@ namespace tileEngine.Controls
             }
 
             //Grab all functions that have the "EventFunction" attribute, add their names to a list.
-            var eventMethods = sceneClass.GetMethods()
+            var eventMethods = ReflectionExtensions.GetMethodsWithInheritance(sceneClass)
                                          .SelectMany(m => m.GetCustomAttributes(typeof(EventFunctionAttribute), false))
                                          .Select(x => (EventFunctionAttribute)x).ToList();
             EventFunctions.Clear();

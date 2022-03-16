@@ -50,9 +50,9 @@ namespace tileEngine.SDK.GUI.Elements
         /// </summary>
         public override void DrawSelf(SpriteBatch spriteBatch, Vector2 topLeft)
         {
+            if (FillParent && Parent.Size != Size)
+                Size = Parent.Size;
             spriteBatch.Draw(Scene.PointTexture, topLeft, null, Colour * Opacity, 0f, Vector2.Zero, Size, SpriteEffects.None, 0);
-            if (FillParent)
-                SizeDirty = true;
         }
 
         /// <summary>

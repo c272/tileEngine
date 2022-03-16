@@ -219,7 +219,7 @@ namespace tileEngine.SDK.GUI
         private void ForceUpdatePosition()
         {
             //Calculate the starting position based on anchor.
-            Vector2 startPos = (Parent?.Position ?? Vector2.Zero) + ParentSize / 2f;
+            Vector2 startPos = (Parent?.Position + Parent?.Offset ?? Vector2.Zero) + ParentSize / 2f;
             if (Anchor.HasFlag(UIAnchor.Right))
                 startPos.X += ParentSize.X / 2f;
             if (Anchor.HasFlag(UIAnchor.Left))

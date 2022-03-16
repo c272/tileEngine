@@ -18,6 +18,11 @@ namespace tileEngine.SDK.Map
         public GameObject TriggeringObject { get; set; }
 
         /// <summary>
+        /// The event tile that triggered this call.
+        /// </summary>
+        public TileEvent EventTile { get; set; }
+
+        /// <summary>
         /// The type of interaction that triggered this event.
         /// </summary>
         public EventTriggerType TriggerType { get; set; }

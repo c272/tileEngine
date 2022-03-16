@@ -113,7 +113,7 @@ namespace tileEngine.SDK
         public virtual void Initialize()
         {
             //Pull the attributes on this class, filter for event functions.
-            MethodInfo[] methods = this.GetType().GetMethods();
+            var methods = ReflectionExtensions.GetMethodsWithInheritance(this.GetType());
             foreach (var method in methods)
             {
                 //Get the event function attribute for this (if there is one).
@@ -140,8 +140,9 @@ namespace tileEngine.SDK
                         //Trigger now. Craft some event data!
                         TileEventData eventData = new TileEventData()
                         {
-                            Location = ToGridLocation(layerEvent.Key),
+                            Location = TileToGridLocation(layerEvent.Key),
                             TriggeringObject = null,
+                            EventTile = layerEvent.Value,
                             TriggerType = EventTriggerType.LevelStart
                         };
 
@@ -171,7 +172,7 @@ namespace tileEngine.SDK
             Point bottomRightTile = GridToTileLocation(bottomRight, true);
 
             //Begin layer draws.
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp);
             foreach (var layer in Map.Layers)
             {
                 //Draw the tiles for this layer.
@@ -357,6 +358,7 @@ namespace tileEngine.SDK
                 {
                     Location = TileToGridLocation(triggering),
                     TriggeringObject = gameObject,
+                    EventTile = layer.Events[triggering],
                     TriggerType = EventTriggerType.GameObjectCollide
                 };
 

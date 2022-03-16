@@ -30,7 +30,7 @@ namespace tileEngine.SDK.GUI.Elements
         /// <summary>
         /// The scale of the picture (this is irrelevant to UIElement-level scaling).
         /// </summary>
-        public new float Scale { get; set; }
+        public new float Scale { get; set; } = 1f;
 
         /// <summary>
         /// The colour modifier for this picture.
