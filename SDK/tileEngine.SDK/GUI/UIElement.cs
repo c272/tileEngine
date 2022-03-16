@@ -325,22 +325,22 @@ namespace tileEngine.SDK.GUI
         /// <summary>
         /// Checks whether this element (or it's children) have just been entered.
         /// </summary>
-        internal void CheckEnteredExited(UIElement element, MouseState prevState, MouseState state)
+        internal void CheckEnteredExited(MouseState prevState, MouseState state)
         {
             //Check children.
-            foreach (var child in element.Children)
-                CheckEnteredExited(child, prevState, state);
+            foreach (var child in Children)
+                child.CheckEnteredExited(prevState, state);
 
             //Check entered for self.
-            if (element.Bounds.Contains(state.Position) &&
-                !element.Bounds.Contains(prevState.Position))
+            if (Bounds.Contains(state.Position) &&
+                !Bounds.Contains(prevState.Position))
             {
                 OnEnter?.Invoke();
             }
 
             //Check left for self.
-            if (!element.Bounds.Contains(state.Position) &&
-                element.Bounds.Contains(prevState.Position))
+            if (!Bounds.Contains(state.Position) &&
+                Bounds.Contains(prevState.Position))
             {
                 OnExit?.Invoke();
             }

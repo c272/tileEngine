@@ -125,7 +125,7 @@ namespace tileEngine.SDK.GUI
 
             //Check if the mouse has freshly entered/left any UI elements.
             foreach (var element in rootElements)
-                element.CheckEnteredExited(element, previousMouseState, mouseState);
+                element.CheckEnteredExited(previousMouseState, mouseState);
 
             //Update previous mouse state.
             previousMouseState = mouseState;
