@@ -38,6 +38,11 @@ namespace tileEngine.SDK.Components
         /// </summary>
         public float Opacity { get; set; } = 1.0f;
 
+        /// <summary>
+        /// The colour that this sprite is tinted with. White is no tint.
+        /// </summary>
+        public Color TintColour { get; set; } = Color.White;
+
         public SpriteComponent(Texture2D tex = null)
         {
             Texture = tex;
@@ -56,7 +61,7 @@ namespace tileEngine.SDK.Components
             Vector2 drawScale = new Vector2(gameObject.Scene.Zoom * Scale.X, gameObject.Scene.Zoom * Scale.Y);
             Vector2 realSize = new Vector2(Texture.Width, Texture.Height) * drawScale;
             Rectangle sourceRect = new Rectangle(0,0,Texture.Width,Texture.Height);
-            spriteBatch.Draw(Texture, drawPosition + realSize / 2f, sourceRect, Color.White * Opacity, Rotation, new Vector2(Texture.Width/2f, Texture.Height/2f), drawScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(Texture, drawPosition + realSize / 2f, sourceRect, TintColour * Opacity, Rotation, new Vector2(Texture.Width/2f, Texture.Height/2f), drawScale, SpriteEffects.None, 0);
         }
     }
 }

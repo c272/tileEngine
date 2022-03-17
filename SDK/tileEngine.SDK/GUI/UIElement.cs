@@ -194,17 +194,15 @@ namespace tileEngine.SDK.GUI
             //If no parent, we use UI element root list.
             List<UIElement> siblings = Parent == null ? UI.RootElements.ToList() : Parent.Children.ToList();
 
-            foreach (var other in siblings)
+            int ourIndex = siblings.FindIndex(x => x.ID == this.ID);
+            for (int i = ourIndex - 1; i >= 0; i--)
             {
-                //If we've reached ourselves, then there are no previous matching.
-                if (other.ID == this.ID)
-                    return null;
-
                 //Is this a valid anchor? If so, return.
-                if (selector(other.Anchor))
-                    return other;
+                if (selector(siblings[i].Anchor))
+                    return siblings[i];
             }
 
+            //There wasn't a valid prior sibling, return null.
             return null;
         }
 
