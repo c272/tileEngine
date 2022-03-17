@@ -118,7 +118,7 @@ namespace tileEngine.SDK.GUI
             {
                 foreach (var element in rootElements) 
                 {
-                    if (element.CheckClicked(element, mouseState))
+                    if (element.CheckClicked(mouseState))
                         break;
                 }
             }

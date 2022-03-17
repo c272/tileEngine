@@ -135,19 +135,19 @@ namespace tileEngine.SDK.GUI
         /// Event triggered when this UI element is clicked.
         /// </summary>
         public event OnClickedHandler OnClick;
-        public delegate void OnClickedHandler(Point location);
+        public delegate void OnClickedHandler(UIElement element, Point location);
 
         /// <summary>
         /// Event triggered when the mouse first enters this UI element.
         /// </summary>
         public event OnEnteredHandler OnEnter;
-        public delegate void OnEnteredHandler();
+        public delegate void OnEnteredHandler(UIElement element);
 
         /// <summary>
         /// Event triggered when the mouse first enters this UI element.
         /// </summary>
         public event OnExitedHandler OnExit;
-        public delegate void OnExitedHandler();
+        public delegate void OnExitedHandler(UIElement element);
 
         /// <summary>
         /// Adds a child UI element to this element.
@@ -304,21 +304,26 @@ namespace tileEngine.SDK.GUI
         /// <summary>
         /// Checks whether this element (or it's children) are clicked.
         /// </summary>
-        internal bool CheckClicked(UIElement element, MouseState state)
+        internal bool CheckClicked(MouseState state)
         {
             //Check children first.
-            foreach (var child in element.Children)
+            foreach (var child in Children)
             {
-                if (CheckClicked(child, state))
+                if (child.CheckClicked(state))
+                {
+                    //If our child has been clicked, then we've been clicked too.
+                    OnClick?.Invoke(this, state.Position);
                     return true;
+                }
             }
 
             //Check self, is the mouse within the bounds?
-            if (element.Bounds.Contains(state.Position))
+            if (Bounds.Contains(state.Position))
             {
-                element.OnClick?.Invoke(state.Position);
+                OnClick?.Invoke(this, state.Position);
                 return true;
             }
+
             return false;
         }
 
@@ -335,14 +340,14 @@ namespace tileEngine.SDK.GUI
             if (Bounds.Contains(state.Position) &&
                 !Bounds.Contains(prevState.Position))
             {
-                OnEnter?.Invoke();
+                OnEnter?.Invoke(this);
             }
 
             //Check left for self.
             if (!Bounds.Contains(state.Position) &&
                 Bounds.Contains(prevState.Position))
             {
-                OnExit?.Invoke();
+                OnExit?.Invoke(this);
             }
         }
     }
