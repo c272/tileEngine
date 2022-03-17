@@ -37,6 +37,7 @@ namespace tileEngine.SDK.GUI.Elements
         {
             //Loop over children, find the maximum width & total height.
             float maxWidth = 0f;
+            float currentWidth = 0f;
             float totalHeight = 0f;
             foreach (var child in Children) 
             {
@@ -54,10 +55,21 @@ namespace tileEngine.SDK.GUI.Elements
                 if (child.SizesFromParent)
                     continue;
 
-                if (child.Size.X > maxWidth)
-                    maxWidth = child.Size.X;
+                //If we're starting a new row, reset current width, push max width if necessary.
+                if (child.Anchor != UIAnchor.AutoInline)
+                {
+                    if (currentWidth > maxWidth)
+                        maxWidth = currentWidth;
+                    currentWidth = 0f;
+                }
+
+                currentWidth += child.Size.X;
                 totalHeight += child.Size.Y;
             }
+
+            //Check final width (might have fallen out on an inline).
+            if (currentWidth > maxWidth)
+                maxWidth = currentWidth;
 
             //Set this as the total size of the group.
             SizeDirty = false;
