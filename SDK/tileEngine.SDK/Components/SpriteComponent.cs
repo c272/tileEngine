@@ -16,7 +16,7 @@ namespace tileEngine.SDK.Components
         /// <summary>
         /// The texture that will be drawn by this component.
         /// </summary>
-        public Texture2D Texture { get; set; } = null;
+        public Texture2D Texture { get; } = null;
 
         /// <summary>
         /// The relative position of this sprite to the GameObject.
@@ -27,6 +27,11 @@ namespace tileEngine.SDK.Components
         /// The rotation of the sprite, in radians.
         /// </summary>
         public float Rotation { get; set; } = 0;
+
+        /// <summary>
+        /// The origin of sprite rotation. By default the center.
+        /// </summary>
+        public Vector2 Origin { get; set; } = Vector2.Zero;
 
         /// <summary>
         /// The scale of this sprite, relative to texture size.
@@ -46,6 +51,7 @@ namespace tileEngine.SDK.Components
         public SpriteComponent(Texture2D tex = null)
         {
             Texture = tex;
+            Origin = new Vector2(tex.Width / 2f, tex.Height / 2f);
         }
 
         /// <summary>
@@ -61,7 +67,7 @@ namespace tileEngine.SDK.Components
             Vector2 drawScale = new Vector2(gameObject.Scene.Zoom * Scale.X, gameObject.Scene.Zoom * Scale.Y);
             Vector2 realSize = new Vector2(Texture.Width, Texture.Height) * drawScale;
             Rectangle sourceRect = new Rectangle(0,0,Texture.Width,Texture.Height);
-            spriteBatch.Draw(Texture, drawPosition + realSize / 2f, sourceRect, TintColour * Opacity, Rotation, new Vector2(Texture.Width/2f, Texture.Height/2f), drawScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(Texture, drawPosition + Origin, sourceRect, TintColour * Opacity, Rotation, Origin, drawScale, SpriteEffects.None, 0);
         }
     }
 }
